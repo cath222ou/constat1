@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+    <!-- Latest compiled and minified CSS -->
+	
+	<!-- jQuery library -->
+	
+
+
+	
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>	
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/video.js"></script>
+	
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>  
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css"/>
+  
+	<title>Hello World</title>
+
+	</head>
+
+<body>
+<div class="container-fluid">
+	<div id="tabs" class="row">
+	<div class="col-sm-12">
+		<ul>
+			<li><a href="#tabs-1">Formulaire</a></li>
+			<li><a href="#tabs-2">Détails</a></li>
+		</ul>
+		
+<!--Onglet formulaire-->
+
+  <div id="tabs-1" >
+	<div>
+		</p>
+		<H4>Adresse du contrevenant</H4></p>
+		<H6>Numéro civique:</H6></p>
+		<textarea id="nociv" name="adr" class="adr" style="width:75px; height:20px;"></textarea></p>	
+		<H6>Nom de la rue:</H6></p>
+		<textarea id="rue" name="adrRue"  style="width:200px; height:20px;"></textarea></p>	
+		<H4>Description:</H4></p>
+		<textarea id="descTxt" name="desc"  style="width:200px; height:100px;"></textarea>
+	</div>
+
+	<div style="text-align: center">
+        <button onclick="goInsert()">Inserer</button></p>
+		<button onclick="captureVideo();">Capture Video</button> <br>
+	</div>
+  </div>
+
+</div>
+
+
+<!--Obglet Détails-->	
+<div id="tabs-2">
+	<div id="tblDiv" class="table table-responsive"></div>
+	
+	    <div id="qrpopup" > //The hidden div tag for implementing the popup
+            <hr/>
+            <input type="text" id="editNameBox"><br>
+            <input type="text" id="editNumberBox"><br>
+            <button onclick="goDelete()">Supprimer</button>
+            <button onclick="goEdit()">Modifier</button>
+            <button onclick="document.getElementById('qrpopup').style.display='none';">Annuler</button>
+	</div>
+	
+	<!--Création de la table-->	
+	<section id="no-more-tables">
+		<div class="table">
+		<table class="table-bordered table-striped cf" id="tbl">
+			<thead class="cf">
+			<tr>
+				<th>id</th>
+				<th>Date</th>
+				<th>Adresse</th>
+				<th>Description</th>
+			</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		</div>
+	</section>
+	  
+	   
+    <div style="text-align: center">
+        <button onclick="goSearch()">Rechercher</button>
+        <button onclick="successCB()">Voir tout</button>
+		<button onclick="deleteBD()">Vider la base de données</button>
+	</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+
+
+	<div>
+	<p class="flotte1">
+	<img src="http://grandquebec.com/upl-files/armoiries_ville_val_d_or.jpg" alt="logo ville Val-d'Or" style="heigth:30%; width:20%"/>
+	Formulaire contravention déneigement
+	</p>
+	</div>
+
+	
+    <div id="qrpopup" > //The hidden div tag for implementing the popup
+            <hr/>
+            <input type="text" id="editNameBox"><br>
+            <input type="text" id="editNumberBox"><br>
+            <button onclick="goDelete()">Supprimer</button>
+            <button onclick="goEdit()">Modifier</button>
+            <button onclick="document.getElementById('qrpopup').style.display='none';">Annuler</button>
+    </div>
+	
+    <div>
+		</p>
+		<label for="vOdoD">Adresse du contrevenant</label></p>
+		<label for="vOdoD">Numéro civique:</label></p>
+		<textarea name="adr" id="vOdoD" style="width:75px; height:20px;"></textarea></p>	
+		<label for="vOdoD">Nom de la rue:</label></p>
+		<textarea name="adr" id="vOdoD" style="width:200px; height:20px;"></textarea></p>	
+		<label for="descTxt">Description:</label></p>
+		<textarea name="desc" id="descTxt" style="width:200px; height:100px;"></textarea>
+    </div>
+
+	<div style="text-align: center">
+        <button onclick="goInsert()">Inserer</button></p>
+		<button onclick="voirBD()">Visualiser les informations</button>
+	</div>
+	
+	<div id="visuBD">
+   <div id="tblDiv" class="table"></div>
+    <div style="text-align: center">
+        <button onclick="goInsert()">Inserer</button>
+        <button onclick="goSearch()">Rechercher</button>
+        <button onclick="successCB()">Voir tout</button>
+		<button onclick="deleteBD()">Vider la base de données</button>
+	</div> 
+	</div>
+	-->
+	
+	
+	<script type="text/javascript" src="js/dateHeure.js"></script>
+	<script type="text/javascript" src="js/SQLite.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="http://openlayers.org/en/v3.13.0/build/ol.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+</html>
