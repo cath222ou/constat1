@@ -1,6 +1,6 @@
 // gestion des tabs
 	$( "#tabs" ).tabs({
-	active: 0
+	active: 1
 	});
 
 	$( function() {
@@ -21,7 +21,7 @@
 		}
 		
 		function populateDB(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY AUTOINCREMENT,dateValue,adresse,description)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY AUTOINCREMENT,dateValue,adresse,description,latitude,longitude)');
         }
 
         // Query the database
@@ -86,7 +86,7 @@
 
 		function insertDB(tx) {
 			var newdate = moment().format('DD MMMM YYYY, h:mm:ss a');
-			var adresse = document.getElementById("nociv").value+", "+document.getElementById("rue").value;
+			var adresse = document.getElementById("nociv").value+", "+document.getElementById("rue").value+", "+document.getElementById("ville").value;
 			var desc = document.getElementById("descTxt").value;
             tx.executeSql('INSERT INTO DEMO (dateValue,adresse,description) VALUES ("'+ newdate +'","'+ adresse +'","'+ desc +'")');
 			$('#nociv').val('');
@@ -140,13 +140,9 @@
         }
 		
 		
-		//Table vidéo
+	
 		
-		//function populateDB(tx) {
-        //    tx.executeSql('CREATE TABLE IF NOT EXISTS VIDEO (id INTEGER PRIMARY KEY AUTOINCREMENT,path)');
-        //}
-		
-		editNameBox
+	
 
 			
 

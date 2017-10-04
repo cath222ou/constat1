@@ -50,6 +50,7 @@
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript" src="js/video.js"></script>
+	<script type="text/javascript" src="js/localisation.js"></script>
 	
     <link rel="stylesheet" type="text/css" href="css/index.css"/>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
@@ -74,27 +75,59 @@
 	<div id="tabs" class="row">
 	<div class="col-sm-12">
 		<ul>
-			<li><a href="#tabs-1">Formulaire</a></li>
-			<li><a href="#tabs-2">Détails</a></li>
+			<li><a href="#tabs-1">Vidéo</a></li>
+			<li><a href="#tabs-2">Formulaire</a></li>
+			<li><a href="#tabs-3">Détails</a></li>
 		</ul>
+		
+		
+<!--Onglet vidéo-->		
+  <div id="tabs-1" >
+	<div style="text-align: center">
+        <button onclick="captureVideo();">Capture Vidéo</button></p> 		
+	</div>
+  </div>	
+		
 		
 <!--Onglet formulaire-->
 
-  <div id="tabs-1" >
+  <div id="tabs-2" >
 	<div>
 		</p>
 		<H4>Adresse du contrevenant</H4></p>
 		<H6>Numéro civique:</H6></p>
 		<textarea id="nociv" name="adr" class="adr" style="width:75px; height:20px;"></textarea></p>	
 		<H6>Nom de la rue:</H6></p>
-		<textarea id="rue" name="adrRue"  style="width:200px; height:20px;"></textarea></p>	
-		<H4>Description:</H4></p>
-		<textarea id="descTxt" name="desc"  style="width:200px; height:100px;"></textarea>
+		<textarea id="rue" name="adrRue" style="width:200px; height:20px;"></textarea></p>	
+		<fieldset>    
+			<H6>Ville:</H6></p>	
+			<select name="nomville" id="ville">
+				<option selected="selected">Val-d'Or</option>
+				<option>Vassan</option>
+				<option >Val-Senneville</option>
+				<option>Sullivan</option>
+				<option>Dubuisson</option>
+				<option>Louvicourt</option>
+			</select>
+		</fieldset></p>
+		
+		
+		<H4>Description</H4></p>
+		<textarea id="descTxt" name="desc"  style="width:100%; height:100px;"></textarea></p>
+
+		<H4>Coordonnées</H4></p>
+		<button onclick="getPosition()">Enregistrer ma position</button></p>
+		<textarea id="lat" name="lat" style="width:200px; height:20px;"></textarea></p>	
+		<textarea id="long" name="long" style="width:200px; height:20px;"></textarea></p>
+			
+		
+	
+	
 	</div>
 
 	<div style="text-align: center">
-        <button onclick="goInsert()">Inserer</button></p>
-		<button onclick="captureVideo();">Capture Video</button> <br>
+         
+		<button onclick="goInsert()">Enregistrer le formulaire</button><br>
 	</div>
   </div>
 
@@ -102,7 +135,7 @@
 
 
 <!--Obglet Détails-->	
-<div id="tabs-2">
+<div id="tabs-3">
 	<div id="tblDiv" class="table table-responsive"></div>
 	
 	    <div id="qrpopup" > //The hidden div tag for implementing the popup
