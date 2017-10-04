@@ -21,7 +21,7 @@
 		}
 		
 		function populateDB(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY AUTOINCREMENT,dateValue,adresse,description,latitude,longitude)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY AUTOINCREMENT,dateValue,adresse,description,latitude,longitude,idmobile)');
         }
 
         // Query the database
@@ -45,13 +45,19 @@
 			for (var i = 0; i < len; i++) {
 				var tmpArgs = results.rows.item(i).id + ",'"
 					+ results.rows.item(i).dateValue + "','"
-					+ results.rows.item(i).adresse+ "','"
-					+ results.rows.item(i).description+"'";
+					+ results.rows.item(i).adresse + "','"
+					+ results.rows.item(i).description +"'";
+					+ results.rows.item(i).latitude +"'";
+					+ results.rows.item(i).longitude +"'";
+					+ results.rows.item(i).uuid +"'";
 				tblText +='<tr onclick="goPopup('+ tmpArgs + ');">'
 					+ '<td data-title="id">'+results.rows.item(i).id +'</td>'
 					+ '<td data-title="Date">'+results.rows.item(i).dateValue +'</td>'
 					+ '<td data-title="Adresse">'+results.rows.item(i).adresse +'</td>'
-					+ '<td data-title="Description">'+results.rows.item(i).description +'</td></tr>';
+					+ '<td data-title="Description">'+results.rows.item(i).description +'</td>'
+					+ '<td data-title="Latitude">'+results.rows.item(i).latitude +'</td>'
+					+ '<td data-title="Longitude">'+results.rows.item(i).longitude +'</td>'
+					+ '<td data-title="Uuid">'+results.rows.item(i).idmobile +'</td></tr>';
 				table01.append(tblText);
 			}
 		}
@@ -83,15 +89,27 @@
 
         //Insert query
         //
+			document.addEventListener("deviceready", onDeviceReady, false);
+			function onDeviceReady() {
+			console.log(device.uuid);
+			return device.uuid
+			}
+
 
 		function insertDB(tx) {
 			var newdate = moment().format('DD MMMM YYYY, h:mm:ss a');
 			var adresse = document.getElementById("nociv").value+", "+document.getElementById("rue").value+", "+document.getElementById("ville").value;
 			var desc = document.getElementById("descTxt").value;
-            tx.executeSql('INSERT INTO DEMO (dateValue,adresse,description) VALUES ("'+ newdate +'","'+ adresse +'","'+ desc +'")');
+			var lat = document.getElementById("posLat").value;
+			var lon = document.getElementById("posLong").value;
+			var uuid = onDeviceReady();
+
+            tx.executeSql('INSERT INTO DEMO (dateValue,adresse,description,latitude,longitude,idmobile) VALUES ("'+ newdate +'","'+ adresse +'","'+ desc +'","'+ lat +'","'+ lon +'","'+ uuid +'")');
 			$('#nociv').val('');
 			$('#rue').val('');
 			$('#descTxt').val('');
+			$('#posLat').val('');
+			$('#posLong').val('');
 		}
 
         function goInsert() {
