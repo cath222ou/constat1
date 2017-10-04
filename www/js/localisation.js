@@ -1,6 +1,8 @@
-    var onSuccess = function(position) {
-        $('#lat').val(position.coords.latitude);
-		$('#long').val(position.coords.longitude);
+    //geolocalisation
+	
+	var onSuccess = function(position) {
+        $('#posLat').val(position.coords.latitude);
+		$('#posLong').val(position.coords.longitude);
     };
 
     // onError Callback receives a PositionError object
@@ -10,7 +12,16 @@
               'message: ' + error.message + '\n');
     }
 
-	
 	function getPosition(){
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	}
+	
+	
+	//Information sur l'appareil
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
+	function onDeviceReady() {
+		console.log(device.uuid);
+		var uuid = device.uuid
 	}
