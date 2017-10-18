@@ -41,212 +41,229 @@
 	
 	<!-- jQuery library -->
 	
-
-
-	
-	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.js"></script>
-	<script type="text/javascript" src="js/jquery-ui.js"></script>	
-	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/index.js"></script>
-	<script type="text/javascript" src="js/video.js"></script>
-	<script type="text/javascript" src="js/localisation.js"></script>
-	
-    <link rel="stylesheet" type="text/css" href="css/index.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css"/>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.min.css"/>
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>  
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>	
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css"/>
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.min.css"/>
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css"/>
-  
-	<title>Hello World</title>
+	<title>Constat d'infraction déneigement</title>
 
 	</head>
 
 <body>
-<div class="container-fluid">
-	<div id="tabs" class="row">
-	<div class="col-sm-12">
-		<ul>
-			<li><a href="#tabs-1">Vidéo</a></li>
-			<li><a href="#tabs-2">Formulaire</a></li>
-			<li><a href="#tabs-3">Détails</a></li>
-		</ul>
-		
-		
-<!--Onglet vidéo-->		
-  <div id="tabs-1" >
-	<div style="text-align: center">
-        <button onclick="captureVideo();">Capture Vidéo</button></p> 		
-	</div>
-  </div>	
-		
-		
-<!--Onglet formulaire-->
-
-  <div id="tabs-2" >
-	<div>
-		</p>
-		<H4>Adresse du contrevenant</H4></p>
-		<H6>Numéro civique:</H6></p>
-		<textarea id="nociv" name="adr" class="adr" style="width:75px; height:20px;"></textarea></p>	
-		<H6>Nom de la rue:</H6></p>
-		<textarea id="rue" name="adrRue" style="width:200px; height:20px;"></textarea></p>	
-		<fieldset>    
-			<H6>Ville:</H6></p>	
-			<select name="nomville" id="ville">
-				<option selected="selected">Val-d'Or</option>
-				<option>Vassan</option>
-				<option >Val-Senneville</option>
-				<option>Sullivan</option>
-				<option>Dubuisson</option>
-				<option>Louvicourt</option>
-			</select>
-		</fieldset></p>
-		
-		
-		<H4>Description</H4></p>
-		<textarea id="descTxt" name="desc"  style="width:100%; height:100px;"></textarea></p>
-
-		<H4>Coordonnées</H4></p>
-		<button onclick="getPosition()">Enregistrer ma position</button></p>
-		<textarea id="posLat" name="lat" style="width:200px; height:20px;"></textarea></p>	
-		<textarea id="posLong" name="long" style="width:200px; height:20px;"></textarea></p>
-			
-		
+	<div class="container-fluid">
+		<div id="tabs" class="row">
+			<div class="col-sm-12">
+				<div class="flotte">
+					<img src="css/images/logo-vvd-couleur-nom-dessous.png" style="width:15%; height:15%;">
+					<H2>Constat d'infraction déneigement</H2>
+				</div>
 	
+				<ul>
+					<li><a href="#tabs-1">Formulaire</a></li>
+					<li><a href="#tabs-2">Détails</a></li>
+					<li><a href="#tabs-3">Vidéo</a></li>
+				</ul>
+		
+		
+				<!--Onglet formulaire-->
+
+				<div id="tabs-1" >
+					<div id="accordion">
+						<h3>ORIGINE</h3>
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-sm-12">
+								Nom et adresse du responsable 
+									<h6>Ville de Val-d'Or</h6>
+								</div>
+							<div id="row">
+								<div class="col-sm-4">
+								Code postal
+									<h6>J9P 1W8</h6>
+								</div>
+								
+							</div>
+						</div>
+						<h3>A - DÉFENDEUR</h3>
+							<div>
+							</div>
+						<h3>B - INFRACTION</h3>
+							<div>
+							</div>
+						<h3>C - LIEU DE L'INFRACTION</h3>
+							<div>
+								<H4>Matricule de l'employé</H4></p>
+								<textarea id="mat" name="mattxt" style="width:200px; height:27px;"></textarea></p>	
+								</p>
+								<H4>Lieu de l'infraction</H4></p>
+								<H6>Numéro civique:</H6></p>
+								<textarea id="nociv" name="adr" class="adr" style="width:75px; height:27px;"></textarea></p>	
+								<H6>Nom de la rue:</H6></p>
+								<textarea id="rue" for="tags" name="adrRue" style="width:200px; height:27px;"></textarea></p>	
+								<fieldset>    
+									<H6>Ville:</H6></p>	
+									<select name="nomville" id="ville">
+										<option selected="selected">Val-d'Or</option>
+										<option>Vassan</option>
+										<option >Val-Senneville</option>
+										<option>Sullivan</option>
+										<option>Dubuisson</option>
+										<option>Louvicourt</option>
+									</select>
+								</fieldset></p>
+							</div>	
+						<h3>E - FAITS ET GESTES PERTINENTS</h3>
+							<div>
+								<H4>Faits et gestes pertinents</H4></p>
+								<textarea id="descTxt" name="desc"  style="width:100%; height:100px;"></textarea></p>
+							</div>
+						<h3>SIGNATURE</h3>
+							<div>
+							</div>
+					</div>	
+					<div style="text-align: center">    
+						<button id="enr" style="width:100%" onclick="enregistre()">Enregistrer le formulaire</button><br></p>
+						<button onclick="getVideo()">Sélectionner vidéo</button></p>	
+					</div>
+					
+				</div>
+
+
+				<!--Édition de la BD-->	
+				<div id="tabs-2">
+				<button type="button" onclick="loadFromFile()">test</button>
+				<button type="button" onclick="deleteBaseD3()">supprime</button>
+				
+				<!--<div id="qrpopup" > //The hidden div tag for implementing the popup
+						<hr/>
+						<input type="text" id="editNameBox"><br>
+						<input type="text" id="editNumberBox"><br>
+					
+						<button onclick="goDelete()">Supprimer</button>
+						<button onclick="goEdit()">Modifier</button>
+						<button onclick="document.getElementById('qrpopup').style.display='none';">Annuler</button>
+					</div>-->
 	
-	</div>
 
-	<div style="text-align: center">
-         
-		<button onclick="goInsert()">Enregistrer le formulaire</button><br>
-	</div>
-  </div>
+					<!--Création de la table-->	
+					<section id="no-more-tables">
+						<div class="table">
+						<table class="table-bordered table-striped cf" id="tbl">
+							<thead class="cf">
+							<tr>
+								<th>matricule</th>
+								<th>id</th>
+								<th>Date</th>
+								<th>Adresse</th>
+								<th>Description</th>
+								<th>Latitude</th>
+								<th>Longitude</th>
+								<th>Uuid</th>
+							</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						</div>
+					</section>
+					<div style="text-align: center">
+						<button onclick="goSearch()">Rechercher</button>
+						<button onclick="successCB()">Voir tout</button>
+						<button onclick="deleteBaseD()">Vider la base de données</button>
+					</div>
+				</div>	
 
-</div>
-
-
-<!--Obglet Détails-->	
-<div id="tabs-3">
-	<div id="tblDiv" class="table table-responsive"></div>
-	
-	    <div id="qrpopup" > //The hidden div tag for implementing the popup
-            <hr/>
-            <input type="text" id="editNameBox"><br>
-            <input type="text" id="editNumberBox"><br>
-            <button onclick="goDelete()">Supprimer</button>
-            <button onclick="goEdit()">Modifier</button>
-            <button onclick="document.getElementById('qrpopup').style.display='none';">Annuler</button>
-	</div>
-	
-	<!--Création de la table-->	
-	<section id="no-more-tables">
-		<div class="table">
-		<table class="table-bordered table-striped cf" id="tbl">
-			<thead class="cf">
-			<tr>
-				<th>id</th>
-				<th>Date</th>
-				<th>Adresse</th>
-				<th>Description</th>
-				<th>Latitude</th>
-				<th>Longitude</th>
-				<th>Uuid</th>
-			</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+				<!--table temporaire-->
+				<div id="tabs-3">
+					<section id="no-more-tables">
+						<div class="table1">
+							<table class="table-bordered table-striped cf" id="tbl1">
+								<thead class="cf1" id="tbl11">
+									<tr>
+										<th>matricule</th>
+										<th>ID formulaire</th>
+										<th>ID Vidéo</th>
+										<th>Path</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<button onclick="deleteBaseBD2()">Vider la base de données</button>
+				</div>
+			</div>
 		</div>
-	</section>
-	  
-	   
-    <div style="text-align: center">
-        <button onclick="goSearch()">Rechercher</button>
-        <button onclick="successCB()">Voir tout</button>
-		<button onclick="deleteBD()">Vider la base de données</button>
-	</div>
-</div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-
-
-
-	<div>
-	<p class="flotte1">
-	<img src="http://grandquebec.com/upl-files/armoiries_ville_val_d_or.jpg" alt="logo ville Val-d'Or" style="heigth:30%; width:20%"/>
-	Formulaire contravention déneigement
-	</p>
 	</div>
 
-	
-    <div id="qrpopup" > //The hidden div tag for implementing the popup
-            <hr/>
-            <input type="text" id="editNameBox"><br>
-            <input type="text" id="editNumberBox"><br>
-            <button onclick="goDelete()">Supprimer</button>
-            <button onclick="goEdit()">Modifier</button>
-            <button onclick="document.getElementById('qrpopup').style.display='none';">Annuler</button>
-    </div>
-	
-    <div>
-		</p>
-		<label for="vOdoD">Adresse du contrevenant</label></p>
-		<label for="vOdoD">Numéro civique:</label></p>
-		<textarea name="adr" id="vOdoD" style="width:75px; height:20px;"></textarea></p>	
-		<label for="vOdoD">Nom de la rue:</label></p>
-		<textarea name="adr" id="vOdoD" style="width:200px; height:20px;"></textarea></p>	
-		<label for="descTxt">Description:</label></p>
-		<textarea name="desc" id="descTxt" style="width:200px; height:100px;"></textarea>
-    </div>
+	<!--Pop up d'édition -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="exampleModalLabel">Édition des données</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="adresse" class="control-label">Adresse</label></p>
+							<label for="noCivEdit" class="control-label">Numéro civique:</label>
+								<input type="text" class="form-control" id="noCivEdit" ></p>	
+							<label for="rueEdit" class="control-label">Nom de la rue:</label>
+								<input type="text" class="form-control" id="rueEdit"></p>
+							<fieldset>    
+								<label for="villeEdit" class="control-label">Ville:</label>
+								<select name="nomville" id="villeEdit">
+									<option selected="selected">Val-d'Or</option>
+									<option>Vassan</option>
+									<option >Val-Senneville</option>
+									<option>Sullivan</option>
+									<option>Dubuisson</option>
+									<option>Louvicourt</option>
+								</select>
+							</fieldset></p>
+						</div>
+						<div class="form-group">
+							<label for="descriptionEdit" class="control-label">Faits et gestes pertinents</label>
+							<textarea class="form-control" id="descriptionEdit"></textarea>
+						</div>
+						<div class="form-group">
+						<button type="button" class="btn btn-primary">Modifier la vidéo</button>
+						</div>
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+						<button onclick="goEdit()" type="button" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  
 
-	<div style="text-align: center">
-        <button onclick="goInsert()">Inserer</button></p>
-		<button onclick="voirBD()">Visualiser les informations</button>
-	</div>
-	
-	<div id="visuBD">
-   <div id="tblDiv" class="table"></div>
-    <div style="text-align: center">
-        <button onclick="goInsert()">Inserer</button>
-        <button onclick="goSearch()">Rechercher</button>
-        <button onclick="successCB()">Voir tout</button>
-		<button onclick="deleteBD()">Vider la base de données</button>
-	</div> 
-	</div>
-	-->
-	
-	
-	<script type="text/javascript" src="js/dateHeure.js"></script>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>	
+	<script type="text/javascript" src="js/tether.js"></script>	
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript" src="js/SQLite.js"></script>
+	<script type="text/javascript" src="js/dateHeure.js"></script>
 	<script type="text/javascript" src="cordova.js"></script>
-	<script src="http://openlayers.org/en/v3.13.0/build/ol.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
-</body>
+	<script type="text/javascript" src="js/adresse.js"></script>
+	
+	<script type="text/javascript" src="js/video.js"></script> 
+    <script type="text/javascript">app.initialize();</script>	
+	
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<link rel="stylesheet" type="text/css" href="css/adresse.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.css"/>-->
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>  	
+	<!--<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css"/>-->
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="css/constat.css"/>
 
+
+	
+
+</body>
 </html>

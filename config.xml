@@ -11,11 +11,9 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="14" />
     <plugin name="cordova-plugin-battery-status" source="npm" spec="~1.1.1" />
-    <plugin name="cordova-plugin-camera" source="npm" spec="~2.1.1" />
     <plugin name="cordova-plugin-media-capture" source="npm" spec="~1.2.0" />
     <plugin name="cordova-plugin-console" source="npm" spec="~1.0.2" />
     <plugin name="cordova-plugin-contacts" source="npm" spec="~2.0.1" />
-    <plugin name="cordova-plugin-device" source="npm" spec="~1.1.1" />
     <plugin name="cordova-plugin-device-motion" source="npm" spec="~1.2.0" />
     <plugin name="cordova-plugin-device-orientation" source="npm" spec="~1.0.2" />
     <plugin name="cordova-plugin-dialogs" source="npm" spec="~1.2.0" />
@@ -115,4 +113,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <plugin name="cordova-sqlite-legacy-build-support" spec="https://github.com/litehelpers/Cordova-sqlite-legacy-build-support" />
+    <plugin name="cordova-plugin-camera" spec="~2.1.1" />
+    <plugin name="cordova-plugin-device" spec="~1.1.6" />
+    <plugin name="uk.co.workingedge.cordova.plugin.sqliteporter" spec="~1.0.1" />
 </widget>

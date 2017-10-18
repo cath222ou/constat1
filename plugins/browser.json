@@ -66,6 +66,9 @@
         },
         "cordova-sqlite-legacy-build-support": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "uk.co.workingedge.cordova.plugin.sqliteporter": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },
     "dependent_plugins": {
