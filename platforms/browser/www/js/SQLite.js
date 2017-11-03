@@ -2,26 +2,13 @@ var x = '';
 var y = '';
 var db = null;
 var currentRow;
- // gestion des tabs
-	$( "#tabs" ).tabs({
-	active: 0
-	});
 
-	$( function() {
-		$( "#tabs" ).tabs();
-	} );
-	
-	//accordeon
-	$( function() {
-		$( "#accordion" ).accordion(
-		{active: 0});
-	} );
+// Wait for Cordova to load
+    document.addEventListener("deviceready", onDeviceReady, false);
+
 
 	
-	  // Wait for Cordova to load
-        //
-        document.addEventListener("deviceready", onDeviceReady, false);
-
+	
        
         // Populate the database
         //
@@ -31,7 +18,7 @@ var currentRow;
 		}
 		
 		function populateDB(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (matricule, id INTEGER PRIMARY KEY AUTOINCREMENT,dateValue,adresse,description,latitude,longitude,idmobile)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_adresse,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync)');
 		}
 		
         // Query the database
@@ -55,14 +42,26 @@ var currentRow;
 		for (var i = 0; i < len; i++) {
 			table01.append(
 				'<tr data-toggle="modal" data-target="#exampleModal">'
-					+ '<td data-title="matricule" id="matricule">'+results.rows.item(i).matricule +'</td>'
-					+ '<td data-title="id">'+results.rows.item(i).id +'</td>'
-					+ '<td data-title="dateValue">'+results.rows.item(i).dateValue +'</td>'
-					+ '<td data-title="adresse">'+results.rows.item(i).adresse +'</td>'
-					+ '<td data-title="description">'+results.rows.item(i).description +'</td>'
-					+ '<td data-title="latitude">'+results.rows.item(i).latitude +'</td>'
-					+ '<td data-title="longitude">'+results.rows.item(i).longitude +'</td>'
-					+ '<td data-title="idmobile">'+results.rows.item(i).idmobile +'</td>'+
+					+ '<td data-title="id" id="id">'+results.rows.item(i).id +'</td>'
+					+ '<td data-title="user_id">'+results.rows.item(i).id +'</td>'
+					+ '<td data-title="device_id">'+results.rows.item(i).user_id +'</td>'
+					+ '<td data-title="dossier_id">'+results.rows.item(i).dossier_id +'</td>'
+					+ '<td data-title="a_adresse">'+results.rows.item(i).a_adresse +'</td>'
+                	+ '<td data-title="a_telephone1">'+results.rows.item(i).a_telephone1 +'</td>'
+                	+ '<td data-title="a_telephone2">'+results.rows.item(i).a_telephone2 +'</td>'
+               	 + '<td data-title="a_nom">'+results.rows.item(i).a_nom +'</td>'
+					+ '<td data-title="b_date">'+results.rows.item(i).b_date +'</td>'
+					+ '<td data-title="b_heure">'+results.rows.item(i).b_heure +'</td>'
+                	+ '<td data-title="b_description">'+results.rows.item(i).b_description +'</td>'
+                	+ '<td data-title="c_endroit">'+results.rows.item(i).c_endroit +'</td>'
+                	+ '<td data-title="c_adresse">'+results.rows.item(i).c_adresse +'</td>'
+                	+ '<td data-title="c_description">'+results.rows.item(i).c_description +'</td>'
+               	 	+ '<td data-title="e_details">'+results.rows.item(i).e_details +'</td>'
+                	+ '<td data-title="e_suite">'+results.rows.item(i).e_suite +'</td>'
+                	+ '<td data-title="e_detailsSuite">'+results.rows.item(i).e_detailsSuite +'</td>'
+                	+ '<td data-title="lat">'+results.rows.item(i).lat +'</td>'
+               	 	+ '<td data-title="lon">'+results.rows.item(i).lon +'</td>'
+					+ '<td data-title="note">'+results.rows.item(i).note +'</td>'+
 				'</tr>'
 				);
 			}
@@ -111,15 +110,62 @@ var currentRow;
 		//Insert query
         //
 		function insertDB(tx, position) {
-			var newdate = moment().format('DD MMMM YYYY, h:mm:ss a');
-			var adresse = document.getElementById("nociv").value+", "+document.getElementById("rue").value+", "+document.getElementById("ville").value;
-			var desc = document.getElementById("descTxt").value;
-			var uuid = onDeviceReady();
-			var matricule = document.getElementById("mat").value;
-            tx.executeSql('INSERT INTO DEMO (matricule,dateValue,adresse,description,latitude,longitude,idmobile) VALUES ("'+ matricule +'","'+ newdate +'","'+ adresse +'","'+ desc +'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ uuid +'")');
-			$('#nociv').val('');
-			$('#rue').val('');
-			$('#descTxt').val('');
+        	var matricule = document.getElementById("matriculeValue").value;
+            var uuid = onDeviceReady();
+			var nom = document.getElementById("nomTxt").value;
+			var adresse_a = document.getElementById("adresseCor").value;
+			var tel1 = document.getElementById("telRes").value;
+			var tel2 = document.getElementById("telTra").value;
+			var newdate = moment().format('DD/MM/YYYY');
+			var newheure = moment().format('h:mm a');
+			var descInfraction = null;
+
+				if ($('#radio-1').is(':checked') || $('#radio-2').is(':checked') || $('#radio-3').is(':checked')){
+						descInfraction = $("input:checked").val();
+					}
+				else if ($('#radio-4').is(':checked')){
+                    descInfraction = document.getElementById("descInfraction").value;
+                }
+            console.log(descInfraction);
+			var endroit = document.getElementById("endroitTxt").value;
+			var adresse = document.getElementById("adresseTxt_c").value +","+ document.getElementById("ville").value;
+			var decriptionLieux = document.getElementById("descLieux").value;
+            var faits = document.getElementById("faitTxt").value;
+            var faits2 = document.getElementById("faitTxt2").value;
+			var note = document.getElementById("noteTxt").value;
+
+			var suite = null;
+
+				if($('#checkbox-nested-text').is(':checked')){
+					var suite = true
+				}
+				else {
+					var suite = false
+				}
+
+            tx.executeSql('INSERT INTO DEMO (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_adresse,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note) VALUES ("'+ matricule +'","'+ uuid +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+adresse+'","'+decriptionLieux+'","'+faits+'","'+faits2+'","'+suite+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'")');
+			//effacer les valeurs entrées
+				$('#nomTxt').val('');
+			$('#adresseCor').val('');
+			$('#telRes').val('');
+            $('#telTra').val('');
+            $('#descInfraction').val('');
+            $('#endroitTxt').val('');
+            $('#adresse-Txt_c').val('');
+            $('#descLieux').val('');
+            $('#faitTxt').val('');
+            $('#faitTxt2').val('');
+            $('#noteTxt').val('');
+            $('input[type=radio]').prop('checked',false);
+			$('#ville').selectmenu("Val-d'Or", value);
+
+
+            //Retour à l'accordéon initial
+            $( "#accordion" ).accordion(
+                {active:1}
+            );
+
+
 		}
 
 		function goInsert(position) {

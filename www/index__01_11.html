@@ -47,31 +47,31 @@
 
 <body>
 
-<div id="accueil">
+	<!--<div id="accueil">
 		<div id="dialog" title="Matricule">
 			Entrer votre matricule: </p>
 			<textarea id="matriculeValue" name="matricule" style="width:70%; height:50px"></textarea>
 		</div>
-	</div>
+	</div>-->
 
 	<div id="app" class="container-fluid">
-		<div class="row" id="tabs">
+		<div id="tabs"  class="row">
 			<div class="col-sm-12">
 				<div class="flotte">
 					<img src="css/images/logo-vvd-couleur-nom-dessous.png" style="width:15%; height:15%;">
 					<H2>Constat d'infraction déneigement</H2>
 				</div>
-
-
-				<ul>
-					<li><a href="#tabs-1">Formulaire</a></li>
-					<li><a href="#tabs-2">Détails</a></li>
-					<li><a href="#tabs-3">Vidéo</a></li>
+	
+				 <ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+					<li><a data-toggle="tab" href="#tabs-1">Menu 1</a></li>
+					<li><a data-toggle="tab" href="#tabs-2">Menu 2</a></li>
 				</ul>
 
 				<!--Onglet formulaire-->
 
-				<div id="tabs-1" >
+				<div class="tab-content">
+					<div id="home" class="tab-pane fade in active">
 					<div id="accordion">
 						<h3>ORIGINE</h3>
 						<div id="accordion-1">
@@ -93,199 +93,193 @@
 							</div>
 						</div>
 						<h3>A - DÉFENDEUR</h3>
-							<div id="accordion-2">
-							<div class="row">
-								<div class="col-sm-12 tableaufor">
-								Nom et prénom </p>
-									<textarea id="nomTxt" name="nomTxt" class="adr"></textarea><br />
-								</div>
-							</div>	
-							<div class="row">
-								<div class="col-sm-12 tableaufor">
-								Adresse de correspondance*
-									<textarea id="adresseCor" name="nomTxt" class="adr"></textarea><br />
-								</div>
+						<div id="accordion-2">
+						<div class="row">
+							<div class="col-sm-12 tableaufor">
+							Nom et prénom </p>
+								<textarea id="nociv" name="adr" class="adr"></textarea></p>
 							</div>
-							<div class="row">
-								<div class="col-sm-6 tableaufor">
-								Téléphone (résidence)*
-									<textarea id="telRes" name="nomTxt" class="adr"></textarea><br />
-								</div>
-								<div class="col-sm-6 tableaufor">
-								Téléphone (travail)*
-									<textarea id="telTra" name="nomTxt" class="adr"></textarea><br />
-								</div>
+						</div>	
+						<div class="row">
+							<div class="col-sm-8 tableaufor">
+							Adresse de correspondance*
+								<h6>&nbsp;</h6>
 							</div>
+							<div class="col-sm-4 tableaufor">
+							Code postal*
+								<h6>&nbsp;</h6>
 							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6 tableaufor">
+							Téléphone (résidence)*
+								<h6>&nbsp;</h6>
+							</div>
+							<div class="col-sm-6 tableaufor">
+							Téléphone (travail)*
+								<h6>&nbsp;</h6>
+							</div>
+						</div>
+						</div>
 						<h3>B - INFRACTION</h3>
-							<div id="accordion-3">
-								<div class="row">
-									<div class="col-sm-3 tableaufor">
-										Date
-										<h6 id="datediv"></h6>
-									</div>
-									<div class="col-sm-3 tableaufor">
-										Heure
-										<h6 id="heurediv"></h6>
-									</div>
-									<div class="col-sm-6 tableaufor">
-										Titre de la loi ou du réglement
-										<h6>Nuissance de la neige</h6>
-									</div>
+						<div id="accordion-3">
+							<div class="row">
+								<div class="col-sm-3 tableaufor">
+									Date
+									<h6 id="datediv"></h6>
 								</div>
-								<div class="row">
-									<div class="col-sm-6 tableaufor">
-										Réglement municipale
-										<h6>2002-49</h6>
-									</div>
-									<div class="col-sm-6 tableaufor">
-										Article
-										<h6>Article 3</h6>
-									</div>
-									<div class="col-sm-12 tableaufor">
-										Description de l'infraction <br />
-										<fieldset>
-											<div id="descInfCheck">
-											<input type="radio" name="radio-1" id="radio-1" value="Nuissance">
-											<label for="radio-1">Nuissance</label><br />
-											<input type="radio" name="radio-1" id="radio-2" value="Nuissance1">
-											<label for="radio-2">Nuissance</label><br />
-											<input type="radio" name="radio-1" id="radio-3" value="Nuissance2">
-											<label for="radio-3">Nuissance</label><br />
-											<input type="radio" name="radio-1" id="radio-4" value="Autre">
-											<label for="radio-4">Autre</label><br />
-											</div>
-												<textarea id="descInfraction" for="tags" name="descInfraction" style="width:90%; height:27px;"></textarea><br />
-
-										</fieldset>
-									
-									</select>
-									</div>
+								<div class="col-sm-3 tableaufor">
+									Heure
+									<h6 id="heurediv"></h6>
+								</div>
+								<div class="col-sm-6 tableaufor">
+									Titre de la loi ou du réglement
+									<h6>Nuissance de la neige</h6>
 								</div>
 							</div>
-						<h3>C - LIEU DE L'INFRACTION</h3>
-							<div id="accordion-4">
-								<div class="row">
-									<div class="col-sm-12 tableaufor" >
-										Endroit (établissement, compagnie, route)<br />
-										<textarea id="endroitTxt" name="endroitTxt" class="adr" style="width:90%; height:27px;"></textarea><br />
-									</div>
+							<div class="row">
+								<div class="col-sm-6 tableaufor">
+									Réglement municipale
+									<h6>2002-49</h6>
 								</div>
-								<div class="row">
-									<div class="col-sm-12 tableaufor">
-									Adresse<br />
-									<textarea id="adresseTxt_c" for="tags" name="adresseTxt_c" style="width:60%; height:27px;" placeholder="Nom de la rue"></textarea>
-									<fieldset class="villeStyle">
-									<select name="nomville" id="ville">
-										<option selected="selected">Val-d'Or</option>
-										<option>Vassan</option>
-										<option >Val-Senneville</option>
-										<option>Sullivan</option>
-										<option>Dubuisson</option>
-										<option>Louvicourt</option>
-									</select>
+								<div class="col-sm-6 tableaufor">
+									Article
+									<h6>Article 3</h6>
+								</div>
+								<div class="col-sm-12 tableaufor">
+									Description de l'infraction </p>
+									<fieldset>
+										<input type="radio" name="radio-1" id="radio-1">
+										<label for="radio-1">Nuissance</label></p>
+										<input type="radio" name="radio-1" id="radio-2">
+										<label for="radio-2">Nuissance</label></p>
+										<input type="radio" name="radio-1" id="radio-3">
+										<label for="radio-3">Nuissance</label></p>
+										<input type="radio" name="radio-1" id="radio-4">
+										<label for="radio-4">Autre</label></p>
+										<textarea id="autre" for="tags" name="autre" style="width:90%; height:27px;"></textarea></p>	
 									</fieldset>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6 tableaufor">
-										Localisation<br />
-										<H6>&nbsp;</H6>
-									</div>
-									<div class="col-sm-6 tableaufor">
-										District judiciaire<br />
-										<H6>&nbsp;</H6>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-12 tableaufor">
-									Description des lieux<br />
-									<textarea id="descLieux" name="descLieux"  style="width:100%; height:50px;"></textarea><br />
-									</div>
-								</div>
-							</div>	
-						<h3>E - FAITS ET GESTES PERTINENTS</h3>
-							<div id="accordion-5">
-								<div class="row">
-									<div class="col-sm-12 tableaufor">
-										Faits et gestes pertinents<br />
-										<textarea id="faitTxt" class="auto-text-area" name="faitTxt" maxlength="2" style="width:100%;" onkeyup="reste(this.value);"></textarea><br />
-										<span id="caracteres">2</span> caractères restants
-										<a  class="plus">
-											<input type="checkbox" name="checkbox-nested-text" id="checkbox-nested-text">
-										<!--<i  class="fa fa-plus-square fa-lg" onClick="addText()"></i>-->
-										</a>
-										<textarea id="faitTxt2" class="auto-text-area hidden" name="faitTxt2" style="width:100%;" placeholder="[Page additionnelle] Continuer votre texte ici"></textarea><br />
-									</div>
+								
+								</select>
 								</div>
 							</div>
+						</div>
+						<h3>C - LIEU DE L'INFRACTION</h3>
+						<div id="accordion-4">
+							<div class="row">
+								<div class="col-sm-12 tableaufor" >
+									Endroit (établissement, compagnie, route)</p>
+									<textarea id="nociv" name="adr" class="adr" style="width:90%; height:27px;"></textarea></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 tableaufor">
+								Adresse </p>
+								<textarea id="nociv" name="adr" class="adr" style="width:10%; height:27px;" placeholder="No civ"></textarea>
+								<textarea id="rue" for="tags" name="adrRue" style="width:60%; height:27px;" placeholder="Nom de la rue"></textarea>
+								<fieldset class="villeStyle">
+								<select name="nomville" id="ville">
+									<option selected="selected">Val-d'Or</option>
+									<option>Vassan</option>
+									<option >Val-Senneville</option>
+									<option>Sullivan</option>
+									<option>Dubuisson</option>
+									<option>Louvicourt</option>
+								</select>
+								</fieldset>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6 tableaufor">
+								Localisation</p>
+								<textarea id="nociv" name="adr" class="adr" style="width:80%; height:27px;"></textarea></p>
+								</div>
+								<div class="col-sm-6 tableaufor">
+								District judiciaire</p>
+								<textarea id="nociv" name="adr" class="adr" style="width:80%; height:27px;"></textarea></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 tableaufor">
+								Description des lieux</p>
+								<textarea id="descTxt" name="desc"  style="width:100%; height:50px;"></textarea></p>
+								</div>
+							</div>
+						</div>	
+						<h3>E - FAITS ET GESTES PERTINENTS</h3>
+						<div id="accordion-5">
+							<div class="row">
+								<div class="col-sm-12 tableaufor">
+									Faits et gestes pertinents</p>
+									<textarea id="descTxt" class="auto-text-area" name="desc" maxlength="2" style="width:100%;" onkeyup="reste(this.value);"></textarea></p>
+									<span id="caracteres">2</span> caractères restants
+									<a  class="plus btn btn-default">
+									<i  class="fa fa-plus-square fa-lg" onClick="addText()"></i>
+									</a>
+									<textarea id="descTxt2" class="auto-text-area hidden" name="desc" style="width:100%;" placeholder="[Page additionnelle] Continuer votre texte ici"></textarea></p>
+								</div>
+							</div>
+						</div>
 						
 						
 						
 						<h3>SIGNATURE</h3>
-							<div id="accordion-6">
-								<div class="row">
-									<div class="col-sm-12 tableaufor">
-										J'ai personnellement constaté les faits mentionnées en<br />
-										<fieldset class="widget">
-											<label for="checkbox-1">A</label>
-											<input type="checkbox" name="checkbox-1" id="checkbox-1" checked>
-											<label for="checkbox-2">B</label>
-											<input type="checkbox" name="checkbox-2" id="checkbox-2" checked>
-											<label for="checkbox-3">C</label>
-											<input type="checkbox" name="checkbox-3" id="checkbox-3" checked>
-											<label for="checkbox-4">E</label>
-											<input type="checkbox" name="checkbox-4" id="checkbox-4" checked>
-										</fieldset>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6 tableaufor">
-										Nom et prénom*<br />
-										<H6>&nbsp;</H6>
-									</div>
-									<div class="col-sm-6 tableaufor">
-										Signature*<br />
-										<H6>&nbsp;</H6>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-4 tableaufor">
-										Matricule<br />
-										<H6 id="matriculeNum"></H6>
-									</div>
-									<div class="col-sm-4 tableaufor">
-										Qualité*<br />
-										<H6>&nbsp;</H6>
-									</div>
-									<div class="col-sm-4 tableaufor">
-										Date<br />
-										<H6 id="heureSignature"></H6>
-									</div>
+						<div id="accordion-5">
+							<div class="row">
+								<div class="col-sm-12 tableaufor">
+									J'ai personnellement constaté les faits mentionnées en</p>
+									<fieldset class="widget">
+										<label for="checkbox-1">A</label>
+										<input type="checkbox" name="checkbox-1" id="checkbox-1" checked>
+										<label for="checkbox-2">B</label>
+										<input type="checkbox" name="checkbox-2" id="checkbox-2" checked>
+										<label for="checkbox-3">C</label>
+										<input type="checkbox" name="checkbox-3" id="checkbox-3" checked>
+										<label for="checkbox-4">E</label>
+										<input type="checkbox" name="checkbox-4" id="checkbox-4" checked>
+									</fieldset>
 								</div>
 							</div>
-						<h3>Note pour usage interne</h3>
-						<div id="accordion-6">
 							<div class="row">
-								<div class="col-sm-12">
-									<textarea id="noteTxt" name="noteTxt" class="auto-text-area" style="width:100%; height:100px;" placeholder="Cette note n'apparaîtra pas sur le formulaire"></textarea><br />
+								<div class="col-sm-6 tableaufor">
+									Nom et prénom*</p>
+									<H6>&nbsp;</H6>
+								</div>
+								<div class="col-sm-6 tableaufor">
+									Signature*</p>
+									<H6>&nbsp;</H6>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-4 tableaufor">
+									Matricule</p>
+									<H6 id="matriculeNum"></H6>
+								</div>
+								<div class="col-sm-4 tableaufor">
+									Qualité*</p>
+									<H6>&nbsp;</H6>
+								</div>
+								<div class="col-sm-4 tableaufor">
+									Date</p>
+									<H6 id="heureSignature"></H6>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div>	
 					<div style="text-align: center"> 
 						* inclus automatiquement lors de la synchronisation
-						<button id="enr" style="width:100%" onclick="enregistre()">Enregistrer le formulaire</button><br />
-						<button onclick="getVideo()">Sélectionner vidéo</button><br />
+						<button id="enr" style="width:100%" onclick="enregistre()">Enregistrer le formulaire</button><br></p>
+						<button onclick="getVideo()">Sélectionner vidéo</button></p>	
 					</div>
-					
+					</div>
 				</div>
 								<!--<H4>Matricule de l'employé</H4></p>
 								<textarea id="mat" name="mattxt" style="width:200px; height:27px;"></textarea></p>	
 								</p>-->
 
 				<!--Édition de la BD-->	
-				<div id="tabs-2">
+				<div class="tab-content">
+					<div id="tabs-1" class="tab-pane fade in active">
 				<button type="button" onclick="loadFromFile()">test</button>
 				<button type="button" onclick="deleteBaseD3()">supprime</button>
 				
@@ -326,10 +320,12 @@
 						<button onclick="successCB()">Voir tout</button>
 						<button onclick="deleteBaseD()">Vider la base de données</button>
 					</div>
-				</div>	
-<!--ICCCCIIIIII-->
+				</div>
+				</div>				
+
 				<!--table temporaire-->
-				<div id="tabs-3">
+				<div class="tab-content">
+				<div id="tabs-2" class="tab-pane fade in active">
 					<section id="no-more-tables">
 						<div class="table1">
 							<table class="table-bordered table-striped cf" id="tbl1">
@@ -348,11 +344,11 @@
 					</section>
 					<button onclick="deleteBaseBD2()">Vider la base de données</button>
 				</div>
-
+				</div>
+			</div>
 		</div>
-	</div>
-	</div>
-<!--ICCCCIIIIII-->
+	</div> 
+
 	<!--Pop up d'édition -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 		<div class="modal-dialog" role="document">
@@ -364,11 +360,11 @@
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<label class="control-label">Adresse</label><br />
+							<label for="adresse" class="control-label">Adresse</label></p>
 							<label for="noCivEdit" class="control-label">Numéro civique:</label>
-								<input type="text" class="form-control" id="noCivEdit"><br />
+								<input type="text" class="form-control" id="noCivEdit" ></p>	
 							<label for="rueEdit" class="control-label">Nom de la rue:</label>
-								<input type="text" class="form-control" id="rueEdit"><br />
+								<input type="text" class="form-control" id="rueEdit"></p>
 							<fieldset>    
 								<label for="villeEdit" class="control-label">Ville:</label>
 								<select name="nomville" id="villeEdit">
@@ -379,7 +375,7 @@
 									<option>Dubuisson</option>
 									<option>Louvicourt</option>
 								</select>
-							</fieldset><br />
+							</fieldset></p>
 						</div>
 						<div class="form-group">
 							<label for="descriptionEdit" class="control-label">Faits et gestes pertinents</label>
@@ -401,24 +397,23 @@
 
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.js"></script>	
-	<script type="text/javascript" src="js/tether.js"></script>	
+
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript" src="js/dateHeure.js"></script>
 	<script type="text/javascript" src="js/SQLite.js"></script>
-	<script type="text/javascript" src="js/formulaire.js"></script>
+	
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/adresse.js"></script>
-	
+	<script type="text/javascript" src="js/formulaire.js"></script>
 	<script type="text/javascript" src="js/video.js"></script> 
     <script type="text/javascript">app.initialize();</script>	
 	
     <link rel="stylesheet" type="text/css" href="css/index.css"/>
 	<link rel="stylesheet" type="text/css" href="css/adresse.css"/>
-	<!--<link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.css"/>-->
+
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>  	
-	<!--<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css"/>-->
+
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
 	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
