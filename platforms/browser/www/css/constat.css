@@ -72,6 +72,23 @@ input[type=checkbox] {
 	min-height: 100px;
 }
 
+.modal-content{
+	width:900px;
+	padding-right: 20%;
+}
 
 
+input[type='text']{
+	margin-bottom: 10px;
+	margin-top: 10px;
+	width: 60%;
+}
+
+.cocher{
+	padding-top:10px;
+	padding-bottom: 10px;
+}
+
+.clickable {
+	cursor: pointer;}
 

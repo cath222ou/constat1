@@ -13,7 +13,7 @@ var idFormu = null;
 	//	}
 		
 		//dessiner BD
-		function querySuccess2(tx, results) {
+		function querySuccessVideo(tx, results) {
 		var table02 = $('#tbl1 tbody');
 		table02.html('');
 		var len = results.rows.length;
@@ -46,15 +46,15 @@ var idFormu = null;
 		
 		// Query the database
         //
-        function queryDB2(tx) {
-            tx.executeSql('SELECT * FROM VIDEO', [], querySuccess2, errorCB);
+        function queryDBVideo(tx) {
+            tx.executeSql('SELECT * FROM VIDEO', [], querySuccessVideo, errorCB);
         }
 		
 		// Transaction success callback
         //
-        function successCB2() {
+        function successCBVideo() {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(queryDB2, errorCB);
+            db.transaction(queryDBVideo, errorCB);
         }
 		
 		// Transaction error callback
