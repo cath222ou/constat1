@@ -1,8 +1,12 @@
-
-
-
-
 var currentRow;
+var constat;
+
+// gestion des tabs
+$(function () {
+    $("#tabsEdit").tabs(
+        {active: 0}
+    )
+});
 
     //Afficher champs texte si "Autre" est sélectionné
     $(document).ready(function () {
@@ -121,6 +125,8 @@ var currentRow;
                 }
             }
         );
+        constat = row.find('td[data-title="constat_id"]').html();
+        videoConstat();
     });
 
 

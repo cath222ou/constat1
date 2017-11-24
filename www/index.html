@@ -57,7 +57,6 @@
 	<div id="dialog" title="Matricule">
 		Entrer votre matricule: </p>
 		<select id="matriculeMenu" type="text" name="matricule" style="width:70%; height:50px">
-			<option>1</option>
 		</select>
 	</div>
 </div>
@@ -69,7 +68,8 @@
 					<img src="css/images/logo-vvd-couleur-nom-dessous.png" style="width:15%; height:15%;">
 					<H2>Constat d'infraction déneigement</H2>
 				</div>
-
+                <button onclick="deleteBaseDAgent()">Vider la base de données Agent</button>
+                <button onclick="deleteBaseDAdr()">Vider la base de données Adr</button>
 
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
@@ -179,7 +179,7 @@
 								<div class="row">
 									<div class="col-sm-12 tableaufor">
 									Adresse<br />
-									<input id="adresseTxt_c" for="tags" name="adresseTxt_c" data-verif maxlength="250" ><br />
+									<input id="adresseTxt_c" type="text" for="tags" name="adresseTxt_c" maxlength="250" ><br />
 
 									</div>
 								</div>
@@ -268,8 +268,8 @@
 					</div>
 					<div style="text-align: center"> 
 						* inclus automatiquement lors de la synchronisation
+                        <button type="button" data-toggle="modal" data-target="#videoModal">Sélectionner vidéo</button>
 						<button id="enr" style="width:100%" onclick="enregistre()">Enregistrer le formulaire</button><br />
-						<button onclick="getVideo()">Sélectionner vidéo</button><br />
 					</div>
 
 				</div>
@@ -336,7 +336,13 @@
 						<h4 class="modal-title" id="exampleModalLabel">Édition des données</h4>
 					</div>
 					<div class="modal-body">
+                        <div class="row" id="tabsEdit">
 
+                        <ul>
+                            <li><a href="#tabs-1Edit">Formulaire d'édition</a></li>
+                            <li><a href="#tabs-2Edit">Édition Vidéo</a></li>
+                        </ul>
+                        <div id="tabs-1Edit" >
 							<div id="accordion1">
 								<h3>ORIGINE</h3>
 								<div id="accordion_1">
@@ -527,15 +533,79 @@
 								<div id="matAgent" class="hidden"></div>
 								<div id="uuidApp" class="hidden"></div>
 							</div>
+                        </div>
+
+                        <div id="tabs-2Edit">
+                            <section id="no-more-tables">
+                                <div class="table1">
+                                    <table class="table-bordered table-striped cf" id="tblVideoEdit">
+                                        <thead class="cf1">
+                                        <tr>
+                                            <th>matricule</th>
+                                            <th>ID formulaire</th>
+                                            <th>ID Vidéo</th>
+                                            <th>Path</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
 
 						<div class="modal-footer">
+
 							<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 							<button onclick="goEdit()" type="button" class="btn btn-primary">Enregistrer</button>
 						</div>
 					</div>
+                    </div>
 				</div>
 			</div>
 		</div>
+
+
+
+        <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-content1">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nom de la vidéo</h5>
+                        <div>
+                            <input id="nomVideo" type="text">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                <button onclick="getVideo()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="videoModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-content1">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nom de la vidéo</h5>
+                        <div>
+                            <input id="nomVideoEdit" type="text">
+                            <div class="modal-footer">
+                                <input id="idvideo" class="hidden">
+                                </input>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                <button onclick="getVideoEdit()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
 	</div>
 
 <script type="text/javascript" src="js/jquery-ui.js"></script>
@@ -544,13 +614,15 @@
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/dateHeure.js"></script>
 <script type="text/javascript" src="js/SQLite.js"></script>
-<script type="text/javascript" src="js/SQLiteAgent.js"></script>
 <script type="text/javascript" src="js/formulaire.js"></script>
 <script type="text/javascript" src="js/editionFormulaire.js"></script>
+<script type="text/javascript" src="js/editionVideo.js"></script>
 <script type="text/javascript" src="js/sync.js"></script>
 <script type="text/javascript" src="js/validation.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
-<script type="text/javascript" src="js/adresse.js"></script>
+
+<script type="text/javascript" src="js/SQLiteAgent.js"></script>
+<script type="text/javascript" src="js/SQLiteAdresse.js"></script>
 <script type="text/javascript" src="js/video.js"></script>
 <script type="text/javascript">app.initialize();</script>
 

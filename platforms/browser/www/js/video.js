@@ -2,8 +2,8 @@ var fichier = null;
 var idFormu = null;
 	//Table vidéo
 		
-		function populateDB2(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS VIDEO (matricule, id_form, id_video INTEGER PRIMARY KEY AUTOINCREMENT,path, FOREIGN KEY(id_form) REFERENCES DEMO(id))');
+		function populateDBVideo(tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS VIDEO (matricule, constat_id INTEGER, id_video INTEGER PRIMARY KEY AUTOINCREMENT, nom, path, FOREIGN KEY(constat_id) REFERENCES DEMO(constat_id))');
         }
 		 
 		 //Cordova ready
@@ -19,15 +19,13 @@ var idFormu = null;
 		var len = results.rows.length;
 			for (var i = 0; i < len; i++) {
 				table02.append(
-				'<tr onclick="goPopup('
-					+ results.rows.item(i).matricule + ",'"
-					+ results.rows.item(i).id_form + "','"
-					+ results.rows.item(i).id_video + "','"
-					+ results.rows.item(i).path +"')"+'";>'
+				'<tr>'
 					+ '<td data-title="matricule">'+results.rows.item(i).matricule +'</td>'
-					+ '<td data-title="id_form">'+results.rows.item(i).id_form +'</td>'
+					+ '<td data-title="constat_id">'+results.rows.item(i).constat_id +'</td>'
 					+ '<td data-title="id_video">'+results.rows.item(i).id_video +'</td>'
-					+ '<td data-title="path">'+results.rows.item(i).path +'</td></tr>'
+                    + '<td data-title="nom">'+results.rows.item(i).nom +'</td>'
+					+ '<td data-title="path">'+results.rows.item(i).path +'</td>'+
+				'</tr>'
 				);
 			}
 		} 
@@ -53,31 +51,32 @@ var idFormu = null;
 		// Transaction success callback
         //
         function successCBVideo() {
+
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(queryDBVideo, errorCB);
         }
 		
-		// Transaction error callback
-        //
-        function errorCB2(err) {
-            alert("Error processing SQL: "+err.code);
-        }
+        // // Transaction error callback
+        // //
+        // function errorCBVideo(err) {
+        //     alert("Error processing SQL: "+err.code);
+        // }
 		
 		
 		//Insert query
 
-		function insertDB2(tx, idForm, fichier) { //
-			idForm = "allo"
-			//console.log(fichier);
-			var matricule = document.getElementById("mat").value;
-            tx.executeSql('INSERT INTO VIDEO (matricule,id_form,path) VALUES ("'+ matricule +'","'+ idFormu +'","'+ fichier +'")');
+		function insertDB2(tx) {
+			var matricule = document.getElementById("matAgent").value;
+			var nomV = $('#nomVideo').val();
+            tx.executeSql('INSERT INTO VIDEO (matricule,constat_id,nom,path) VALUES ("'+ matricule +'","'+ idFormu +'","'+nomV+'","'+ fichier +'")');
+            $('#nomVideo').val('');
 		}
 
 
 
 	//trouver valeur du dernier id du formulaire
 	function idInfo(tx) {
-			tx.executeSql('SELECT id FROM DEMO WHERE id = (SELECT MAX(id) FROM DEMO)', [], querySuccess3, errorCB);
+			tx.executeSql('SELECT constat_id FROM DEMO WHERE constat_id = (SELECT MAX(constat_id) FROM DEMO)', [], querySuccess3, errorCB);
 		}
 
     // Query the success callback
@@ -85,10 +84,8 @@ var idFormu = null;
     function querySuccess3(tx, results) {
         var len = results.rows.length;
         for (var i=0; i<len; i++){
-            console.log(" ID = " + results.rows.item(i).id);
-        idFormu = results.rows.item(i).id
+        	idFormu = results.rows.item(i).constat_id;
 		}
-		
     }
 
 	//insertion dans la BD
@@ -98,8 +95,8 @@ var idFormu = null;
 			db.transaction(function(tx){
 				idInfo(tx);
 			}
-			, errorCB, successCB2);	
-			goInsert3();
+			, errorCB,goInsert3);
+
 		
 		}
 		
@@ -110,8 +107,7 @@ var idFormu = null;
 				insertDB2(tx, null, fichier);
 				
 			}
-			, errorCB, successCB2);	
-			console.log(fichier);
+			, errorCB, successCBVideo);
 		}
 		
 
@@ -121,19 +117,47 @@ var idFormu = null;
 		options["sourceType"] = 0 | 2; 
 		options["mediaType"] = 1;
 		options["destinationType"] = 2;
-		navigator.camera.getPicture(onVideoSuccess, onFail, options);   
+		navigator.camera.getPicture(onVideoSuccess, onFail, options);
 	}
 	
 	
 	function onVideoSuccess(fileuri) {
 		fichier = fileuri;
+
 		goInsert2();
 	}
 
-	
+function videoName(){
+    $(document).on('show.bs.modal', "#videoModal", function (event) {
+        $(document).ready(function () {
+
+        })
+    })
+}
+
+
+function videoTranscodeSuccess(result) {
+    // result is the path to the transcoded video on the device
+    console.log('videoTranscodeSuccess, result: ' + result);
+}
+
+function videoTranscodeError(err) {
+    console.log('videoTranscodeError, err: ' + err);
+}
+
+
+
+
+
+
 	function onFail(err) {
 		console.log("onFail");
-	}	
+	}
+
+
+
+
+
 
 	// Upload files to server
 //	function uploadFile(mediaFile) {

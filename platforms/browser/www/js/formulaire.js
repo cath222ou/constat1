@@ -3,12 +3,19 @@
 // });
 
 
-
-
-	//menu de sélection de matricule
-	$( function() {
-        $("#matriculeMenu").selectmenu();
+$( function() {
+    $( "#adresseTxt_c" ).autocomplete({
+        source: function( request, response ) {
+            var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+            response( $.grep( adresseResult, function( item ){
+                return matcher.test( item );
+            }) );
+        },
+        minLength: 1
     });
+
+} );
+
 
 
     // gestion des tabs

@@ -1,6 +1,6 @@
 var x = '';
 var y = '';
-var db = null;
+//var db = null;
 var currentRow;
 var uuidValue;
 var matAgent1 = 1; //$('#matAgent').val();
@@ -8,19 +8,33 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
 
 
 // Wait for Cordova to load
-    document.addEventListener("deviceready", onDeviceReady(uuidApp1), false);
+    document.addEventListener("deviceready", onDeviceReady, false);
 
-        // Populate the database
+// Cordova is ready
+//
+function onDeviceReady() {
+    uuidValue= device.uuid;
+    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    db.transaction(populateDBConstat, errorCB, successCBConstat);
+    db.transaction(populateDBVideo, errorCB, successCBVideo);
+    db.transaction(populateDBAgent, function(tx,result){console.log(tx,result)}, function(tx,result){successCBAgent(tx,result)});
+    db.transaction(populateDBAdr, function(tx,result){console.log(tx,result)}, function(tx,result){successCBAdr(tx,result)});
+
+}
+
+
+
+    // Populate the database
         //
-        
+
 		function deleteDB(tx){
 			tx.executeSql('DROP TABLE IF EXISTS DEMO');
 		}
-		
+
 		function populateDBConstat(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_adresse,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_adresse,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync)');
 		}
-		
+
         // Query the database
         //
         function queryDB(tx) {
@@ -35,8 +49,8 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
         }
         // Query the success callback
         //
-		
-		
+
+
 		function querySuccess(tx, results) {
 		var table01 = $('#tbl tbody');
 		table01.html('');
@@ -44,7 +58,7 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
 		for (var i = 0; i < len; i++) {
 			table01.append(
 				'<tr>'
-					+ '<td data-title="id" id="id">'+results.rows.item(i).id +'</td>'
+					+ '<td data-title="constat_id" id="id">'+results.rows.item(i).constat_id +'</td>'
 					+ '<td data-title="user_id">'+results.rows.item(i).user_id +'</td>'
 					+ '<td data-title="device_id">'+results.rows.item(i).device_id +'</td>'
 					+ '<td data-title="dossier_id">'+results.rows.item(i).dossier_id +'</td>'
@@ -81,7 +95,7 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
         // Transaction error callback
         //
         function errorCB(err) {
-            alert("Error processing SQL: "+err.code);
+            console.log(err);
         }
 
         // Transaction success callback
@@ -91,16 +105,7 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
             db.transaction(queryDB, errorCB);
         }
 
-         // Cordova is ready
-        //
-        function onDeviceReady(tx,result,uuidApp1) {
-            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(populateDBConstat, errorCB, successCBConstat);
-			db.transaction(populateDB2, errorCB, successCBVideo);
-            db.transaction(populateDBAgent, errorCB, function(tx,result,uuidApp1){successCBAgent(tx,result,uuidApp1)});
-			uuidValue= device.uuid;
-				
-		}
+
 
 
 		//Insert query
@@ -180,13 +185,13 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
                 db.transaction(function (tx) {
                         insertDB(tx, position);
                     }
-                    , errorCB, successCB);
+                    , errorCB, successCBConstat);
         }
         function goSearch() {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(searchQueryDB, errorCB);
         }
-		
+
 		//Supprimer le contenu de la BD
 
 		function deleteBaseD() {
@@ -202,7 +207,7 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
              document.getElementById('qrpopup').style.display='none';
         }
 
-	/////////////////////////////	
+	/////////////////////////////
 	//////geolocalisation////////
 	/////////////////////////////
 	// function onSuccess(position) {
@@ -221,14 +226,14 @@ var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
 		//
     // }
 
-		
-	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement	
+
+	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement
 	function enregistre(){
 		navigator.geolocation.getCurrentPosition(goInsert, onError);
-	};	
-	
-	
-	
+	};
+
+
+
 ////////////////////adresse//////////////////
 
 
