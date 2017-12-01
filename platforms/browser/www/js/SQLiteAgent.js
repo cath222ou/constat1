@@ -27,22 +27,23 @@ function queryDBAgent(tx,result,uuidApp1){
 function querySuccessAgent(tx,result) {
     if (result.rows.length===0){
         $.ajax({
-            url: 'http://constats.dev/api/v1/sync/users',
+            url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
             method: 'get',
             data: {uuid: uuidApp1},
             success: function (changes) {
                     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                    db.transaction(function (tx){insertDBAgent(tx,changes)}, errorCB);
+                    db.transaction(function (tx){insertDBAgent(tx, changes)}, function(tx, results){alert(JSON.stringify(tx))});
                 },
             error: function (model, response) {
                 console.log(model);
-                alert(response.responseText);
+                alert(JSON.stringify(model));
+                //alert(response.responseText);
             }
         })
     }
     else {
         $.ajax({
-            url: 'http://constats.dev/api/v1/sync/users',
+            url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
             method: 'get',
             data: {uuid: uuidApp1},
             success: function (changes) {
@@ -50,14 +51,15 @@ function querySuccessAgent(tx,result) {
                 resultat = $.parseJSON(changes);
                 $(resultat).each(function(key,value){
                     //agentResult = value.matricule;
-                    //console.log(value.matricule);
-                        $('#matriculeMenu').append( '<option value="'+value.matricule+'">'+value.matricule+'</option>' );
+                    //console.log(value);
+                        $('#matriculeMenu').append( '<option value="'+value.id+'">'+value.matricule+'</option>' );
 
                 })
             },
             error: function (model, response) {
                 console.log(model);
-                alert(response.responseText);
+                alert(JSON.stringify(model));
+                //alert(response.responseText);
             }
         })
     }
@@ -69,7 +71,7 @@ function querySuccessAgent(tx,result) {
 function insertDBAgent(tx,changes){
     var resultat = $.parseJSON(changes);
     $(resultat).each(function(key,value){
-        tx.executeSql('INSERT INTO AGENT (user_id,matricule,nom) VALUES ("'+ value.id +'","'+ value.matricule +'","'+ value.nom +'")');
+        tx.executeSql('INSERT INTO AGENT (user_id,matricule,nom) VALUES ('+value.id +',"'+ value.matricule +'","'+ value.nom +'")');
     });
 
 }
@@ -83,4 +85,24 @@ function deleteBaseDAgent() {
 
 function deleteDBAgent(tx){
     tx.executeSql('DROP TABLE IF EXISTS AGENT');
+}
+
+
+
+function test(){
+    $.ajax({
+        url: 'http://constats.ville.valdor.qc.ca/api/v1/test',
+        method: 'get',
+        data: {uuid: uuidApp1},
+        success: function (changes) {
+            alert(JSON.stringify(changes));
+            resultat = $.parseJSON(changes);
+
+        },
+        error: function (model, response) {
+            console.log(model);
+            alert(JSON.stringify(model));
+            //alert(response.responseText);
+        }
+    })
 }

@@ -12,7 +12,7 @@ $(function () {
     $(document).ready(function () {
         $('#descInfractionEdit').hide();
         $('input[type="radio"]').click(function () {
-            if ($(this).attr('id') == 'radio-4Edit') {
+            if ($(this).attr('id') == 'radio-8Edit') {
                 $('#descInfractionEdit').show();
             }
             else {
@@ -86,7 +86,8 @@ $(function () {
         modal.find('#datedivEdit').text(row.find('td[data-title="b_date"]').html());
         modal.find('#heuredivEdit').text(row.find('td[data-title="b_heure"]').html());
         modal.find('#endroitTxtEdit').val(row.find('td[data-title="c_endroit"]').html());
-        modal.find('#adresseTxt_cEdit').val(row.find('td[data-title="c_adresse"]').html());
+        modal.find('#noCivTxtEdit_c').val(row.find('td[data-title="c_nociv"]').html());
+        modal.find('#rueTxtEdit_c').val(row.find('td[data-title="c_rue"]').html());
         modal.find('#descLieuxEdit').val(row.find('td[data-title="c_description"]').html());
         modal.find('#faitTxtEdit').val(row.find('td[data-title="e_details"]').html());
         modal.find('#faitTxt2Edit').val(row.find('td[data-title="e_detailsSuite"]').html());
@@ -107,20 +108,36 @@ $(function () {
         modal.find('#detailCache').text(row.find('td[data-title="e_suite"]').html());
         modal.find('#descInfCheckEdit').val(
             function verifCheck() {
-                if (row.find('td[data-title="b_description"]').html() == "Nuisance") {
+                if (row.find('td[data-title="b_description"]').html() == "1") {
                     $('#radio-1Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "Nuisance1") {
+                else if (row.find('td[data-title="b_description"]').html() == "2") {
                     $('#radio-2Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "Nuisance2") {
+                else if (row.find('td[data-title="b_description"]').html() == "3") {
                     $('#radio-3Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else {
+                else if (row.find('td[data-title="b_description"]').html() == "4") {
                     $('#radio-4Edit').prop('checked', true);
+                    modal.find('#descInfractionEdit').val(" ");
+                }
+                else if (row.find('td[data-title="b_description"]').html() == "5") {
+                    $('#radio-5Edit').prop('checked', true);
+                    modal.find('#descInfractionEdit').val(" ");
+                }
+                else if (row.find('td[data-title="b_description"]').html() == "6") {
+                    $('#radio-6Edit').prop('checked', true);
+                    modal.find('#descInfractionEdit').val(" ");
+                }
+                else if (row.find('td[data-title="b_description"]').html() == "7") {
+                    $('#radio-7Edit').prop('checked', true);
+                    modal.find('#descInfractionEdit').val(" ");
+                }
+                else {
+                    $('#radio-8Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(row.find('td[data-title="b_description"]').html());
                 }
             }
@@ -150,10 +167,10 @@ $(function () {
             radioValue();
             detailValue();
             function radioValue(){
-                if ($('#radio-1Edit').is(':checked') || $('#radio-2Edit').is(':checked') || $('#radio-3Edit').is(':checked')){
+                if ($('#radio-1Edit').is(':checked') || $('#radio-2Edit').is(':checked') || $('#radio-3Edit').is(':checked') || $('#radio-4Edit').is(':checked') || $('#radio-5Edit').is(':checked') || $('#radio-6Edit').is(':checked') || $('#radio-7Edit').is(':checked')){
                     $('#radioCache').val($("input:checked").val());
                 }
-                else if ($('#radio-4Edit').is(':checked')){
+                else if ($('#radio-8Edit').is(':checked')){
                     $('#radioCache').val($("#descInfractionEdit").val());
                 }};
 

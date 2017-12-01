@@ -61,6 +61,7 @@
 	</div>
 </div>
 
+
 	<div id="app" class="container-fluid">
 		<div class="row" id="tabs">
 			<div class="col-sm-12">
@@ -68,8 +69,12 @@
 					<img src="css/images/logo-vvd-couleur-nom-dessous.png" style="width:15%; height:15%;">
 					<H2>Constat d'infraction déneigement</H2>
 				</div>
-                <button onclick="deleteBaseDAgent()">Vider la base de données Agent</button>
+				<button onclick="deleteBaseDAgent()">Vider la base de données Agent</button>
                 <button onclick="deleteBaseDAdr()">Vider la base de données Adr</button>
+
+				<div id="status"></div>
+				<button id="downloadButton" onclick="syncConstat()">Synchroniser</button>
+
 
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
@@ -80,7 +85,7 @@
 				<!--Onglet formulaire-->
 
 				<div id="tabs-1" >
-
+					<button id="nouvConstat" onclick="nouvConstat()" class="btn2">Nouveau constat</button>
 					<div id="accordion">
 						<h3>ORIGINE</h3>
 						<div id="accordion-1">
@@ -138,7 +143,7 @@
 										<h6 id="heurediv"></h6>
 									</div>
 									<div class="col-sm-6 tableaufor">
-										Titre de la loi ou du réglement
+										Titre du réglement
 										<h6>Nuissance de la neige</h6>
 									</div>
 								</div>
@@ -155,16 +160,24 @@
 										Description de l'infraction <br />
 
 											<div id="descInfCheck">
-											<input type="radio" name="radio-1" id="radio-1" value="Nuisance" >
-											<label for="radio-1">Nuisance</label><br />
-											<input type="radio" name="radio-1" id="radio-2" value="Nuisance1" >
-											<label for="radio-2">Nuisance</label><br />
-											<input type="radio" name="radio-1" id="radio-3" value="Nuisance2" >
-											<label for="radio-3">Nuisance</label><br />
-											<input type="radio" name="radio-1" id="radio-4" value="Autre" >
-											<label for="radio-4">Autre</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-1" value="1" >
+											<label for="radio-1" class="radio-label">Voie publique</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-2" value="2" >
+											<label for="radio-2" class="radio-label">Triangle de visibilité d'une intersection</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-3" value="3" >
+											<label for="radio-3" class="radio-label">Fossé ou cours d'eau municipal</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-4" value="4" >
+											<label for="radio-4" class="radio-label">Amoncellement de neige fait par les travaux publics<br /> ou un entrepreneur engagé par la ville</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-5" value="5" >
+											<label for="radio-5" class="radio-label">Ammoncellement de neige ayant pour effet d'éllargir,<br /> d'allonger ou d'agrandir la surface au sol</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-6" value="6" >
+											<label for="radio-6" class="radio-label">Borne-fontaine et/ou à proximité</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-7" value="7" >
+											<label for="radio-7" class="radio-label">Terre-plein, parc ou terrain municipal</label><br />
+											<input type="radio" class="radio-input" name="radio-1" id="radio-8" value="Autre" >
+											<label for="radio-8" class="radio-label">Autre</label><br />
 											</div>
-												<input id="descInfraction" type="text" name="descInfraction" style="width:90%; height:27px;" maxlength="250"><br />
+											<input id="descInfraction" type="text" name="descInfraction" style="width:90%; height:27px;" maxlength="250"><br />
 									</div>
 								</div>
 							</div>
@@ -178,9 +191,10 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-12 tableaufor">
-									Adresse<br />
-									<input id="adresseTxt_c" type="text" for="tags" name="adresseTxt_c" maxlength="250" ><br />
-
+										Adresse<br />
+										<label for="noCivTxt_c" style="margin-left: 1%">No civ</label><label for="adresseTxt_c" style="margin-left: 6%">Rue</label><br />
+										<input id="noCivTxt_c" type="text" for="tags" name="noCivTxt_c" maxlength="10" style="width:10%" >
+										<input id="rueTxt_c" type="text" for="tags" name="adresseTxt_c" maxlength="250" style="width:80%" ><br />
 									</div>
 								</div>
 								<div class="row">
@@ -268,8 +282,9 @@
 					</div>
 					<div style="text-align: center"> 
 						* inclus automatiquement lors de la synchronisation
-                        <button type="button" data-toggle="modal" data-target="#videoModal">Sélectionner vidéo</button>
+
 						<button id="enr" style="width:100%" onclick="enregistre()">Enregistrer le formulaire</button><br />
+						<button id="enrVideo" type="button" data-toggle="modal" data-target="#videoModal" class="hidden btn1">Sélectionner vidéo</button>
 					</div>
 
 				</div>
@@ -293,13 +308,10 @@
 						</div>
 					</section>
 					<div style="text-align: center">
-						<button onclick="goSearch()">Rechercher</button>
-						<button onclick="successCB()">Voir tout</button>
 						<button onclick="deleteBaseD()">Vider la base de données</button>
-						<button onclick="Sync()">Synchro</button>
 					</div>
 				</div>	
-<!--ICCCCIIIIII-->
+
 				<!--table temporaire-->
 				<div id="tabs-3">
 					<section id="no-more-tables">
@@ -404,7 +416,7 @@
 											<h6 id="heuredivEdit"></h6>
 										</div>
 										<div class="col-sm-6 tableaufor">
-											Titre de la loi ou du réglement
+											Titre du réglement
 											<h6>Nuissance de la neige</h6>
 										</div>
 									</div>
@@ -421,14 +433,27 @@
 											Description de l'infraction <br />
 											<fieldset>
 												<div id="descInfCheckEdit">
-													<input type="radio" name="radio-1" id="radio-1Edit" value="Nuisance">
-													<label for="radio-1Edit">Nuisance</label><br />
-													<input type="radio" name="radio-1" id="radio-2Edit" value="Nuisance1">
-													<label for="radio-2Edit">Nuisance</label><br />
-													<input type="radio" name="radio-1" id="radio-3Edit" value="Nussance2">
-													<label for="radio-3Edit">Nuisance</label><br />
-													<input type="radio" name="radio-1" id="radio-4Edit" value="Autre">
-													<label for="radio-4Edit">Autre</label><br />
+													<div class="col-sm-12 tableaufor">
+														Description de l'infraction <br />
+
+															<input type="radio" class="radio-input" name="radio-1" id="radio-1Edit" value="1" >
+															<label for="radio-1" class="radio-label">Voie publique</label><br />
+															<input type="radio" class="radio-input" name="radio-1" id="radio-2Edit" value="2" >
+															<label for="radio-2" class="radio-label">Triangle de visibilité d'une intersection</label><br />
+															<input type="radio" class="radio-input" name="radio-1" id="radio-3Edit" value="3" >
+															<label for="radio-3" class="radio-label">Fossé ou cours d'eau municipal</label><br />
+															<input type="radio" class="radio-input" name="radio-1" id="radio-4Edit" value="4" >
+															<label for="radio-3" class="radio-label">Amoncellement de neige fait par les travaux publics<br /> ou un entrepreneur engagé par la ville</label><br />
+															<input type="radio" class="radio-input" name="radio-1" id="radio-5Edit" value="5" >
+															<label for="radio-3" class="radio-label">Ammoncellement de neige ayant pour effet d'éllargir,<br /> d'allonger ou d'agrandir la surface au sol</label><br />
+															<input type="radio" class="radio-input" name="radio-1" id="radio-6Edit" value="6" >
+															<label for="radio-3" class="radio-label">Borne-fontaine et/ou à proximité</label><br />
+															<input type="radio" class="radio-input" name="radio-1" id="radio-7Edit" value="7" >
+															<label for="radio-3" class="radio-label">Terre-plein, parc ou terrain municipal</label><br />
+															<input type="radio" class="radio-input" name="radio-1" id="radio-8Edit" value="Autre" >
+															<label for="radio-4" class="radio-label">Autre</label><br />
+
+													</div>
 												</div>
 												<input id="descInfractionEdit" type="text" name="descInfractionEdit" maxlength="250" style="width:90%; height:27px;"><br />
 											</fieldset>
@@ -446,7 +471,9 @@
 									<div class="row">
 										<div class="col-sm-12 tableaufor">
 											Adresse<br />
-											<input id="adresseTxt_cEdit" type="text" name="adresseTxt_cEdit" style="width:60%; height:27px;" maxlength="250"><br />
+											<label for="noCivTxtEdit_c" style="margin-left: 1%">No civ</label><label for="adresseTxtEdit_c" style="margin-left: 6%">Rue</label><br />
+											<input id="noCivTxtEdit_c" type="text" for="tags" name="noCivTxtEdit_c" maxlength="10" style="width:10%" >
+											<input id="rueTxtEdit_c" type="text" for="tags" name="rueTxtEdit_c" maxlength="250" style="width:80%" ><br />
 										</div>
 									</div>
 									<div class="row">
@@ -552,6 +579,7 @@
                                     </table>
                                 </div>
                             </section>
+							<button type="button" data-toggle="modal" data-target="#videoModalAjout">Ajouter vidéo</button>
                         </div>
 
 						<div class="modal-footer">
@@ -566,7 +594,7 @@
 		</div>
 
 
-
+		<!--modal de vidéo-->
         <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content modal-content1">
@@ -584,6 +612,7 @@
             </div>
         </div>
 
+		<!--modal d'édition de vidéo-->
         <div class="modal fade" id="videoModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content modal-content1">
@@ -602,6 +631,24 @@
                 </div>
             </div>
         </div>
+
+	<!--Modal d'ajout de vidéo-->
+		<div class="modal fade" id="videoModalAjout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+			<div class="modal-dialog" role="document">
+				<div class="modal-content modal-content1">
+					<div class="modal-header">
+						<h5 class="modal-title">Nom de la vidéo</h5>
+						<div>
+							<input id="nomVideoAjout" type="text">
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+								<button onclick="getVideoAjout()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
@@ -633,7 +680,6 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/constat.css"/>
-  
 
 </body>
 </html>

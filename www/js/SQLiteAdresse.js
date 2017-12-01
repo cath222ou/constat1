@@ -2,11 +2,7 @@ var adresseResult = [];
 
 //table agent
 function populateDBAdr(tx) {
-    tx.executeSql('CREATE TABLE IF NOT EXISTS ADRESSE (matricule PRIMARY KEY, adresse)');
-}
-
-function errorCB1(){
-    console.log('oan');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS ADRESSE (adresse_id PRIMARY KEY, nocivique, rue)');
 }
 
 // Transaction success callback
@@ -27,7 +23,7 @@ function queryDBAdr(tx,result,uuidApp1){
 function querySuccessAdr(tx,result) {
     if (result.rows.length===0){
         $.ajax({
-            url: 'http://constats.dev/api/v1/sync/adresses',
+            url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/adresses',
             method: 'get',
             data: {uuid: uuidApp1},
             success: function (changes) {
@@ -42,14 +38,14 @@ function querySuccessAdr(tx,result) {
     }
     else {
         $.ajax({
-            url: 'http://constats.dev/api/v1/sync/adresses',
+            url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/adresses',
             method: 'get',
             data: {uuid: uuidApp1},
             success: function (changes) {
                 resultat = $.parseJSON(changes);
-                 $(resultat).each(function (key, value) {
-                     adresseResult.push(value.ADRESSE);
-                 });
+                //$(resultat).each(function (key, value) {
+                adresseResult.push(resultat);
+
             },
             error: function (model, response) {
                 console.log(model);
@@ -63,7 +59,7 @@ function querySuccessAdr(tx,result) {
 function insertDBAdr(tx,changes){
     var resultat = $.parseJSON(changes);
     $(resultat).each(function(key,value){
-        tx.executeSql('INSERT INTO ADRESSE (matricule,adresse) VALUES ("'+ value.MATRICULE +'","'+ value.ADRESSE +'")');
+        tx.executeSql('INSERT INTO ADRESSE (adresse_id,nocivique,rue) VALUES ("'+ value.MATRICULE +'","'+ value.NOCIVIQUE +'","'+ value.RUE +'")');
     });
 
 }

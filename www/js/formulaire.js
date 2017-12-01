@@ -3,18 +3,40 @@
 // });
 
 
-$( function() {
-    $( "#adresseTxt_c" ).autocomplete({
-        source: function( request, response ) {
-            var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
-            response( $.grep( adresseResult, function( item ){
-                return matcher.test( item );
-            }) );
-        },
-        minLength: 1
-    });
-
-} );
+// $( function() {
+//     $( "#adresseTxt_c" ).autocomplete({
+//         source: adresseResult// function( request, response ) {
+//         //     var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+//         //     response( $.grep( adresseResult, function( item ){
+//         //         return matcher.test( item );
+//         //     }) )
+//         //     },
+//
+//           //  minLength: 1});
+//
+//     //});
+//
+//
+// } );
+//Autocomplete des adresses
+// $( function() {
+//     $('#adresseTxt_c').autocomplete({
+//
+//         source: function(resquest,response){
+//             //console.log(adresseResult);
+//                 response($.map(adresseResult[0], function (value, key) {
+//                    // console.log(value);
+//                     return {
+//                         label: value.ADRESSE,
+//                         value: value.MATRICULE
+//                     };
+//                 }))},
+//         minLength: 2
+//
+//
+//         //delay: 100
+//     });
+// });
 
 
 
@@ -30,7 +52,7 @@ $( function() {
     $(function () {
         $("#accordion").accordion(
             {
-                active: 4,
+                active: 3,
                 heightStyle: "content",
                 autoHeight: false
             }
@@ -52,6 +74,34 @@ $( function() {
     $(function () {
         $("radio").checkboxradio();
     });
+
+//Débuter un nouveau constat
+    function nouvConstat(){
+        $('#enrVideo').addClass('hidden');
+        //effacer les valeurs entrées
+        $('#nomTxt').val('');
+        $('#adresseCor').val('');
+        $('#telRes').val('');
+        $('#telTra').val('');
+        $('#descInfraction').val('');
+        $('#endroitTxt').val('');
+        $('#noCivTxt_c').val('');
+        $('#rueTxt_c').val('');
+        $('#descLieux').val('');
+        $('#faitTxt').val('');
+        $('#faitTxt2').val('');
+        $('#noteTxt').val('');
+        $('input[type=radio]').prop('checked',false);
+        $('#descInfraction').hide();
+        //Retour à l'accordéon initial
+        $( "#accordion" ).accordion(
+            {active:1}
+        );
+    }
+
+
+
+
 
 
     //Afficher nombre de caractères restants
@@ -110,7 +160,7 @@ $( function() {
     });
 	//Entrer son matricule
     function addmatricule() {
-        $('#matriculeNum').val($('#matriculeMenu').val());
+        $('#matriculeNum').text($("#matriculeMenu option:selected").val());
         $('#matAgent').val($("#matriculeMenu option:selected").val());
         $('#uuidApp').val(uuidValue);
         $(this).dialog("close");
@@ -136,7 +186,7 @@ $( function() {
     $(document).ready(function () {
         $('#descInfraction').hide();
         $('input[type="radio"]').click(function () {
-            if ($(this).attr('id') == 'radio-4') {
+            if ($(this).attr('id') == 'radio-8') {
                 $('#descInfraction').show();
             }
             else {

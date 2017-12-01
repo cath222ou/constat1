@@ -17,8 +17,8 @@ function onDeviceReady() {
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(populateDBConstat, errorCB, successCBConstat);
     db.transaction(populateDBVideo, errorCB, successCBVideo);
-    db.transaction(populateDBAgent, function(tx,result){console.log(tx,result)}, function(tx,result){successCBAgent(tx,result)});
-    db.transaction(populateDBAdr, function(tx,result){console.log(tx,result)}, function(tx,result){successCBAdr(tx,result)});
+    db.transaction(populateDBAgent, errorCB, function(tx,result){successCBAgent(tx,result)});
+    db.transaction(populateDBAdr, errorCB, function(tx,result){successCBAdr(tx,result)});
 
 }
 
@@ -32,7 +32,7 @@ function onDeviceReady() {
 		}
 
 		function populateDBConstat(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_adresse,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER)');
 		}
 
         // Query the database
@@ -70,7 +70,9 @@ function onDeviceReady() {
 					+ '<td data-title="b_heure">'+results.rows.item(i).b_heure +'</td>'
                 	+ '<td data-title="b_description">'+results.rows.item(i).b_description +'</td>'
                 	+ '<td data-title="c_endroit">'+results.rows.item(i).c_endroit +'</td>'
-                	+ '<td data-title="c_adresse">'+results.rows.item(i).c_adresse +'</td>'
+                	+ '<td data-title="c_nociv">'+results.rows.item(i).c_nociv +'</td>'
+                	+ '<td data-title="c_rue">'+results.rows.item(i).c_rue +'</td>'
+                	+ '<td data-title="adresse_id">'+results.rows.item(i).adresse_id +'</td>'
                 	+ '<td data-title="c_description">'+results.rows.item(i).c_description +'</td>'
                	 	+ '<td data-title="e_details">'+results.rows.item(i).e_details +'</td>'
                 	+ '<td data-title="e_suite">'+results.rows.item(i).e_suite +'</td>'
@@ -78,7 +80,9 @@ function onDeviceReady() {
                 	+ '<td data-title="lat">'+results.rows.item(i).lat +'</td>'
                	 	+ '<td data-title="lon">'+results.rows.item(i).lon +'</td>'
                 	+ '<td data-title="note">'+results.rows.item(i).note +'</td>'
-					+ '<td><button type="button" data-toggle="modal" data-target="#exampleModal">Modifier</button></td>'+
+                	+ '<td data-title="sync">'+results.rows.item(i).sync +'</td>'
+					+ '<td><button type="button" data-toggle="modal" data-target="#exampleModal">Modifier</button>'
+					+ '<button type="button" class="btn1" onClick="syncConstatIndividuelle('+results.rows.item(i).constat_id+','+i+')">Synchronisation</button></td>'+
 				'</tr>'
 				);
 			}
@@ -96,6 +100,7 @@ function onDeviceReady() {
         //
         function errorCB(err) {
             console.log(err);
+            alert('ca'+JSON.stringify(err));
         }
 
         // Transaction success callback
@@ -122,14 +127,16 @@ function onDeviceReady() {
 			var newheure = moment().format('h:mm a');
 			var descInfraction = null;
 
-				if ($('#radio-1').is(':checked') || $('#radio-2').is(':checked') || $('#radio-3').is(':checked')){
+				if ($('#radio-1').is(':checked') || $('#radio-2').is(':checked') || $('#radio-3').is(':checked')|| $('#radio-4').is(':checked')|| $('#radio-5').is(':checked')|| $('#radio-6').is(':checked')|| $('#radio-7').is(':checked')){
 						descInfraction = $("input:checked").val();
 					}
-				else if ($('#radio-4').is(':checked')){
+				else if ($('#radio-8').is(':checked')){
                     descInfraction = document.getElementById("descInfraction").value;
                 }
 			var endroit = document.getElementById("endroitTxt").value;
-			var adresse = document.getElementById("adresseTxt_c").value;
+			var nociv = document.getElementById("noCivTxt_c").value;
+			var rue = document.getElementById("rueTxt_c").value;
+			var adresseid = 'allo';
 			var decriptionLieux = document.getElementById("descLieux").value;
             var faits = document.getElementById("faitTxt").value;
             var faits2 = document.getElementById("faitTxt2").value;
@@ -144,28 +151,7 @@ function onDeviceReady() {
 					var suite = false
 				}
 
-            tx.executeSql('INSERT INTO DEMO (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_adresse,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+adresse+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'")');
-			//effacer les valeurs entrées
-				$('#nomTxt').val('');
-			$('#adresseCor').val('');
-			$('#telRes').val('');
-            $('#telTra').val('');
-            $('#descInfraction').val('');
-            $('#endroitTxt').val('');
-            $('#adresse-Txt_c').val('');
-            $('#descLieux').val('');
-            $('#faitTxt').val('');
-            $('#faitTxt2').val('');
-            $('#noteTxt').val('');
-            $('input[type=radio]').prop('checked',false);
-
-
-
-            //Retour à l'accordéon initial
-            $( "#accordion" ).accordion(
-                {active:1}
-            );
-
+            tx.executeSql('INSERT INTO DEMO (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
 
 		}
 
@@ -210,9 +196,7 @@ function onDeviceReady() {
 	/////////////////////////////
 	//////geolocalisation////////
 	/////////////////////////////
-	// function onSuccess(position) {
-    //
-    // };
+
 
     //onError Callback receives a PositionError object
 
@@ -221,20 +205,16 @@ function onDeviceReady() {
               'message: ' + error.message + '\n');
     }
 
-    // function getPosition(){
-		// navigator.geolocation.getCurrentPosition(onSuccess, onError);
-		//
-    // }
+
 
 
 	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement
 	function enregistre(){
 		navigator.geolocation.getCurrentPosition(goInsert, onError);
+		$('#enrVideo').removeClass('hidden');
 	};
 
 
-
-////////////////////adresse//////////////////
 
 
 

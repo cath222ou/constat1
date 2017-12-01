@@ -1,16 +1,12 @@
 var fichier = null;
 var idFormu = null;
-	//Table vidéo
+
+		//Table vidéo
 		
 		function populateDBVideo(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS VIDEO (matricule, constat_id INTEGER, id_video INTEGER PRIMARY KEY AUTOINCREMENT, nom, path, FOREIGN KEY(constat_id) REFERENCES DEMO(constat_id))');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS VIDEO (matricule, constat_id INTEGER, id_video INTEGER PRIMARY KEY AUTOINCREMENT, nom, path, videoSync INTEGER, FOREIGN KEY(constat_id) REFERENCES DEMO(constat_id))');
         }
-		 
-		 //Cordova ready
-    //    function onDeviceReady2() {
-    //        var db = window.openDatabase("Database1", "1.0", "Cordova Demo", 200000);
-    //        db.transaction(populateDB2, errorCB2, successCB2);     
-	//	}
+
 		
 		//dessiner BD
 		function querySuccessVideo(tx, results) {
@@ -24,7 +20,8 @@ var idFormu = null;
 					+ '<td data-title="constat_id">'+results.rows.item(i).constat_id +'</td>'
 					+ '<td data-title="id_video">'+results.rows.item(i).id_video +'</td>'
                     + '<td data-title="nom">'+results.rows.item(i).nom +'</td>'
-					+ '<td data-title="path">'+results.rows.item(i).path +'</td>'+
+					+ '<td data-title="path">'+results.rows.item(i).path +'</td>'
+                    + '<td data-title="videoSync">'+results.rows.item(i).videoSync +'</td>'+
 				'</tr>'
 				);
 			}
@@ -55,20 +52,15 @@ var idFormu = null;
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(queryDBVideo, errorCB);
         }
-		
-        // // Transaction error callback
-        // //
-        // function errorCBVideo(err) {
-        //     alert("Error processing SQL: "+err.code);
-        // }
-		
+
 		
 		//Insert query
 
-		function insertDB2(tx) {
+		function insertDB2(tx, filePath) {
 			var matricule = document.getElementById("matAgent").value;
 			var nomV = $('#nomVideo').val();
-            tx.executeSql('INSERT INTO VIDEO (matricule,constat_id,nom,path) VALUES ("'+ matricule +'","'+ idFormu +'","'+nomV+'","'+ fichier +'")');
+			//console.log(fichier);
+            tx.executeSql('INSERT INTO VIDEO (matricule,constat_id,nom,path,videoSync) VALUES ("'+ matricule +'","'+ idFormu +'","'+nomV+'","'+ filePath +'","'+0+'")');
             $('#nomVideo').val('');
 		}
 
@@ -90,21 +82,21 @@ var idFormu = null;
 
 	//insertion dans la BD
 
-		function goInsert2() {
+		function goInsert2(filePath) {
+
 			db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 			db.transaction(function(tx){
 				idInfo(tx);
 			}
-			, errorCB,goInsert3);
-
-		
+			, errorCB,function(){goInsert3(filePath)});
 		}
 		
 		
-		function goInsert3() {
+		function goInsert3(filePath) {
+
 			db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 			db.transaction(function(tx){
-				insertDB2(tx, null, fichier);
+				insertDB2(tx, filePath);
 				
 			}
 			, errorCB, successCBVideo);
@@ -121,32 +113,28 @@ var idFormu = null;
 	}
 	
 	
-	function onVideoSuccess(fileuri) {
+	function onVideoSuccess(fileuri, mediaFiles) {
+        //var taille = mediaFiles[0].size;
+        //console.log('alo',taille);
 		fichier = fileuri;
+		var nomVid = $('#nomVideo').val();
+		var sourceFilePath = fichier;
+		var filePath = cordova.file.documentsDirectory +nomVid+".mov";
+		var ft = new FileTransfer();
+            ft.download(
+                sourceFilePath,
+                filePath,
+                function(entry){
+                    alert("file copy success");
+					//alert(JSON.stringify(entry));
+                },
+                function(error){
+                    alert(JSON.stringify(error));
+                }
+            );
 
-		goInsert2();
+        goInsert2(filePath);
 	}
-
-function videoName(){
-    $(document).on('show.bs.modal', "#videoModal", function (event) {
-        $(document).ready(function () {
-
-        })
-    })
-}
-
-
-function videoTranscodeSuccess(result) {
-    // result is the path to the transcoded video on the device
-    console.log('videoTranscodeSuccess, result: ' + result);
-}
-
-function videoTranscodeError(err) {
-    console.log('videoTranscodeError, err: ' + err);
-}
-
-
-
 
 
 
@@ -155,28 +143,6 @@ function videoTranscodeError(err) {
 	}
 
 
-
-
-
-
-	// Upload files to server
-//	function uploadFile(mediaFile) {
-//		var ft = new FileTransfer(),
-//			path = mediaFile.fullPath,
-//			name = mediaFile.name;
-//	
-//		ft.upload(path,
-//			"http://my.domain.com/upload.php",
-//			function(result) {
-//				console.log('Upload success: ' + result.responseCode);
-//				console.log(result.bytesSent + ' bytes sent');
-//			},
-//			function(error) {
-//				console.log('Error uploading file ' + path + ': ' + error.code);
-//			},
-//			{ fileName: name });   
-//	}
-	
 
 
 

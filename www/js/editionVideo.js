@@ -18,7 +18,8 @@ function querySuccessVideoEdit(tx, results) {
             + '<td data-title="nom">'+results.rows.item(i).nom +'</td>'
             + '<td data-title="path">'+results.rows.item(i).path +'</td>'
             + '<td><button type="button" data-toggle="modal" data-target="#videoModalEdit" data-videoid="'+results.rows.item(i).id_video+'">Modifier</button>'
-            + '<button type="button" onclick="removeVideo('+results.rows.item(i).id_video+','+i+')" class="btn btn-default btn1" style="background-color:#ff0000; border-color:#b30000">Supprimer</button></td>'+
+            + '<button type="button" onclick="removeVideo('+results.rows.item(i).id_video+','+i+')" class="btn btn-default btn1" style="background-color:#ff0000; border-color:#b30000">Supprimer</button></td>'
+            + '<td><button type="button"  onClick="syncVideoIndividuelle('+results.rows.item(i).id_video+','+i+')">Synchronisation</button></td>'+
             '</tr>'
         );
     }
@@ -52,12 +53,29 @@ function getVideoEdit() {
     options["sourceType"] = 0 | 2;
     options["mediaType"] = 1;
     options["destinationType"] = 2;
-    navigator.camera.getPicture(onVideoSuccess, onFail, options);
+    navigator.camera.getPicture(onVideoSuccessEdit, onFail, options);
 }
 
-function onVideoSuccess(fileuriEdit) {
+function onVideoSuccessEdit(fileuriEdit) {
+    alert('allo');
     fichierEdit = fileuriEdit;
-    modifVideo();
+   // modifVideo();
+    var nomVid = $('#nomVideoEdit').val();
+    var sourceFilePath = fichierEdit;
+    var filePath = cordova.file.documentsDirectory +nomVid+".mov";
+    var ft = new FileTransfer();
+    ft.download(
+        sourceFilePath,
+        filePath,
+        function(entry){
+            alert("file copy success");
+            //alert(JSON.stringify(entry));
+        },
+        function(error){
+            alert(JSON.stringify(error));
+        }
+    );
+    modifVideo(filePath);
 }
 
 //modal
@@ -70,15 +88,71 @@ $(document).on('show.bs.modal','#videoModalEdit', function (event) {
 })
 
 //Modifier la vidéo relié au formulaire
-function modifVideo(){
+function modifVideo(filePath){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-    db.transaction(videoModification, errorCB);
+    db.transaction(function(tx){videoModification(tx, filePath)}, errorCB);
 }
 
-function videoModification(tx){
-    var vid = $("#idvideo").val();
-    console.log(vid);
-    nomVideo = $('#idvideo').val();
-    tx.executeSql('UPDATE VIDEO SET nom ='+nomVideo+', path ='+fichierEdit+' WHERE id_video='+vid, [], errorCB)
+function videoModification(tx, filePath){
 
+    var vid = $("#idvideo").val();
+    alert(vid);
+    nomVideo = $('#nomVideoEdit').val();
+    alert(nomVideo);
+    alert(filePath);
+    tx.executeSql('UPDATE VIDEO SET nom ="'+nomVideo+'", path ="'+filePath+'" WHERE id_video='+vid, [], errorCB);
+    tx.executeSql('SELECT * FROM VIDEO',[], querySuccessVideoEdit, errorCB);
+    tx.executeSql('SELECT * FROM VIDEO', [],querySuccessVideo, errorCB);
+}
+
+
+
+//Ajout de vidéo au constat
+
+function getVideoAjout() {
+    var options = { quality: 80 };
+    options["sourceType"] = 0 | 2;
+    options["mediaType"] = 1;
+    options["destinationType"] = 2;
+    navigator.camera.getPicture(onVideoSuccessAjout, onFail, options);
+}
+
+function onVideoSuccessAjout(fileuriAjout) {
+
+    fichierAjout = fileuriAjout;
+    // modifVideo();
+    var nomVid = $('#nomVideoEdit').val();
+    var sourceFilePath = fichierAjout;
+    var filePath = cordova.file.documentsDirectory +nomVid+".mov";
+    var ft = new FileTransfer();
+    ft.download(
+        sourceFilePath,
+        filePath,
+        function(entry){
+            alert("file copy success");
+            //alert(JSON.stringify(entry));
+        },
+        function(error){
+            alert(JSON.stringify(error));
+        }
+    );
+    insertVideo(filePath);
+}
+
+function insertVideo(filePath){
+    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    db.transaction(function(tx){
+            successCBVideoAdd(tx, filePath);
+
+        }
+        , errorCB, successCBVideo);
+}
+function successCBVideoAdd(tx, filePath){
+    var matricule = $('#matAgent').val();
+    var nomV = $('#nomVideoAjout').val();
+    var idConstat = $("#idCache").text();
+    alert(matricule + nomV + idConstat);
+    //console.log(fichier);
+    tx.executeSql('INSERT INTO VIDEO (matricule,constat_id,nom,path) VALUES ("'+ matricule +'","'+ idConstat +'","'+nomV+'","'+ filePath +'")');
+    $('#nomVideo').val('');
 }

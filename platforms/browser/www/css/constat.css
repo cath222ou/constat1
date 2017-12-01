@@ -25,6 +25,7 @@ body {
 	margin-left:-1px;
 	margin-right: 1px;
 	border-left: 1px solid black;
+    font-weight: bold;
 }
 
 
@@ -125,3 +126,29 @@ input[type='text']{
     margin-top:10px;
     margin-left:10px;
 }
+
+label{
+    font-size: 13px;
+}
+
+.radio-label {
+    display: inline-block;
+    margin-right: 3%;
+    font-weight: normal;
+    margin-top:1%;
+    vertical-align: center;
+}
+
+.radio-input {
+    display: inline-block;
+    vertical-align: center;
+}
+
+.btn2{
+    margin-bottom: 20px;
+    margin-top:10px;
+    margin-left:10px;
+
+}
+
+
