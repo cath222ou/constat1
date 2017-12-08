@@ -82,7 +82,7 @@ function onDeviceReady() {
                 	+ '<td data-title="note">'+results.rows.item(i).note +'</td>'
                 	+ '<td data-title="sync">'+results.rows.item(i).sync +'</td>'
 					+ '<td><button type="button" data-toggle="modal" data-target="#exampleModal">Modifier</button>'
-					+ '<button type="button" class="btn1" onClick="syncConstatIndividuelle('+results.rows.item(i).constat_id+','+i+')">Synchronisation</button></td>'+
+					+ '<button type="button" class="btn1" onClick="syncConstat()">Synchronisation</button></td>'+
 				'</tr>'
 				);
 			}
@@ -99,8 +99,7 @@ function onDeviceReady() {
         // Transaction error callback
         //
         function errorCB(err) {
-            console.log(err);
-            alert('ca'+JSON.stringify(err));
+            console.log('erreur',err);
         }
 
         // Transaction success callback
@@ -136,7 +135,7 @@ function onDeviceReady() {
 			var endroit = document.getElementById("endroitTxt").value;
 			var nociv = document.getElementById("noCivTxt_c").value;
 			var rue = document.getElementById("rueTxt_c").value;
-			var adresseid = 'allo';
+			var adresseid = $('#rueTxt_c').data("matricule");
 			var decriptionLieux = document.getElementById("descLieux").value;
             var faits = document.getElementById("faitTxt").value;
             var faits2 = document.getElementById("faitTxt2").value;
@@ -158,21 +157,73 @@ function onDeviceReady() {
 
 
 		function goInsert(position) {
-            validA();
-            //validateForm();
+            //lance la fonction pour remplir les champs vide non obligatoire par NULL
+			validA();
 
-            //////SI RETOURNE FALSE WHATTT ???????
-            // if (validateForm() === false) {
-            //     alert('Des champs obligatoires ne sont pas remplis')
-            // }
-            // else {
 
-                db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                db.transaction(function (tx) {
-                        insertDB(tx, position);
-                    }
-                    , errorCB, successCBConstat);
-        }
+            //Vérifier les champs obligatoire
+			var nbr = 0;
+			var radioNbr =0;
+            var a = $('#accordion');
+
+			//Compter le nombre de description d'infraction sélectionné (1 ou 0)
+            a.find(".radio-input").each(function() {
+            	//Si un radio box est sélectionné, augmenter la radioNbr de 1
+            	if(( $(this).is(':checked') && $(this).attr('id')!== 'radio-8') || ($(this).is(':checked') && $(this).attr('id')=== 'radio-8' && $('#descInfraction').val() !== "")){
+                    radioNbr = radioNbr + 1;
+                }
+            });
+			// Vérification qu'il y a une description d'infraction sélectionnée
+            if (radioNbr === 0 ){
+            	if($('#radio-8').is(':checked')){
+                    $('#b').addClass("ChampsObligatoire");
+                    $('#descInfraction').addClass("divObligatoire");
+				}
+				else {
+                    $('#b').addClass("ChampsObligatoire");
+                    $('#descInfCheck').addClass("divObligatoire");
+                }
+            }
+            else {
+                $('#b').removeClass("ChampsObligatoire");
+                $('#descInfCheck').removeClass("divObligatoire");
+                $('#descInfraction').removeClass("divObligatoire");
+            }
+
+
+			//Vérification que les champs textes obligatoires sont remplis
+            $(".obligatoire").each(function() {
+                if ($(this).val() === "null" || $(this).val() === " " || $(this).val() === "") {
+                	nbr = nbr +1;
+
+					$(this).css("border", "3px solid red");
+                    $(this).closest('.parent').prev().addClass("ChampsObligatoire");
+
+                }
+                else{
+                    $(this).closest('.parent').prev().removeClass("ChampsObligatoire");
+                    $(this).css("border", "");
+				}
+            });
+
+			//Si un des champs obligatoires n'est pas remplis ou aucun radio n'est sélectionné
+			if (nbr > 0 || radioNbr === 0){
+				console.log(nbr);
+                console.log(radioNbr);
+                alert('Des champs obligatoires ne sont pas remplis');
+			}
+
+			//sinon lance la transaction insertDB pour insérer les données dans la table DEMO
+			else{
+
+                    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+                    db.transaction(function (tx) {
+                            insertDB(tx, position);
+                        }
+                        , errorCB, successCBConstat);
+                }
+		}
+
         function goSearch() {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(searchQueryDB, errorCB);

@@ -12,14 +12,14 @@ $(function () {
     $(document).ready(function () {
         $('#descInfractionEdit').hide();
         $('input[type="radio"]').click(function () {
-            if ($(this).attr('id') == 'radio-8Edit') {
+            if ($(this).attr('id') === 'radio-8Edit') {
                 $('#descInfractionEdit').show();
             }
             else {
                 $('#descInfractionEdit').hide();
             }
         });
-    })
+    });
 		
 	// Édition de la BD
 	 	$('#exampleModal').modal({show:false})//.
@@ -50,7 +50,7 @@ $(function () {
     $(document).on("change", '#checkbox-nested-text1', function () {
         //Si checkbox est coché
 
-        if ($(this).prop('checked') == true) {
+        if ($(this).prop('checked') === true) {
             //affiche textarea
             $('#faitTxt2Edit').removeClass('hidden');
         }
@@ -62,17 +62,6 @@ $(function () {
 
     //Remplir les champs du modal selon les informations de la ligne sélectionnée
     $(document).on('show.bs.modal', "#exampleModal", function (event) {
-        $(document).ready(function () {
-            $('#descInfractionEdit').hide();
-            $('input[type="radio"]').click(function () {
-                if ($(this).attr('id') == 'radio-4Edit') {
-                    $('#descInfractionEdit').show();
-                }
-                else {
-                    $('#descInfractionEdit').hide();
-                }
-            });
-        })
 
         var row = $(event.relatedTarget).closest('tr');
         var modal = $(this);
@@ -93,7 +82,7 @@ $(function () {
         modal.find('#faitTxt2Edit').val(row.find('td[data-title="e_detailsSuite"]').html());
             //cocher la case si texte valeur dans le deuxième champ texte
             var champ = $('#faitTxt2Edit').val();
-            if (champ.length > 0){
+            if (champ.length > 0 && champ !== 'null'){
                 $('#checkbox-nested-text1').attr('checked', true);
                 $('#faitTxt2Edit').removeClass('hidden');
                 }
@@ -108,108 +97,188 @@ $(function () {
         modal.find('#detailCache').text(row.find('td[data-title="e_suite"]').html());
         modal.find('#descInfCheckEdit').val(
             function verifCheck() {
-                if (row.find('td[data-title="b_description"]').html() == "1") {
+                $('#descInfractionEdit').hide();
+                if (row.find('td[data-title="b_description"]').html() === "1") {
                     $('#radio-1Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "2") {
+                else if (row.find('td[data-title="b_description"]').html() === "2") {
                     $('#radio-2Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "3") {
+                else if (row.find('td[data-title="b_description"]').html() === "3") {
                     $('#radio-3Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "4") {
+                else if (row.find('td[data-title="b_description"]').html() === "4") {
                     $('#radio-4Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "5") {
+                else if (row.find('td[data-title="b_description"]').html() === "5") {
                     $('#radio-5Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "6") {
+                else if (row.find('td[data-title="b_description"]').html() === "6") {
                     $('#radio-6Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
-                else if (row.find('td[data-title="b_description"]').html() == "7") {
+                else if (row.find('td[data-title="b_description"]').html() === "7") {
                     $('#radio-7Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
                 else {
                     $('#radio-8Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(row.find('td[data-title="b_description"]').html());
+                    $('#descInfractionEdit').show();
                 }
+
             }
         );
+
         constat = row.find('td[data-title="constat_id"]').html();
         videoConstat();
     });
 
 
-        // // Transaction error callback
-        // //
-        // function errorCB(err) {
-        //     alert("Error processing SQL: "+err.code);
-        // }
-
-        // Transaction success callback
-        //
-        // function successCB() {
-        //     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-        //     db.transaction(queryDB, errorCB);
-        // }
-
-
 
 
         function editRow(tx){
-            radioValue();
-            detailValue();
-            function radioValue(){
-                if ($('#radio-1Edit').is(':checked') || $('#radio-2Edit').is(':checked') || $('#radio-3Edit').is(':checked') || $('#radio-4Edit').is(':checked') || $('#radio-5Edit').is(':checked') || $('#radio-6Edit').is(':checked') || $('#radio-7Edit').is(':checked')){
-                    $('#radioCache').val($("input:checked").val());
-                }
-                else if ($('#radio-8Edit').is(':checked')){
-                    $('#radioCache').val($("#descInfractionEdit").val());
-                }};
 
-            function detailValue(){
+            if ($('#radio-1Edit').is(':checked') || $('#radio-2Edit').is(':checked') || $('#radio-3Edit').is(':checked')|| $('#radio-4Edit').is(':checked')|| $('#radio-5Edit').is(':checked')|| $('#radio-6Edit').is(':checked')|| $('#radio-7Edit').is(':checked')){
+                descInfraction = $("input:checked").val();
+            }
+            else {
+                descInfraction = $("#descInfractionEdit").val();
+            }
+
 
                 if ($('#checkbox-nested-text1').is(':checked')){
                     $('#detailCache').val(true);
                 }
                 else {
-                    console.log('allo');
                     $('#detailCache').val(false);
-                    $('#faitTxt2Edit').val(" ");
+                    $('#faitTxt2Edit').val("null");
                 }
-            }
+
+                validAEdit();
+
 
             tx.executeSql('UPDATE DEMO SET a_nom="'+$("#nomTxtEdit").val()+
                 '", a_adresse ="'+$("#adresseCorEdit").val()+
                 '", a_telephone1 ="'+$("#telResEdit").val()+
                 '", a_telephone2 ="'+$("#telTraEdit").val()+
+                '", b_description="'+ descInfraction +
                 '", c_endroit ="'+$("#endroitTxtEdit").val()+
-                '", c_description ="'+$("#adresseTxt_cEdit").val()+
+                '", c_nociv ="'+$("#noCivTxtEdit_c").val()+
+                '", c_rue ="'+$("#rueTxtEdit_c").val()+
+                '", adresse_id ="'+$("#rueTxtEdit_c").data("matricule")+
+                '", c_description ="'+$('#descLieuxEdit').val()+
                 '", e_details ="'+$("#faitTxtEdit").val()+
                 '", e_suite ="'+$("#detailCache").val()+
                 '", e_detailsSuite ="'+$("#faitTxt2Edit").val()+
                 '", note ="'+$("#noteTxtEdit").val()+
-                '", b_description="'+$("#radioCache").val()+
-                '", user_id ="'+$("#matriculeNum").val()+ '" WHERE id = '
-                + $("#idCache").html(), [], null, errorCB);
+                '" WHERE constat_id ='
+                + constat, [], queryDB, errorCB);
+
             $('#exampleModal').modal('hide');
 
         }
 
 
-
 		
         function goEdit() {
-            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(editRow, errorCB);
+            validA();
+
+            //Vérifier les champs obligatoire
+            var nbr = 0;
+            var radioNbr =0;
+            var a = $('#accordion1');
+
+            //Compter le nombre de description d'infraction sélectionné (1 ou 0)
+            a.find(".radio-input").each(function() {
+                //Si un radio box est sélectionné, augmenter la radioNbr de 1
+                if(( $(this).is(':checked') && $(this).attr('id')!== 'radio-8Edit') || ($(this).is(':checked') && $(this).attr('id')=== 'radio-8Edit' && $('#descInfractionEdit').val() !== "")){
+                    radioNbr = radioNbr + 1;
+                }
+            });
+            // Vérification qu'il y a une description d'infraction sélectionnée
+            if (radioNbr === 0 ){
+                if($('#radio-8Edit').is(':checked')){
+                    $('#bEdit').addClass("ChampsObligatoire");
+                    $('#descInfractionEdit').addClass("divObligatoire");
+                }
+                else {
+                    $('#bEdit').addClass("ChampsObligatoire");
+                    $('#descInfCheckEdit').addClass("divObligatoire");
+                }
+            }
+            else {
+                $('#bEdit').removeClass("ChampsObligatoire");
+                $('#descInfCheckEdit').removeClass("divObligatoire");
+                $('#descInfractionEdit').removeClass("divObligatoire");
+            }
+
+
+            //Vérification que les champs textes obligatoires sont remplis
+            $(".obligatoireEdit").each(function() {
+                if ($(this).val() === "null" || $(this).val() === " " || $(this).val() === "") {
+                    nbr = nbr +1;
+
+                    $(this).css("border", "3px solid red");
+                    $(this).closest('.parent').prev().addClass("ChampsObligatoire");
+
+                }
+                else{
+                    $(this).closest('.parent').prev().removeClass("ChampsObligatoire");
+                    $(this).css("border", "");
+                }
+            });
+
+            //Si un des champs obligatoires n'est pas remplis ou aucun radio n'est sélectionné
+            if (nbr > 0 || radioNbr === 0){
+                console.log(nbr);
+                console.log(radioNbr);
+                alert('Des champs obligatoires ne sont pas remplis');
+            }
+
+            //sinon lance la transaction insertDB pour insérer les données dans la table DEMO
+            else{
+
+                db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+                db.transaction(editRow, errorCB);
+            }
         }
+
+//Autocomplete d'adresse requête en édition
+
+function selectNoCivEdit(){
+    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    db.transaction(selectNoCivEditSucces, errorCB);
+}
+
+function selectNoCivEditSucces(tx, results){
+    tx.executeSql('SELECT * FROM ADRESSE WHERE nocivique='+$('#noCivTxtEdit_c').val(),[],function(tx, results){nomRueSelectEdit(tx, results)}, errorCB)
+
+}
+
+function nomRueSelectEdit(tx, results){
+    nomRueResult = [];
+    var len = results.rows.length;
+    for (var i = 0; i < len; i++) {
+        nomRueResult.push({value: results.rows.item(i).adresse_id, label: results.rows.item(i).adresse});
+    }
+    // Autocomplete Jquery
+    $("#rueTxtEdit_c").autocomplete({
+        source: nomRueResult,
+        minLength: 2,
+        select: function(event, ui) {
+            event.preventDefault();
+            $("#rueTxtEdit_c").val(ui.item.label);
+            $('#rueTxtEdit_c').data("matricule",ui.item.value);
+        }
+    });
+}
+
 
 
 

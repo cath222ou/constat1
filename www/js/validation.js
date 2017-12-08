@@ -2,41 +2,60 @@
 
 function validA() {
 
-	var a = $('#accordion-2');
-	var b = $('#accordion-5');
-	var c = $('#accordion-7');
-    var d = $('#accordion-4');
+    var a = $('#accordion-2');
+    var b = $('#accordion-5');
+    var c = $('#accordion-7');
+
     var e = $('#accordion_2');
     var f = $('#accordion_5');
     var g = $('#accordion_7');
-    var h = $('#accordion_4');
 
-	a.find("input").each(function(){
-		($(this).val() === "" ? $(this).val('null') : $(this).val())
-	});
-    b.find("input").each(function(){
+
+    a.find("input").each(function () {
         ($(this).val() === "" ? $(this).val('null') : $(this).val())
-    })
-    c.find("input").each(function(){
+    });
+    b.find("textarea").each(function () {
         ($(this).val() === "" ? $(this).val('null') : $(this).val())
-    })
-    d.find("input").each(function(){
+    });
+    c.find("textarea").each(function () {
         ($(this).val() === "" ? $(this).val('null') : $(this).val())
-    })
-    e.find("input").each(function(){
-        ($(this).val() === "" ? $(this).val('null') : $(this).val())
-    })
-    f.find("input").each(function(){
-        ($(this).val() === "" ? $(this).val('null') : $(this).val())
-    })
-    g.find("input").each(function(){
-        ($(this).val() === "" ? $(this).val('null') : $(this).val())
-    })
-    h.find("input").each(function(){
-        ($(this).val() === "" ? $(this).val('null') : $(this).val())
-    })
+    });
+
+
+    $('#endroitTxt').val() === "" ? $('#endroitTxt').val('null') : $('#endroitTxt').val();
+
+
+    $('#descLieux').val() === "" ? $('#descLieux').val('null') : $('#descLieux').val();
+
 }
 
+
+//Remplir les champs vides par null pour l'édition
+
+function validAEdit() {
+
+
+
+    var e = $('#accordion_2');
+    var f = $('#accordion_5');
+    var g = $('#accordion_7');
+
+
+    e.find("input").each(function(){
+        ($(this).val() === "" ? $(this).val('null') : $(this).val())
+    });
+    f.find("input").each(function(){
+        ($(this).val() === "" ? $(this).val('null') : $(this).val())
+    });
+    g.find("input").each(function(){
+        ($(this).val() === "" ? $(this).val('null') : $(this).val())
+    });
+
+    $('#endroitTxtEdit').val() === "" ? $('#endroitTxtEdit').val('null') : $('#endroitTxtEdit').val();
+
+
+    $('#descLieuxEdit').val() === "" ? $('#descLieuxEdit').val('null') : $('#descLieuxEdit').val();
+}
 
 //Validation numéro de téléphone
 $('.numbersOnly').keyup(function () {

@@ -97,7 +97,14 @@ input[type='text']{
 .clickable {
 	cursor: pointer;}
 
-.ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden; }
+.ui-autocomplete {
+    height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    z-index: 10000000000;
+
+}
+
 
 .modal {
     position: absolute;
@@ -151,4 +158,35 @@ label{
 
 }
 
+.ChampsObligatoire{
+    background:red !important;
+}
 
+.divObligatoire{
+    border: 3px solid red !important;
+}
+
+.progress {
+    display: block;
+    text-align: center;
+    width: 0;
+    height: 3px;
+    background: red;
+    transition: width .3s;
+}
+.progress.hide {
+    opacity: 0;
+    transition: opacity 1.3s;
+}
+
+.ui-progressbar {
+    position: relative;
+}
+
+.progress-label {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+}

@@ -27,43 +27,45 @@ function queryDBAgent(tx,result,uuidApp1){
 function querySuccessAgent(tx,result) {
     if (result.rows.length===0){
         $.ajax({
+
             url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
             method: 'get',
             data: {uuid: uuidApp1},
             success: function (changes) {
                     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
                     db.transaction(function (tx){insertDBAgent(tx, changes)}, function(tx, results){alert(JSON.stringify(tx))});
-                },
+                   },
             error: function (model, response) {
                 console.log(model);
                 alert(JSON.stringify(model));
                 //alert(response.responseText);
             }
         })
-    }
-    else {
-        $.ajax({
-            url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
-            method: 'get',
-            data: {uuid: uuidApp1},
-            success: function (changes) {
-                $('#matriculeMenu').val('');
-                resultat = $.parseJSON(changes);
-                $(resultat).each(function(key,value){
-                    //agentResult = value.matricule;
-                    //console.log(value);
-                        $('#matriculeMenu').append( '<option value="'+value.id+'">'+value.matricule+'</option>' );
 
-                })
-            },
-            error: function (model, response) {
-                console.log(model);
-                alert(JSON.stringify(model));
-                //alert(response.responseText);
-            }
-        })
+
     }
-}
+    // else {
+    //     $.ajax({
+    //         url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
+    //         method: 'get',
+    //         data: {uuid: uuidApp1},
+    //         success: function (changes) {
+    //             $('#matriculeMenu').val('');
+    //             resultat = $.parseJSON(changes);
+    //             $(resultat).each(function(key,value){
+    //                 //agentResult = value.matricule;
+    //                 //console.log(value);
+    //                     $('#matriculeMenu').append( '<option value="'+value.id+'">'+value.matricule+'</option>' );
+    //
+    //             })
+    //         },
+    //         error: function (model, response) {
+    //             console.log(model);
+    //             alert(JSON.stringify(model));
+    //             //alert(response.responseText);
+    //         }
+        }
+
 
 
 
@@ -73,6 +75,11 @@ function insertDBAgent(tx,changes){
     $(resultat).each(function(key,value){
         tx.executeSql('INSERT INTO AGENT (user_id,matricule,nom) VALUES ('+value.id +',"'+ value.matricule +'","'+ value.nom +'")');
     });
+    $('#matriculeMenu').val('');
+    $(resultat).each(function(key,value) {
+        $('#matriculeMenu').append('<option value="' + value.id + '">' + value.matricule + '</option>');
+    });
+
 
 }
 

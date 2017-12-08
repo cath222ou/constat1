@@ -4,20 +4,14 @@
 
 
 // $( function() {
-//     $( "#adresseTxt_c" ).autocomplete({
-//         source: adresseResult// function( request, response ) {
-//         //     var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
-//         //     response( $.grep( adresseResult, function( item ){
-//         //         return matcher.test( item );
-//         //     }) )
-//         //     },
 //
-//           //  minLength: 1});
+//     $("#rueTxt_c").autocomplete({
+//         source: nomRueResult,
+//         minLength: 2
+//     });
 //
-//     //});
-//
-//
-// } );
+// });
+
 //Autocomplete des adresses
 // $( function() {
 //     $('#adresseTxt_c').autocomplete({
@@ -37,6 +31,7 @@
 //         //delay: 100
 //     });
 // });
+
 
 
 
@@ -127,7 +122,7 @@
     $(document).on("change", '#checkbox-nested-text', function () {
         //Si checkbox est coché
 
-        if ($(this).prop('checked') == true) {
+        if ($(this).prop('checked') === true) {
             //affiche textarea
             $('#faitTxt2').toggleClass('hidden');
 
@@ -149,7 +144,7 @@
     //Popup pour entrer son matricule
     $(function () {
 
-        $("#dialog").dialog({
+        $("#dialog1").dialog({
             dialogClass: "no-close",
             buttons:
                 {
@@ -186,7 +181,7 @@
     $(document).ready(function () {
         $('#descInfraction').hide();
         $('input[type="radio"]').click(function () {
-            if ($(this).attr('id') == 'radio-8') {
+            if ($(this).attr('id') === 'radio-8') {
                 $('#descInfraction').show();
             }
             else {

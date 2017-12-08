@@ -109,6 +109,7 @@ var idFormu = null;
 		options["sourceType"] = 0 | 2; 
 		options["mediaType"] = 1;
 		options["destinationType"] = 2;
+		options["duration"] = 120;
 		navigator.camera.getPicture(onVideoSuccess, onFail, options);
 	}
 	

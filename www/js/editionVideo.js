@@ -19,7 +19,7 @@ function querySuccessVideoEdit(tx, results) {
             + '<td data-title="path">'+results.rows.item(i).path +'</td>'
             + '<td><button type="button" data-toggle="modal" data-target="#videoModalEdit" data-videoid="'+results.rows.item(i).id_video+'">Modifier</button>'
             + '<button type="button" onclick="removeVideo('+results.rows.item(i).id_video+','+i+')" class="btn btn-default btn1" style="background-color:#ff0000; border-color:#b30000">Supprimer</button></td>'
-            + '<td><button type="button"  onClick="syncVideoIndividuelle('+results.rows.item(i).id_video+','+i+')">Synchronisation</button></td>'+
+            + '<td><button type="button"  onClick="uploadVideoSucces('+results.rows.item(i).id_video+','+i+')">Synchronisation</button></td>'+
             '</tr>'
         );
     }

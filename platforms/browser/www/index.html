@@ -54,12 +54,14 @@
 <body>
 
 <div id="accueil">
-	<div id="dialog" title="Matricule">
+	<div id="dialog1" title="Matricule">
 		Entrer votre matricule: </p>
 		<select id="matriculeMenu" type="text" name="matricule" style="width:70%; height:50px">
 		</select>
 	</div>
 </div>
+
+<div id="dialog"></div>
 
 
 	<div id="app" class="container-fluid">
@@ -72,9 +74,13 @@
 				<button onclick="deleteBaseDAgent()">Vider la base de données Agent</button>
                 <button onclick="deleteBaseDAdr()">Vider la base de données Adr</button>
 
-				<div id="status"></div>
 				<button id="downloadButton" onclick="syncConstat()">Synchroniser</button>
 
+                <button id="nouvConstat" onclick="nouvConstat()" class="btn2">Nouveau constat</button>
+
+                <!--test progession-->
+                <div id="progressbar" class="hidden"><div class="progress-label">Loading...</div></div>
+                <div id="progressbarVideo" class="hidden"><div class="progress-labelVid">Loading...</div></div>
 
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
@@ -85,10 +91,10 @@
 				<!--Onglet formulaire-->
 
 				<div id="tabs-1" >
-					<button id="nouvConstat" onclick="nouvConstat()" class="btn2">Nouveau constat</button>
+                    <button id="enrVideo" type="button" data-toggle="modal" data-target="#videoModal" class="hidden btn1">Sélectionner vidéo</button>
 					<div id="accordion">
 						<h3>ORIGINE</h3>
-						<div id="accordion-1">
+						<div id="accordion-1" class="parent">
 							<div class="row">
 								<div class="col-sm-12 tableaufor">
 								Nom et adresse du responsable 
@@ -107,7 +113,7 @@
 							</div>
 						</div>
 						<h3>A - DÉFENDEUR</h3>
-							<div id="accordion-2">
+							<div id="accordion-2" class="parent">
 							<div class="row">
 								<div class="col-sm-12 tableaufor">
 								Nom et prénom </br>
@@ -131,8 +137,8 @@
 								</div>
 							</div>
 							</div>
-						<h3>B - INFRACTION</h3>
-							<div id="accordion-3">
+						<h3 id="b">B - INFRACTION</h3>
+							<div id="accordion-3" class="parent">
 								<div class="row">
 									<div class="col-sm-3 tableaufor">
 										Date
@@ -182,19 +188,19 @@
 								</div>
 							</div>
 						<h3>C - LIEU DE L'INFRACTION</h3>
-							<div id="accordion-4">
+							<div id="accordion-4" class="parent">
 								<div class="row">
 									<div class="col-sm-12 tableaufor" >
 										Endroit (établissement, compagnie, route)<br />
-										<input id="endroitTxt" type="text" name="endroitTxt" class="adr" style="width:90%; height:27px;" maxlength="250"><br />
+										<input id="endroitTxt" type="text" class="adr" style="width:90%; height:27px;" maxlength="250"><br />
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-12 tableaufor">
 										Adresse<br />
-										<label for="noCivTxt_c" style="margin-left: 1%">No civ</label><label for="adresseTxt_c" style="margin-left: 6%">Rue</label><br />
-										<input id="noCivTxt_c" type="text" for="tags" name="noCivTxt_c" maxlength="10" style="width:10%" >
-										<input id="rueTxt_c" type="text" for="tags" name="adresseTxt_c" maxlength="250" style="width:80%" ><br />
+										<label for="noCivTxt_c" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
+										<input id="noCivTxt_c" type="text" class="obligatoire" data-matricule="" name="nociv" maxlength="10" style="width:10%" >
+										<input id="rueTxt_c" type="text" class="obligatoire" onfocus="selectNoCiv()" name="nomrue" maxlength="250" style="width:80%" ><br />
 									</div>
 								</div>
 								<div class="row">
@@ -215,7 +221,7 @@
 								</div>
 							</div>	
 						<h3>E - FAITS ET GESTES PERTINENTS</h3>
-							<div id="accordion-5">
+							<div id="accordion-5" class="parent">
 								<div class="row">
 									<div class="col-sm-12 tableaufor">
 										Faits et gestes pertinents<br />
@@ -233,7 +239,7 @@
 						
 						
 						<h3>SIGNATURE</h3>
-							<div id="accordion-6">
+							<div id="accordion-6" class="parent">
 								<div class="row">
 									<div class="col-sm-12 tableaufor">
 										J'ai personnellement constaté les faits mentionnées en<br />
@@ -284,7 +290,7 @@
 						* inclus automatiquement lors de la synchronisation
 
 						<button id="enr" style="width:100%" onclick="enregistre()">Enregistrer le formulaire</button><br />
-						<button id="enrVideo" type="button" data-toggle="modal" data-target="#videoModal" class="hidden btn1">Sélectionner vidéo</button>
+
 					</div>
 
 				</div>
@@ -355,7 +361,7 @@
                             <li><a href="#tabs-2Edit">Édition Vidéo</a></li>
                         </ul>
                         <div id="tabs-1Edit" >
-							<div id="accordion1">
+							<div id="accordion1" class="parent">
 								<h3>ORIGINE</h3>
 								<div id="accordion_1">
 									<div class="row">
@@ -380,7 +386,7 @@
 									</div>
 								</div>
 								<h3>A - DÉFENDEUR</h3>
-								<div id="accordion_2">
+								<div id="accordion_2" class="parent">
 									<div class="row">
 										<div class="col-sm-12 tableaufor">
 											Nom et prénom <br />
@@ -404,8 +410,8 @@
 										</div>
 									</div>
 								</div>
-								<h3>B - INFRACTION</h3>
-								<div id="accordion_3">
+								<h3 id="bEdit">B - INFRACTION</h3>
+								<div id="accordion_3" class="parent">
 									<div class="row">
 										<div class="col-sm-3 tableaufor">
 											Date
@@ -431,10 +437,8 @@
 										</div>
 										<div class="col-sm-12 tableaufor">
 											Description de l'infraction <br />
-											<fieldset>
 												<div id="descInfCheckEdit">
-													<div class="col-sm-12 tableaufor">
-														Description de l'infraction <br />
+													<div class="col-sm-12">
 
 															<input type="radio" class="radio-input" name="radio-1" id="radio-1Edit" value="1" >
 															<label for="radio-1" class="radio-label">Voie publique</label><br />
@@ -456,12 +460,11 @@
 													</div>
 												</div>
 												<input id="descInfractionEdit" type="text" name="descInfractionEdit" maxlength="250" style="width:90%; height:27px;"><br />
-											</fieldset>
 										</div>
 									</div>
 								</div>
 								<h3>C - LIEU DE L'INFRACTION</h3>
-								<div id="accordion_4">
+								<div id="accordion_4" class="parent">
 									<div class="row">
 										<div class="col-sm-12 tableaufor" >
 											Endroit (établissement, compagnie, route)<br />
@@ -471,9 +474,9 @@
 									<div class="row">
 										<div class="col-sm-12 tableaufor">
 											Adresse<br />
-											<label for="noCivTxtEdit_c" style="margin-left: 1%">No civ</label><label for="adresseTxtEdit_c" style="margin-left: 6%">Rue</label><br />
-											<input id="noCivTxtEdit_c" type="text" for="tags" name="noCivTxtEdit_c" maxlength="10" style="width:10%" >
-											<input id="rueTxtEdit_c" type="text" for="tags" name="rueTxtEdit_c" maxlength="250" style="width:80%" ><br />
+											<label for="noCivTxtEdit_c" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
+											<input id="noCivTxtEdit_c" type="text" class="obligatoireEdit" data-matricule="" name="noCivTxtEdit_c" maxlength="10" style="width:10%" >
+											<input id="rueTxtEdit_c" type="text" class="obligatoireEdit" onfocus="selectNoCivEdit()" name="rueTxtEdit_c" maxlength="250" style="width:80%" ><br />
 										</div>
 									</div>
 									<div class="row">
@@ -494,7 +497,7 @@
 									</div>
 								</div>
 								<h3>E - FAITS ET GESTES PERTINENTS</h3>
-								<div id="accordion_5">
+								<div id="accordion_5" class="parent">
 									<div class="row">
 										<div class="col-sm-12 tableaufor">
 											Faits et gestes pertinents<br />
@@ -508,7 +511,7 @@
 									</div>
 								</div>
 								<h3>SIGNATURE</h3>
-								<div id="accordion_6">
+								<div id="accordion_6" class="parent">
 									<div class="row">
 										<div class="col-sm-12 tableaufor">
 											J'ai personnellement constaté les faits mentionnées en<br />
@@ -547,7 +550,7 @@
 									</div>
 								</div>
 								<h3>Note pour usage interne</h3>
-								<div id="accordion_7">
+								<div id="accordion_7" class="parent">
 									<div class="row">
 										<div class="col-sm-12">
 											<textarea id="noteTxtEdit" name="noteTxt" class="auto-text-area" maxlength="5000" style="width:100%; height:100px;" placeholder="Cette note n'apparaîtra pas sur le formulaire"></textarea><br />
@@ -655,6 +658,7 @@
 
 	</div>
 
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/tether.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -676,7 +680,7 @@
 <link rel="stylesheet" type="text/css" href="css/index.css"/>
 <link rel="stylesheet" type="text/css" href="css/adresse.css"/>
 <link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>
-<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>
+<!--<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>-->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/constat.css"/>
