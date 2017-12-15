@@ -1,23 +1,25 @@
 var x = '';
 var y = '';
-//var db = null;
-var currentRow;
 var uuidValue;
 var matAgent1 = 1; //$('#matAgent').val();
-var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
+//var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
 
 
 // Wait for Cordova to load
     document.addEventListener("deviceready", onDeviceReady, false);
 
-// Cordova is ready
-//
+//Cordova ready
 function onDeviceReady() {
-    uuidValue= device.uuid;
+	//Valeur du UUID de l'appareille
+    uuidValue= '21FE5A66-7C7D-4183-87E6-2A58739DE667';//device.uuid; A ENLEBVEERERRRRRRr
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, successCBConstat);
+    //Création de la Table de vidéo
     db.transaction(populateDBVideo, errorCB, successCBVideo);
+    //Création de la Table de Agent
     db.transaction(populateDBAgent, errorCB, function(tx,result){successCBAgent(tx,result)});
+    //Création de la Table de Adresse
     db.transaction(populateDBAdr, errorCB, function(tx,result){successCBAdr(tx,result)});
 
 }
@@ -41,15 +43,9 @@ function onDeviceReady() {
             tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
         }
 
-        function searchQueryDB(tx) {
-            tx.executeSql("SELECT * FROM DEMO where description like ('%"+ document.getElementById("nociv").value + "%')",
-                    [], querySuccess, errorCB);
 
-
-        }
         // Query the success callback
         //
-
 
 		function querySuccess(tx, results) {
 		var table01 = $('#tbl tbody');
@@ -61,7 +57,6 @@ function onDeviceReady() {
 					+ '<td data-title="constat_id" id="id">'+results.rows.item(i).constat_id +'</td>'
 					+ '<td data-title="user_id">'+results.rows.item(i).user_id +'</td>'
 					+ '<td data-title="device_id">'+results.rows.item(i).device_id +'</td>'
-					+ '<td data-title="dossier_id">'+results.rows.item(i).dossier_id +'</td>'
                 	+ '<td data-title="a_nom">'+results.rows.item(i).a_nom +'</td>'
 					+ '<td data-title="a_adresse">'+results.rows.item(i).a_adresse +'</td>'
                 	+ '<td data-title="a_telephone1">'+results.rows.item(i).a_telephone1 +'</td>'
@@ -91,10 +86,6 @@ function onDeviceReady() {
 
 
 
-        //Delete query
-        function deleteRow(tx) {
-          tx.executeSql('DELETE FROM DEMO WHERE id = ' + currentRow, [], queryDB, errorCB);
-        }
 
         // Transaction error callback
         //
@@ -224,10 +215,6 @@ function onDeviceReady() {
                 }
 		}
 
-        function goSearch() {
-            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(searchQueryDB, errorCB);
-        }
 
 		//Supprimer le contenu de la BD
 
@@ -238,11 +225,6 @@ function onDeviceReady() {
 			db.transaction(onDeviceReady, errorCB);
         }
 
-        function goDelete() {
-             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-             db.transaction(deleteRow, errorCB);
-             document.getElementById('qrpopup').style.display='none';
-        }
 
 	/////////////////////////////
 	//////geolocalisation////////

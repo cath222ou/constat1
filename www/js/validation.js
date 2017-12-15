@@ -65,13 +65,3 @@ $('.numbersOnly').keyup(function () {
     }
 });
 
-
-// ///Valider que les champs ne sont pas vide
-// function validateForm() {
-// 	console.log($('.data-verif').html());
-//
-//     if ($('.data-verif').val() === "") {
-//         alert("Name must be filled out");
-//         return false;
-//     }
-// }

@@ -1,4 +1,3 @@
-var currentRow;
 var constat;
 
 // gestion des tabs
@@ -66,8 +65,7 @@ $(function () {
         var row = $(event.relatedTarget).closest('tr');
         var modal = $(this);
 
-        modal.find('.modal-title').text('Édition du numéro de dossier' + ' ' + row.find('td[data-title="user_id"]').html() + "-" + (row.find('td[data-title="b_date"]').html()).substr((row.find('td[data-title="b_date"]').html()).length - 2) + "-" + row.find('td[data-title="id"]').html());
-        modal.find('#no_dossierEdit').text(row.find('td[data-title="user_id"]').html() + "-" + (row.find('td[data-title="b_date"]').html()).substr((row.find('td[data-title="b_date"]').html()).length - 2) + "-" + row.find('td[data-title="id"]').html());
+        modal.find('.modal-title').text('Édition du constat ' + row.find('td[data-title="constat_id"]').html());
         modal.find('#nomTxtEdit').val(row.find('td[data-title="a_nom"]').html());
         modal.find('#adresseCorEdit').val(row.find('td[data-title="a_adresse"]').html());
         modal.find('#telResEdit').val(row.find('td[data-title="a_telephone1"]').html());

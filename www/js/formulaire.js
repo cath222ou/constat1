@@ -3,37 +3,6 @@
 // });
 
 
-// $( function() {
-//
-//     $("#rueTxt_c").autocomplete({
-//         source: nomRueResult,
-//         minLength: 2
-//     });
-//
-// });
-
-//Autocomplete des adresses
-// $( function() {
-//     $('#adresseTxt_c').autocomplete({
-//
-//         source: function(resquest,response){
-//             //console.log(adresseResult);
-//                 response($.map(adresseResult[0], function (value, key) {
-//                    // console.log(value);
-//                     return {
-//                         label: value.ADRESSE,
-//                         value: value.MATRICULE
-//                     };
-//                 }))},
-//         minLength: 2
-//
-//
-//         //delay: 100
-//     });
-// });
-
-
-
 
     // gestion des tabs
     $(function () {
@@ -100,8 +69,6 @@
 
 
     //Afficher nombre de caractères restants
-
-    var restants;
 
    function reste(texte) {
         var restants = 2 - texte.length;

@@ -74,13 +74,9 @@
 				<button onclick="deleteBaseDAgent()">Vider la base de données Agent</button>
                 <button onclick="deleteBaseDAdr()">Vider la base de données Adr</button>
 
-				<button id="downloadButton" onclick="syncConstat()">Synchroniser</button>
+				<button id="downloadButton" onclick="syncConstat()" data-toggle="modal" data-target="#synchronisation">Synchroniser</button>
 
                 <button id="nouvConstat" onclick="nouvConstat()" class="btn2">Nouveau constat</button>
-
-                <!--test progession-->
-                <div id="progressbar" class="hidden"><div class="progress-label">Loading...</div></div>
-                <div id="progressbarVideo" class="hidden"><div class="progress-labelVid">Loading...</div></div>
 
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
@@ -648,6 +644,28 @@
 								<button onclick="getVideoAjout()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!--Modal de synchronisation-->
+		<div class="modal fade" id="synchronisation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+			<div class="modal-dialog" role="document">
+				<div class="modal-content modal-content1">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="exampleModalLabel">Synchronisation</h4>
+					</div>
+					<div class="modal-header">
+						<div>
+							<div id="progressbar" class="progress"><div class="progress-label">Loading...</div></div>
+							<div id="progressbarVideo" class="progress"><div id="progressLabelVideo"class="progress-label">Loading...</div></div></div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
 					</div>
 				</div>
 			</div>

@@ -1,6 +1,4 @@
 
-var agentResult;
-
 //table agent
 function populateDBAgent(tx) {
     tx.executeSql('CREATE TABLE IF NOT EXISTS AGENT (user_id INTEGER PRIMARY KEY, matricule, nom)');
@@ -25,15 +23,15 @@ function queryDBAgent(tx,result,uuidApp1){
 
 //connexion on serveur
 function querySuccessAgent(tx,result) {
-    if (result.rows.length===0){
+    //if (result.rows.length===0){
         $.ajax({
 
             url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
             method: 'get',
-            data: {uuid: uuidApp1},
+            data: {uuid: uuidValue},
             success: function (changes) {
                     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                    db.transaction(function (tx){insertDBAgent(tx, changes)}, function(tx, results){alert(JSON.stringify(tx))});
+                    db.transaction(function (tx){insertDBAgent(tx, changes)}, errorCB);
                    },
             error: function (model, response) {
                 console.log(model);
@@ -43,7 +41,7 @@ function querySuccessAgent(tx,result) {
         })
 
 
-    }
+    //}
     // else {
     //     $.ajax({
     //         url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
@@ -73,7 +71,7 @@ function querySuccessAgent(tx,result) {
 function insertDBAgent(tx,changes){
     var resultat = $.parseJSON(changes);
     $(resultat).each(function(key,value){
-        tx.executeSql('INSERT INTO AGENT (user_id,matricule,nom) VALUES ('+value.id +',"'+ value.matricule +'","'+ value.nom +'")');
+        tx.executeSql('INSERT OR REPLACE INTO AGENT (user_id,matricule,nom) VALUES ('+value.id +',"'+ value.matricule +'","'+ value.nom +'")');
     });
     $('#matriculeMenu').val('');
     $(resultat).each(function(key,value) {
@@ -95,21 +93,3 @@ function deleteDBAgent(tx){
 }
 
 
-
-function test(){
-    $.ajax({
-        url: 'http://constats.ville.valdor.qc.ca/api/v1/test',
-        method: 'get',
-        data: {uuid: uuidApp1},
-        success: function (changes) {
-            alert(JSON.stringify(changes));
-            resultat = $.parseJSON(changes);
-
-        },
-        error: function (model, response) {
-            console.log(model);
-            alert(JSON.stringify(model));
-            //alert(response.responseText);
-        }
-    })
-}

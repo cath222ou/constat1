@@ -109,7 +109,6 @@ input[type='text']{
 .modal {
     position: absolute;
     top: 10%;
-    right: 10%;
     bottom: 0;
     left: 0;
     z-index: 10040;
@@ -117,15 +116,9 @@ input[type='text']{
     overflow-y: auto;
 }
 
-.modal1 {
-    position: absolute;
-    top: 10%;
-    right:50%;
-    bottom: 0;
-    left: 0;
-    z-index: 10040;
-    overflow: auto;
-    overflow-y: auto;
+.modal-content{
+    width: 99%;
+    padding-right:1%;
 }
 
 .btn1{
@@ -170,8 +163,8 @@ label{
     display: block;
     text-align: center;
     width: 0;
-    height: 3px;
-    background: red;
+    height: 30px;
+    background: dodgerblue;
     transition: width .3s;
 }
 .progress.hide {
@@ -185,8 +178,7 @@ label{
 
 .progress-label {
     position: absolute;
-    left: 50%;
+    left: 45%;
     top: 4px;
     font-weight: bold;
-    text-shadow: 1px 1px 0 #fff;
 }

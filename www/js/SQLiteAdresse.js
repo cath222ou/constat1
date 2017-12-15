@@ -24,9 +24,38 @@ function queryDBAdr(tx,result,uuidApp1){
 function querySuccessAdr(tx,result) {
     //if (result.rows.length===0){
         $.ajax({
+
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+
+                // Upload progress
+                xhr.upload.addEventListener("progress", function(evt){
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total)*100;
+                        //Do something with upload progress
+                        $(".progress-bar").css("width", percentComplete + "%").text(percentComplete + " %");
+                        //alert(percentComplete);
+
+                    }
+                }, false);
+
+                // Download progress
+                xhr.addEventListener("progress", function(evt){
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total)*100;
+                        // Do something with download progress
+                        $(".progress-bar").css("width", percentComplete + "%").text(percentComplete + " %");
+                        //alert(percentComplete);
+                    }
+                }, false);
+
+                return xhr;
+            },
+
+
             url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/adresses',
             method: 'get',
-            data: {uuid: uuidApp1},
+            data: {uuid: uuidValue},
             success: function (changes) {
                 db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
                 db.transaction(function (tx){insertDBAdr(tx,changes)}, errorCB);
