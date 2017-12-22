@@ -64,6 +64,7 @@ $(function () {
 
         var row = $(event.relatedTarget).closest('tr');
         var modal = $(this);
+        $('#idCache').val(row.find('td[data-title="constat_id"]').html());
 
         modal.find('.modal-title').text('Édition du constat ' + row.find('td[data-title="constat_id"]').html());
         modal.find('#nomTxtEdit').val(row.find('td[data-title="a_nom"]').html());

@@ -68,7 +68,7 @@ function onVideoSuccessEdit(fileuriEdit) {
         sourceFilePath,
         filePath,
         function(entry){
-            alert("file copy success");
+            //alert("file copy success");
             //alert(JSON.stringify(entry));
         },
         function(error){
@@ -96,13 +96,10 @@ function modifVideo(filePath){
 function videoModification(tx, filePath){
 
     var vid = $("#idvideo").val();
-    alert(vid);
     nomVideo = $('#nomVideoEdit').val();
-    alert(nomVideo);
-    alert(filePath);
     tx.executeSql('UPDATE VIDEO SET nom ="'+nomVideo+'", path ="'+filePath+'" WHERE id_video='+vid, [], errorCB);
-    tx.executeSql('SELECT * FROM VIDEO',[], querySuccessVideoEdit, errorCB);
-    tx.executeSql('SELECT * FROM VIDEO', [],querySuccessVideo, errorCB);
+    videoConstat();
+  //  tx.executeSql('SELECT * FROM VIDEO', [],querySuccessVideo, errorCB);
 }
 
 
@@ -150,9 +147,11 @@ function insertVideo(filePath){
 function successCBVideoAdd(tx, filePath){
     var matricule = $('#matAgent').val();
     var nomV = $('#nomVideoAjout').val();
-    var idConstat = $("#idCache").text();
+    var idConstat = $("#idCache").val();
     alert(matricule + nomV + idConstat);
     //console.log(fichier);
-    tx.executeSql('INSERT INTO VIDEO (matricule,constat_id,nom,path) VALUES ("'+ matricule +'","'+ idConstat +'","'+nomV+'","'+ filePath +'")');
+    tx.executeSql('INSERT INTO VIDEO (matricule,constat_id,nom,path, videoSync) VALUES ("'+ matricule +'","'+ idConstat +'","'+nomV+'","'+ filePath +'","'+0+'")');
+    videoConstat();
     $('#nomVideo').val('');
+
 }

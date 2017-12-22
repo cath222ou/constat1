@@ -78,6 +78,9 @@
 
                 <button id="nouvConstat" onclick="nouvConstat()" class="btn2">Nouveau constat</button>
 
+				<div id="test"></div>
+
+
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
 					<li><a href="#tabs-2">Détails</a></li>
@@ -146,7 +149,7 @@
 									</div>
 									<div class="col-sm-6 tableaufor">
 										Titre du réglement
-										<h6>Nuissance de la neige</h6>
+										<h6>Nuisance de la neige</h6>
 									</div>
 								</div>
 								<div class="row">
@@ -419,7 +422,7 @@
 										</div>
 										<div class="col-sm-6 tableaufor">
 											Titre du réglement
-											<h6>Nuissance de la neige</h6>
+											<h6>Nuisance de la neige</h6>
 										</div>
 									</div>
 									<div class="row">
@@ -658,10 +661,14 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title" id="exampleModalLabel">Synchronisation</h4>
 					</div>
-					<div class="modal-header">
-						<div>
-							<div id="progressbar" class="progress"><div class="progress-label">Loading...</div></div>
-							<div id="progressbarVideo" class="progress"><div id="progressLabelVideo"class="progress-label">Loading...</div></div></div>
+					<div class="modal-body progressBar">
+						<H6 id="h6Constat">Constat</H6>
+						<div id="progressbar" class="progress">
+							<div id="progerssLabelConstat" class="progress-label"></div>
+						</div>
+						<H6 id="h6Video">Vidéo</H6>
+						<div id="progressbarVideo" class="progress">
+							<div id="progressLabelVideo" class="progress-label"></div>
 						</div>
 					</div>
 					<div class="modal-footer">

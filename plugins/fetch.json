@@ -190,5 +190,13 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "phonegap-plugin-contentsync": {
+    "source": {
+      "type": "registry",
+      "id": "phonegap-plugin-contentsync"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

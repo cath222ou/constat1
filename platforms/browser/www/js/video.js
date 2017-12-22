@@ -102,11 +102,37 @@ function goInsert2(filePath) {
 		options["sourceType"] = 0 | 2; 
 		options["mediaType"] = 1;
 		options["destinationType"] = 2;
-		options["duration"] = 120;
+		options["duration"] = 100000;
 		navigator.camera.getPicture(onVideoSuccess, onFail, options);
 	}
-	
-	
+
+
+
+
+
+//  function onVideoSuccess(fileuri, mediaFiles) {
+//
+// 	fichier = fileuri;
+// 	var nomVid = $('#nomVideo').val();
+// 	var sourceFilePath = fichier;
+// 	var filePath = cordova.file.documentsDirectory +nomVid+".mov";
+//      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+//          alert('file system open: ' + fs.name);
+//          fs.root.getFile(filePath, { create: true, exclusive: false }, function (fileEntry) {
+//              alert('fileEntry is file? ' + fileEntry.isFile.toString());
+//              var oReq = new XMLHttpRequest();
+//              // Make sure you add the domain name to the Content-Security-Policy <meta> element.
+//              oReq.open("GET", sourceFilePath, true);
+//              oReq.send(null);
+//          }, function (err) { alert('error getting file! ' + JSON.parse(err))});
+//      }, function (err) { alert('error getting persistent fs! ' + JSON.parse(err))});
+//
+//
+//    goInsert2(filePath);
+// }
+
+
+
 	function onVideoSuccess(fileuri, mediaFiles) {
         //var taille = mediaFiles[0].size;
         //console.log('alo',taille);

@@ -177,7 +177,7 @@ label{
 }
 
 .progress-label {
-    position: absolute;
+   /* position: absolute;*/
     left: 45%;
     top: 4px;
     font-weight: bold;
