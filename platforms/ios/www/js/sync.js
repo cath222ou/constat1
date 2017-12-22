@@ -54,24 +54,23 @@ function nombreVideo(results, i) {
         tx.executeSql('SELECT constat_id, COUNT(*) AS nbrVideo FROM VIDEO WHERE constat_id = ' + constatID, [],
             function (tx, resultat) {
             nombre = resultat.rows.item(0).nbrVideo;
-                tx.executeSql('UPDATE DEMO SET nbrVideo='+ nombre + 'WHERE constat_id =' + constatID, [],
-                    function (tx, resultat2) {
-                        console.log(resultat2);
-                    }, function(){console.log(nombre, constatID)})
-            }, errorCB), errorCB
-    });
+                updateNbrVideo(nombre, constatID);
+            }, errorCB)})
+};
+
+function updateNbrVideo(nombre,constatID){
+    db.transaction(function (tx, resultat2) {
+        tx.executeSql('UPDATE DEMO SET nbrVideo="'+ nombre + '"WHERE constat_id =' + constatID),errorCB})
 }
 
 
 function postConstat(results, i, len) {
     var iteration = 0;
-   // var uploadValue = 0;
-    var nbrVideo = 0;
 
             if (navigator.onLine === true) {
                 $.ajax({
-                    url: 'http://10.208.1.137/api/v1/sync/constat',
-                    //  url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/constat',
+                   // url: 'http://10.208.1.137/api/v1/sync/constat',
+                    url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/constat',
                     method: 'post',
                     data: {uuid: uuidValue, constat: results.rows.item(i), nbrVideo: results.rows.item(i).nbrVideo},
                     constatID: results.rows.item(i).constat_id,
@@ -79,6 +78,7 @@ function postConstat(results, i, len) {
                         var idConstat = this.constatID;
                         iteration = iteration + 1;
                         if (constatID.status === 'success') {
+                            console.log(iteration);
                             //  $('#test').text('Constat: '+ iteration +'/' + len);
                             $('#progressbar').css({width: (iteration / len) * 100 + '%'});
                             $('#progerssLabelConstat').text('Constat: ' + iteration + '/' + len);
@@ -164,8 +164,8 @@ function postVideo(tx,results,i,len){
     params.constat_id = results.rows.item(i).constat_id;
     params.video_id = results.rows.item(i).id_video;
     options.params = params;
-    ft.upload(path, "http://10.208.1.137/api/v1/sync/video",
-    //ft.upload(path, "http://constats.ville.valdor.qc.ca/api/v1/sync/video",
+   // ft.upload(path, "http://10.208.1.137/api/v1/sync/video",
+    ft.upload(path, "http://constats.ville.valdor.qc.ca/api/v1/sync/video",
         function (results) {
         if ($.parseJSON(results.response).status === 'success') {
            // alert('Synchronisation réussie de la vidéo = ' + params.video_id);

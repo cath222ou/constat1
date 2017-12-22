@@ -34,7 +34,7 @@ function onDeviceReady() {
 		}
 
 		function populateDBConstat(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER)');
 		}
 
         // Query the database
