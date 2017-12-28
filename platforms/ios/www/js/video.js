@@ -1,17 +1,23 @@
+//Fichier pour la gestion de la table des vidéos
+
 var fichier = null;
 var idFormu = null;
 
-//Table vidéo
+//Création de la table vidéo
 function populateDBVideo(tx) {
 	tx.executeSql('CREATE TABLE IF NOT EXISTS VIDEO (matricule, constat_id INTEGER, id_video INTEGER PRIMARY KEY AUTOINCREMENT, nom, path, videoSync INTEGER, FOREIGN KEY(constat_id) REFERENCES DEMO(constat_id))');
 }
 
-// Transaction success callback
+// Lancer la requête pour sélectionner tout dans la table
 function successCBVideo() {
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(queryDBVideo, errorCB);
 }
 
+// Sélectionner tout dans la table vidéo
+function queryDBVideo(tx) {
+    tx.executeSql('SELECT * FROM VIDEO', [], querySuccessVideo, errorCB);
+}
 
 		
 //dessiner BD  /////TEMPORAIRE POUR LA PROGRAMMATION
@@ -44,10 +50,38 @@ function deleteBaseBD2() {
 		function deleteDB2(tx){
 			tx.executeSql('DROP TABLE IF EXISTS VIDEO');
 		}
-		
-// Sélectionner toute les vidéos
-function queryDBVideo(tx) {
-	tx.executeSql('SELECT * FROM VIDEO', [], querySuccessVideo, errorCB);
+
+
+//Lancer la requête d'insertion dans la table vidéo
+function goInsert2(filePath) {
+	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+	db.transaction(function(tx){
+	    //Lancer la requête pour avoir le dernier numéro de constat_id
+		idInfo(tx);
+	}, errorCB,function(){goInsert3(filePath)});
+}
+
+//trouver valeur du dernier constat_id du formulaire
+function idInfo(tx) {
+    tx.executeSql('SELECT constat_id FROM DEMO WHERE constat_id = (SELECT MAX(constat_id) FROM DEMO)', [], querySuccess3, errorCB);
+}
+
+// Donner à la variable idFormu la valeur du dernier constat
+function querySuccess3(tx, results) {
+    var len = results.rows.length;
+    for (var i=0; i<len; i++){
+        idFormu = results.rows.item(i).constat_id;
+    }
+}
+
+//Lancer la requête d'insertion
+function goInsert3(filePath) {
+    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    db.transaction(function(tx){
+        //Lancer la requête d'insertion
+        insertDB2(tx, filePath);
+        }
+			, errorCB, successCBVideo);
 }
 
 //Insérer les données dans la table Vidéo
@@ -61,42 +95,9 @@ function insertDB2(tx, filePath) {
     $('#nomVideo').val('');
 }
 
-
-
-//trouver valeur du dernier id du formulaire
-function idInfo(tx) {
-	tx.executeSql('SELECT constat_id FROM DEMO WHERE constat_id = (SELECT MAX(constat_id) FROM DEMO)', [], querySuccess3, errorCB);
-}
-
-// Query the success callback
-function querySuccess3(tx, results) {
-	var len = results.rows.length;
-	for (var i=0; i<len; i++){
-		idFormu = results.rows.item(i).constat_id;
-	}
-}
-
-//insertion dans la BD
-function goInsert2(filePath) {
-	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-	db.transaction(function(tx){
-		idInfo(tx);
-	}, errorCB,function(){goInsert3(filePath)});
-}
-		
-		
-		function goInsert3(filePath) {
-
-			db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-			db.transaction(function(tx){
-				insertDB2(tx, filePath);
-				
-			}
-			, errorCB, successCBVideo);
-		}
 		
 
-//Sélection d'une vidéo	
+//Ouvrir la librairie des vidéos
 	function getVideo() {
 		var options = { quality: 80 };
 		options["sourceType"] = 0 | 2; 
@@ -132,10 +133,9 @@ function goInsert2(filePath) {
 // }
 
 
-
+//Envoyer la vidéo dans un nouveau répertoire
 	function onVideoSuccess(fileuri, mediaFiles) {
-        //var taille = mediaFiles[0].size;
-        //console.log('alo',taille);
+
 		fichier = fileuri;
 		var nomVid = $('#nomVideo').val();
 		var sourceFilePath = fichier;
@@ -145,19 +145,19 @@ function goInsert2(filePath) {
                 sourceFilePath,
                 filePath,
                 function(entry){
-                    alert("file copy success");
+                  //  alert("file copy success");
 					//alert(JSON.stringify(entry));
                 },
                 function(error){
                     alert(JSON.stringify(error));
                 }
             );
-
+//Lancer la requête d'insertion dans la table vidéo
         goInsert2(filePath);
 	}
 
 
-
+//Callback d'erreur de l'ouverture de la librairie des vidéos
 	function onFail(err) {
 		console.log("onFail");
 	}

@@ -1,3 +1,6 @@
+//Fichier de la table demo
+
+//Variable
 var x = '';
 var y = '';
 var uuidValue;
@@ -24,29 +27,23 @@ function onDeviceReady() {
 
 }
 
-
-
-    // Populate the database
-        //
-
+		// Suppression de la BD (POUR PROGRAMMATION)
 		function deleteDB(tx){
 			tx.executeSql('DROP TABLE IF EXISTS DEMO');
 		}
 
+		//Création de la table DEMO des constats
 		function populateDBConstat(tx) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER)');
 		}
 
-        // Query the database
-        //
+		//Sélectionner tout dans la table demo
         function queryDB(tx) {
             tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
         }
 
 
-        // Query the success callback
-        //
-
+		//Création de la table demo pour visualisation dans l'application
 		function querySuccess(tx, results) {
 		var table01 = $('#tbl tbody');
 		table01.html('');
@@ -83,32 +80,20 @@ function onDeviceReady() {
 			}
 		}
 
-
-
-
-
-        // Transaction error callback
-        //
+		//Callback d'erreur
         function errorCB(err) {
             console.log('erreur',err);
         }
 
-        // Transaction success callback
-        //
+        // Lancer la requête de sélection de tous dans la table demo
         function successCBConstat(tx,result,matAgent1,uuidApp1) {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(queryDB, errorCB);
         }
 
-
-
-
-		//Insert query
-        //
-
+		//Requête d'insertion dans la table demo lorsque l'on clique sur enregistrer
 		function insertDB(tx, position) {
         	var matricule = document.getElementById("matriculeMenu").value;
-
 			var nom = document.getElementById("nomTxt").value;
 			var adresse_a = document.getElementById("adresseCor").value;
 			var tel1 = document.getElementById("telRes").value;
@@ -116,10 +101,11 @@ function onDeviceReady() {
 			var newdate = moment().format('DD/MM/YYYY');
 			var newheure = moment().format('h:mm a');
 			var descInfraction = null;
-
+			//Donner à la variable descInfraction la valeur de 1 à 7 selon le radiobox sélectionné
 				if ($('#radio-1').is(':checked') || $('#radio-2').is(':checked') || $('#radio-3').is(':checked')|| $('#radio-4').is(':checked')|| $('#radio-5').is(':checked')|| $('#radio-6').is(':checked')|| $('#radio-7').is(':checked')){
 						descInfraction = $("input:checked").val();
 					}
+				//Si radiobox 8 est coché, prendre la valeur du champ texte
 				else if ($('#radio-8').is(':checked')){
                     descInfraction = document.getElementById("descInfraction").value;
                 }
@@ -133,16 +119,16 @@ function onDeviceReady() {
 			var note = document.getElementById("noteTxt").value;
 
 			var suite = null;
-
+                //Si la case est coché, mettre la valeur true à la variable suite
 				if($('#checkbox-nested-text').is(':checked')){
 					var suite = true
 				}
+				//Sinon mettre la valeur false
 				else {
 					var suite = false
 				}
-
+            //Insérer les données dans la table demo
             tx.executeSql('INSERT INTO DEMO (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
-
 		}
 
 
@@ -231,8 +217,7 @@ function onDeviceReady() {
 	/////////////////////////////
 
 
-    //onError Callback receives a PositionError object
-
+    //Callback d'erreur du géopositionnement
     function onError(error) {
         alert('code: '    + error.code    + '\n' +
               'message: ' + error.message + '\n');
@@ -240,10 +225,10 @@ function onDeviceReady() {
 
 
 
-
-	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement
+	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement du constat
 	function enregistre(){
 		navigator.geolocation.getCurrentPosition(goInsert, onError);
+		//rendre visible le bouton de sélection de vidéo
 		$('#enrVideo').removeClass('hidden');
 	};
 

@@ -1,45 +1,66 @@
+//Fichier pour la partie d'édition du formulaire (lorsque l'on clique sur Modifier)
+
 var constat;
 
-// gestion des tabs
+// gestion des tabs dans le modal d'édition des constats
 $(function () {
     $("#tabsEdit").tabs(
         {active: 0}
     )
 });
 
+//Gestion des accordions
+$(function () {
+    $("#accordion1").accordion(
+        {
+            active: 4,
+            heightStyle: "content",
+            autoHeight: false
+        }
+    );
+});
+
+
     //Afficher champs texte si "Autre" est sélectionné
     $(document).ready(function () {
+        //cacher la division de champs texte additionnel
         $('#descInfractionEdit').hide();
         $('input[type="radio"]').click(function () {
+            //Si radio-8Edit est coché montrer la division de champs texte
             if ($(this).attr('id') === 'radio-8Edit') {
                 $('#descInfractionEdit').show();
             }
+            //Sinon la cacher
             else {
                 $('#descInfractionEdit').hide();
             }
         });
     });
 		
-	// Édition de la BD
-	 	$('#exampleModal').modal({show:false})//.
+	// Modal d'édition de la BD
+	 	$('#exampleModal').modal({
+            show:false
+	 	});
 
 
     //Afficher nombre de caractères restants
-    var restants1
-
     function resteEdit(texte1) {
 
-        var restants1 = 2 - texte1.length;
+        var restants1 = 950 - texte1.length;
         document.getElementById('caracteresEdit').innerHTML = restants1;
+        //Si le nombre de caractère restant est égale à 0
         if (restants1 <= 0) {
             //Coche le checkbox
             $('#checkbox-nested-text1').attr('checked', true);
-            //ajoute un champ texte supplémentaire
+            //Rendre visible le champ texte supplémentaire
             $('#faitTxt2Edit').removeClass('hidden');
 
         }
+
         else{
+            //Sinon ne pas cocher la case
             $('#checkbox-nested-text1').attr('checked', false);
+            //Cacher le champs texte additionnelle
             $('#faitTxt2Edit').addClass('hidden');
         }
     }
@@ -57,7 +78,7 @@ $(function () {
             //n'affiche pas textarea
             $('#faitTxt2Edit').addClass('hidden');
         }
-    })
+    });
 
     //Remplir les champs du modal selon les informations de la ligne sélectionnée
     $(document).on('show.bs.modal', "#exampleModal", function (event) {
@@ -65,7 +86,7 @@ $(function () {
         var row = $(event.relatedTarget).closest('tr');
         var modal = $(this);
         $('#idCache').val(row.find('td[data-title="constat_id"]').html());
-
+        //Donner aux différents champs la valeur des données de la ligne de la table sélectionnée
         modal.find('.modal-title').text('Édition du constat ' + row.find('td[data-title="constat_id"]').html());
         modal.find('#nomTxtEdit').val(row.find('td[data-title="a_nom"]').html());
         modal.find('#adresseCorEdit').val(row.find('td[data-title="a_adresse"]').html());
@@ -79,6 +100,7 @@ $(function () {
         modal.find('#descLieuxEdit').val(row.find('td[data-title="c_description"]').html());
         modal.find('#faitTxtEdit').val(row.find('td[data-title="e_details"]').html());
         modal.find('#faitTxt2Edit').val(row.find('td[data-title="e_detailsSuite"]').html());
+
             //cocher la case si texte valeur dans le deuxième champ texte
             var champ = $('#faitTxt2Edit').val();
             if (champ.length > 0 && champ !== 'null'){
@@ -95,8 +117,11 @@ $(function () {
         modal.find('#idCache').text(row.find('td[data-title="id"]').html());
         modal.find('#detailCache').text(row.find('td[data-title="e_suite"]').html());
         modal.find('#descInfCheckEdit').val(
+            // Vérifier quel radiobox est coché
             function verifCheck() {
+                //Cacher la division
                 $('#descInfractionEdit').hide();
+                //Si la valeur de la ligne b_description est de 1 à 7 est coché, cocher la case et vider le champs texte
                 if (row.find('td[data-title="b_description"]').html() === "1") {
                     $('#radio-1Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
@@ -125,6 +150,7 @@ $(function () {
                     $('#radio-7Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(" ");
                 }
+                //Sinon, cocher le radiobox 8, montrer le champ texte et afficher la valeur dans le champs texte
                 else {
                     $('#radio-8Edit').prop('checked', true);
                     modal.find('#descInfractionEdit').val(row.find('td[data-title="b_description"]').html());
@@ -133,35 +159,39 @@ $(function () {
 
             }
         );
-
+        // donner à la variable constat la valeur du constat_id de la ligne sélectionnée
         constat = row.find('td[data-title="constat_id"]').html();
+        //Lancer la fonction
         videoConstat();
     });
 
 
 
-
+        //Lorsque l'on clique sur enregistrer, faire la modification sur la table
         function editRow(tx){
-
+            //Si le radiobox 1 à 7 est coché, donner à la variable descInfraction la valeur 1 à 7 selon celui sélectionné
             if ($('#radio-1Edit').is(':checked') || $('#radio-2Edit').is(':checked') || $('#radio-3Edit').is(':checked')|| $('#radio-4Edit').is(':checked')|| $('#radio-5Edit').is(':checked')|| $('#radio-6Edit').is(':checked')|| $('#radio-7Edit').is(':checked')){
                 descInfraction = $("input:checked").val();
             }
+            //Sinon, donner à la variable la valeur dans le champs texte
             else {
                 descInfraction = $("#descInfractionEdit").val();
             }
 
+            // Si la case est coché, donner la valeur true
+            if ($('#checkbox-nested-text1').is(':checked')){
+                $('#detailCache').val(true);
+            }
+            //Sinon, donner la valeur false et au champ texte la valeur null
+            else {
+                $('#detailCache').val(false);
+                $('#faitTxt2Edit').val("null");
+            }
 
-                if ($('#checkbox-nested-text1').is(':checked')){
-                    $('#detailCache').val(true);
-                }
-                else {
-                    $('#detailCache').val(false);
-                    $('#faitTxt2Edit').val("null");
-                }
+            // lancer la fonction suivant pour donner aux champs vide la valeur null
+            validAEdit();
 
-                validAEdit();
-
-
+            //Modifier les valeurs des champs de la table DEMO où le constat est égale à celui de la ligne sélecionnée
             tx.executeSql('UPDATE DEMO SET a_nom="'+$("#nomTxtEdit").val()+
                 '", a_adresse ="'+$("#adresseCorEdit").val()+
                 '", a_telephone1 ="'+$("#telResEdit").val()+
@@ -179,13 +209,15 @@ $(function () {
                 '" WHERE constat_id ='
                 + constat, [], queryDB, errorCB);
 
+            //Cacher le modal
             $('#exampleModal').modal('hide');
 
         }
 
 
-		
+		//Fonction de validation des champs qui doivent être obligatoirement remplis
         function goEdit() {
+            //Lancer la fonction qui remplis les champs vides non obligatoires par la valeur null
             validA();
 
             //Vérifier les champs obligatoire
@@ -202,15 +234,19 @@ $(function () {
             });
             // Vérification qu'il y a une description d'infraction sélectionnée
             if (radioNbr === 0 ){
+                //Si le radiobox 8 est sélectionné ajouter à la division du champ texte et à l'accordion
+
                 if($('#radio-8Edit').is(':checked')){
                     $('#bEdit').addClass("ChampsObligatoire");
                     $('#descInfractionEdit').addClass("divObligatoire");
                 }
+                //Sinon, ajouter la classe uniquement la classe à la division des radiobox et de l'accordion
                 else {
                     $('#bEdit').addClass("ChampsObligatoire");
                     $('#descInfCheckEdit').addClass("divObligatoire");
                 }
             }
+            //Si une case est coché, enlever la classe
             else {
                 $('#bEdit').removeClass("ChampsObligatoire");
                 $('#descInfCheckEdit').removeClass("divObligatoire");
@@ -218,15 +254,17 @@ $(function () {
             }
 
 
-            //Vérification que les champs textes obligatoires sont remplis
+            //Vérification que les champs ayant une classe obligaroieEdit sont remplis
             $(".obligatoireEdit").each(function() {
+                //Si le champ est null ou vide, augmenter la variable nbr de 1
                 if ($(this).val() === "null" || $(this).val() === " " || $(this).val() === "") {
                     nbr = nbr +1;
-
+                    // mettre la bordure en rouger et ajouter la classe
                     $(this).css("border", "3px solid red");
                     $(this).closest('.parent').prev().addClass("ChampsObligatoire");
 
                 }
+                //Sinon, enlever la bordure rouge et la classe
                 else{
                     $(this).closest('.parent').prev().removeClass("ChampsObligatoire");
                     $(this).css("border", "");
@@ -235,38 +273,36 @@ $(function () {
 
             //Si un des champs obligatoires n'est pas remplis ou aucun radio n'est sélectionné
             if (nbr > 0 || radioNbr === 0){
-                console.log(nbr);
-                console.log(radioNbr);
                 alert('Des champs obligatoires ne sont pas remplis');
             }
 
             //sinon lance la transaction insertDB pour insérer les données dans la table DEMO
             else{
-
                 db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
                 db.transaction(editRow, errorCB);
             }
         }
 
 //Autocomplete d'adresse requête en édition
-
 function selectNoCivEdit(){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(selectNoCivEditSucces, errorCB);
 }
 
+//Sélectionner les informations de la table où le numéro civique correspond à celui inscrit dans le champs texte
 function selectNoCivEditSucces(tx, results){
     tx.executeSql('SELECT * FROM ADRESSE WHERE nocivique='+$('#noCivTxtEdit_c').val(),[],function(tx, results){nomRueSelectEdit(tx, results)}, errorCB)
 
 }
 
+//remplir la variable nomRueResult par la matricule et le nom de la rue
 function nomRueSelectEdit(tx, results){
     nomRueResult = [];
     var len = results.rows.length;
     for (var i = 0; i < len; i++) {
         nomRueResult.push({value: results.rows.item(i).adresse_id, label: results.rows.item(i).adresse});
     }
-    // Autocomplete Jquery
+    // Autocomplete Jquery du nom de la rue
     $("#rueTxtEdit_c").autocomplete({
         source: nomRueResult,
         minLength: 2,
@@ -277,8 +313,4 @@ function nomRueSelectEdit(tx, results){
         }
     });
 }
-
-
-
-
 
