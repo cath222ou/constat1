@@ -75,13 +75,12 @@
 					<img src="css/images/logo-vvd-couleur-nom-dessous.png" style="width:10%; height:10%;">
 					<H3>Constat d'infraction déneigement</H3>
 				</div>
-			<!--	<button onclick="deleteBaseDAgent()">Vider la base de données Agent</button>
-                <button onclick="deleteBaseDAdr()">Vider la base de données Adr</button>-->
+			<!--POUR la programmation
+				<button onclick="deleteBaseDAgent()">Vider la base de données Agent</button>
+                <button onclick="deleteBaseDAdr()">Vider la base de données Adr</button>
+          	-->
 
-
-				<button id="downloadButton" onclick="syncConstat()" style="float: right; margin-right: 2%" data-toggle="modal" data-target="#synchronisation">Synchroniser</button>
-
-				<button id="nouvConstat" onclick="nouvConstat()" style="width:97%" class="btn2">Nouveau constat</button>
+				<button id="nouvConstat" onclick="nouvConstat()" style="width:98%" class="btn2">Nouveau constat</button>
 
 				<div id="test"></div>
 
@@ -89,8 +88,9 @@
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
 					<li><a href="#tabs-2">Détails</a></li>
-					<li><a href="#tabs-3">Vidéo</a></li>
-					<li><a href="#tabs-4">Résultat synchronisation</a></li>
+					<!--Pour la programmation
+					li><a href="#tabs-3">Vidéo</a></li>-->
+					<li><a href="#tabs-4">Synchronisation et résultat</a></li>
 				</ul>
 
 				<!--Onglet formulaire-->
@@ -319,12 +319,12 @@
 						</div>
 					</section>
 					<div style="text-align: center">
-						<button onclick="deleteBaseD()">Vider la base de données</button>
+						<button onclick="deleteBaseD()">Vider la base de données À ENLEVER</button>
 					</div>
 				</div>	
 
-				<!--table temporaire-->
-				<div id="tabs-3">
+				<!--table temporaire pour la programmation-->
+				<!--<div id="tabs-3">
 					<section id="no-more-tables">
 						<div class="table1">
 							<table class="table-bordered table-striped cf" id="tbl1">
@@ -343,14 +343,15 @@
 					</section>
 					<button onclick="deleteBaseBD2()">Vider la base de données</button>
 
-				</div>
+				</div>-->
 
 				<!--table résultat de synchronisation-->
 				<div id="tabs-4">
 					<div id="resultatSync">
-						<H4>Succès</H4>
-						<div id="succesSync" style="color: red"></div>
-						<H4>Échec</H4>
+						<button id="downloadButton" onclick="syncConstat()" style="width: 100%; margin-right: 2%" data-toggle="modal" data-target="#synchronisation">Synchroniser</button>
+						<H4 class="sousligne">Succès</H4>
+						<div id="succesSync" style="color: green"></div>
+						<H4 class="sousligne">Échec</H4>
 						<div id="echecSync" style="color: red"></div>
 					</div>
 				</div>

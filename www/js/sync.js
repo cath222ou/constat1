@@ -7,8 +7,6 @@ $('#progressbar').progressbar({
     value: 0
 });
 
-
-
 //Synchronisation des constats
 function syncConstat() {
     //Vider l'information contenu dans les divisions de succès et d'échec
@@ -17,7 +15,7 @@ function syncConstat() {
     //Lancer la requête de sélection
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(syncConstatSucces, errorCB);
-}
+};
 
 //Sélectionner les constats qui ne sont pas déjà synchronisés (sync = 0)
 function syncConstatSucces(tx) {
@@ -33,7 +31,7 @@ function syncConstatSucces(tx) {
             }
         },
         errorCB)
-}
+};
 
 
 //Synchroniser les constats
@@ -45,10 +43,16 @@ function uploadConstat(tx,results) {
 
     //Boucle pour les fonctions de nombre de vidéo par constat et pour pousser les données vers le serveur
     var len = results.rows.length;
-    for (i = 0; i < len; i++) {
-        var iteration = i + 1;
+    //Créer une liste avec la même quantité que la quantité de constat (len)
+    var constatCompletees = new Array(len);
+    for (var i=0; i<len; i++){
+        //Donner la valeur 0 à chaque élément de la liste
+        constatCompletees[i] = 0;
+    };
+
+    for (var i = 0; i < len; i++) {
         nombreVideo(results, i);
-        postConstat(results, i, len, iteration);
+        postConstat(results, i, len, constatCompletees);
     }
     //Si la connexion internet est disponible
     if (navigator.onLine === true) {
@@ -59,7 +63,7 @@ function uploadConstat(tx,results) {
     else{
         alert('Impossible de synchroniser les vidéos: Aucune connectivité');
     }
-}
+};
 
 //Faire une requête afin d'obtenir le nombre de vidéo par constat
 function nombreVideo(results, i) {
@@ -83,7 +87,7 @@ function updateNbrVideo(nombre,constatID){
 }
 
 //Connexion au serveur pour envoyer les constats vers le serveur
-function postConstat(results, i, len, iteration) {
+function postConstat(results, i, len, constatCompletees) {
             //Si la connection internet est disponible
             if (navigator.onLine === true) {
                 $.ajax({
@@ -97,24 +101,34 @@ function postConstat(results, i, len, iteration) {
                         var idConstat = this.constatID;
                         //Si le serveur envoi un succès
                         if (constatID.status === 'success') {
-                            //  $('#test').text('Constat: '+ iteration +'/' + len);
+                            //Réinitialiser la variable du nombre de constat synchronisé à 0
+                            var nbConstatCompletees = 0;
+                            var len = constatCompletees.length;
+                            //Selon la position dans la liste, changer la valeur 0 par 1
+                            constatCompletees[i] = 1;
+                            //Faire la somme des éléments de la liste pour connaitre à quel nombre de constat nous sommes rendu pour la synchronisation
+                            for (var j = 0; j < len; j++){
+                                nbConstatCompletees += constatCompletees[j];
+                            }
+
+
                             //Augmenter la valeur de la progressbar en fonction du nombre de constat poussé vers le serveur
-                            $('#progressbar').css({width: (iteration / len) * 100 + '%'});
-                            $('#progerssLabelConstat').text('Constat: ' + iteration + '/' + len);
+                            $('#progressbar').css({width: (nbConstatCompletees / len) * 100 + '%'});
+                            $('#progerssLabelConstat').text('Constat: ' + nbConstatCompletees + '/' + len);
                             $('#succesSync').append('Constat: ' + idConstat + '<br/>');
                             //Si le nombre de constat poussé est égale au nombre de constat total
-                            if (iteration === len) {
+                            if (nbConstatCompletees === len) {
                                 //ajouter Synchornisation complétée à la progressbar
                                 $('#progerssLabelConstat').text("Synchronisation complétée");
                                 $('#h6Constat').text('Constat');
                             }
 
-                            // db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                            // db.transaction(function (tx, results) {
+                             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+                             db.transaction(function (tx, results) {
                             //Modifier le champ sync de 0 vers 1
-                            //     tx.executeSql('UPDATE DEMO SET sync=' + 1 + ' WHERE constat_id=' + idConstat, [], queryDB, errorCB),
-                            //         errorCB
-                            // });
+                                tx.executeSql('UPDATE DEMO SET sync=' + 1 + ' WHERE constat_id=' + idConstat, [], queryDB, errorCB),
+                                     errorCB
+                             });
                         }
                         //Si le serveur envoi un message d'erreur
                         else {
@@ -140,7 +154,7 @@ function postConstat(results, i, len, iteration) {
             else {
                 alert('Impossible de synchroniser les constats: Aucune connectivité');
             }
-}
+};
 
 //Requête de sélection de tous les vidéos dans la table video
 function uploadVideoSucces() {
@@ -158,37 +172,31 @@ function uploadVideoSucces() {
             }, errorCB),
             errorCB
     });
-}
-
-
-function sleep(milliSeconds){
-    var startTime = new Date().getTime();
-    while (new Date().getTime() < startTime + milliSeconds);
-}
+};
 
 // Synchronisation des vidéos en lien avec le constat synchronisé
 function uploadVideo(tx,results) {
     var len = results.rows.length;
-    alert('debut uploadVideo');
+
+    //Créer une liste avec la même quantité que la quantité de constat (len)
     var videoCompletees = new Array(len);
     for (var i=0; i<len; i++){
+        //Donner la valeur 0 à chaque élément de la liste
         videoCompletees[i] = 0;
     };
-    alert("apres boucle");
+
     for (var i=0; i < len; i++) {
-        alert("debut boucle");
         //Si la connexion internet est disponible
         if (navigator.onLine === true){
             //lancer la requête d'envoi des vidéos vers le serveur
-            alert('oooooo');
             postVideo(tx, results, i, videoCompletees);
         }
         //Si la connexion internet n'est pas disponible, message d'erreur
         else {
             alert('Impossible de synchroniser les vidéos: Aucune connectivité');
         }
-    }
-}
+    };
+};
 
 //Connexion au serveur pour pousser les vidéos vers le serveur
 function postVideo(tx,results,i, videoCompletees){
@@ -215,11 +223,13 @@ function postVideo(tx,results,i, videoCompletees){
     function (results) {
         //Si le serveur envoi un succès
         if ($.parseJSON(results.response).status === 'success') {
-            //augmenter de 1 la valeur de la variable globale
+            //Réinitialiser la variable du nombre de vidéo synchronisé à 0
             var nbVideoCompletees = 0;
             var len = videoCompletees.length;
+            //Selon la position dans la liste, changer la valeur 0 par 1
             videoCompletees[i] = 1;
             for (var j = 0; j < len; j++){
+                //Faire la somme des éléments de la liste pour connaitre à quel nombre de vidéo nous sommes rendu pour la synchronisation
                 nbVideoCompletees += videoCompletees[j];
             }
 
@@ -227,7 +237,7 @@ function postVideo(tx,results,i, videoCompletees){
             $('#succesSync').append('Vidéo: ' + params.video_id +'<br/>');
             $('#progressbarVideo').css({width: (nbVideoCompletees/len) * 100 + '%'});
             $('#progressLabelVideo').text('Vidéo: '+ nbVideoCompletees +'/' + len);
-            alert(iterationVideo);
+
             //S'il y a autant de vidéo poussé vers le serveur que de vidéo au total
             if (nbVideoCompletees === len){
                 //message de synchronisation complétée dans la progressbar
@@ -237,10 +247,10 @@ function postVideo(tx,results,i, videoCompletees){
             }
 
             //Modifier le champ videoSync de 0 vers 1
-            // db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            // db.transaction(function(tx){
-            //     tx.executeSql('UPDATE VIDEO SET videoSync='+1+' WHERE id_video='+ params.video_id, [],queryDBVideo, errorCB),
-            // errorCB});
+             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+             db.transaction(function(tx){
+                 tx.executeSql('UPDATE VIDEO SET videoSync='+1+' WHERE id_video='+ params.video_id, [],queryDBVideo, errorCB),
+             errorCB});
             console.log(result.bytesSent + ' bytes sent');
         }
         //Si le serveur envoi un message d'erreur, mettre la progressbar en rouge avec un message d'erreur
@@ -259,4 +269,4 @@ function postVideo(tx,results,i, videoCompletees){
         alert('Vidéo = ' + params.video_id);
     },
     options)
-    }
+    };

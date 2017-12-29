@@ -39,7 +39,7 @@ function onDeviceReady() {
 
 		//Sélectionner tout dans la table demo
         function queryDB(tx) {
-            tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+            tx.executeSql('SELECT * FROM DEMO WHERE sync ='+0, [], querySuccess, errorCB);
         }
 
 
@@ -51,27 +51,27 @@ function onDeviceReady() {
 		for (var i = 0; i < len; i++) {
 			table01.append(
 				'<tr>'
-					+ '<td data-title="constat_id" id="id">'+results.rows.item(i).constat_id +'</td>'
-					+ '<td data-title="user_id">'+results.rows.item(i).user_id +'</td>'
-					+ '<td data-title="device_id">'+results.rows.item(i).device_id +'</td>'
-                	+ '<td data-title="a_nom">'+results.rows.item(i).a_nom +'</td>'
-					+ '<td data-title="a_adresse">'+results.rows.item(i).a_adresse +'</td>'
-                	+ '<td data-title="a_telephone1">'+results.rows.item(i).a_telephone1 +'</td>'
-                	+ '<td data-title="a_telephone2">'+results.rows.item(i).a_telephone2 +'</td>'
-					+ '<td data-title="b_date">'+results.rows.item(i).b_date +'</td>'
-					+ '<td data-title="b_heure">'+results.rows.item(i).b_heure +'</td>'
-                	+ '<td data-title="b_description">'+results.rows.item(i).b_description +'</td>'
-                	+ '<td data-title="c_endroit">'+results.rows.item(i).c_endroit +'</td>'
-                	+ '<td data-title="c_nociv">'+results.rows.item(i).c_nociv +'</td>'
-                	+ '<td data-title="c_rue">'+results.rows.item(i).c_rue +'</td>'
-                	+ '<td data-title="adresse_id">'+results.rows.item(i).adresse_id +'</td>'
-                	+ '<td data-title="c_description">'+results.rows.item(i).c_description +'</td>'
-               	 	+ '<td data-title="e_details">'+results.rows.item(i).e_details +'</td>'
-                	+ '<td data-title="e_suite">'+results.rows.item(i).e_suite +'</td>'
-                	+ '<td data-title="e_detailsSuite">'+results.rows.item(i).e_detailsSuite +'</td>'
-                	+ '<td data-title="lat">'+results.rows.item(i).lat +'</td>'
-               	 	+ '<td data-title="lon">'+results.rows.item(i).lon +'</td>'
-                	+ '<td data-title="note">'+results.rows.item(i).note +'</td>'
+					+ '<td data-title="Numéro du constat" id="id">'+results.rows.item(i).constat_id +'</td>'
+				//	+ '<td data-title="user_id">'+results.rows.item(i).user_id +'</td>'
+                //	+ '<td data-title="device_id">'+results.rows.item(i).device_id +'</td>'
+                //	+ '<td data-title="a_nom">'+results.rows.item(i).a_nom +'</td>'
+                //	+ '<td data-title="a_adresse">'+results.rows.item(i).a_adresse +'</td>'
+                //	+ '<td data-title="a_telephone1">'+results.rows.item(i).a_telephone1 +'</td>'
+                //	+ '<td data-title="a_telephone2">'+results.rows.item(i).a_telephone2 +'</td>'
+                //	+ '<td data-title="b_date">'+results.rows.item(i).b_date +'</td>'
+                //	+ '<td data-title="b_heure">'+results.rows.item(i).b_heure +'</td>'
+                //	+ '<td data-title="b_description">'+results.rows.item(i).b_description +'</td>'
+                //	+ '<td data-title="c_endroit">'+results.rows.item(i).c_endroit +'</td>'
+                	+ '<td data-title="Numéro civique">'+results.rows.item(i).c_nociv +'</td>'
+                	+ '<td data-title="Nom de la rue">'+results.rows.item(i).c_rue +'</td>'
+                //	+ '<td data-title="adresse_id">'+results.rows.item(i).adresse_id +'</td>'
+                //	+ '<td data-title="c_description">'+results.rows.item(i).c_description +'</td>'
+                //	+ '<td data-title="e_details">'+results.rows.item(i).e_details +'</td>'
+                //	+ '<td data-title="e_suite">'+results.rows.item(i).e_suite +'</td>'
+                //	+ '<td data-title="e_detailsSuite">'+results.rows.item(i).e_detailsSuite +'</td>'
+                //	+ '<td data-title="lat">'+results.rows.item(i).lat +'</td>'
+                //	+ '<td data-title="lon">'+results.rows.item(i).lon +'</td>'
+                //	+ '<td data-title="note">'+results.rows.item(i).note +'</td>'
                 	+ '<td data-title="sync">'+results.rows.item(i).sync +'</td>'
 					+ '<td><button type="button" data-toggle="modal" data-target="#exampleModal">Modifier</button>'
 					+ '<button type="button" class="btn1" onClick="syncConstat()">Synchronisation</button></td>'+

@@ -12,6 +12,7 @@
 
 body {
 	line-height: 2;
+    background-image:none ;
 }
 
 #no-more-tables td:before {
@@ -181,4 +182,8 @@ label{
     left: 45%;
     top: 4px;
     font-weight: bold;
+}
+
+.sousligne{
+    text-decoration:underline;
 }

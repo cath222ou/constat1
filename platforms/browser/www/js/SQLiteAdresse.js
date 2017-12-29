@@ -177,3 +177,4 @@ function nomRueSelectEdit(tx, results){
             $('#rueTxt_c').data("matricule",ui.item.value);
         }
     });
+}
