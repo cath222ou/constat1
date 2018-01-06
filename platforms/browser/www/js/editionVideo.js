@@ -11,14 +11,14 @@ function querySuccessVideoEdit(tx, results) {
     for (var i = 0; i < len; i++) {
         table02.append(
             '<tr id="'+i+'">'
-            + '<td data-title="matricule">'+results.rows.item(i).matricule +'</td>'
-            + '<td data-title="constat_id">'+results.rows.item(i).constat_id +'</td>'
-            + '<td data-title="id_video">'+results.rows.item(i).id_video +'</td>'
-            + '<td data-title="nom">'+results.rows.item(i).nom +'</td>'
-            + '<td data-title="path">'+results.rows.item(i).path +'</td>'
+            + '<td data-title="matricule" data-desc="matricule" class="hidden">'+results.rows.item(i).matricule +'</td>'
+            + '<td data-title="constat_id" data-desc="constat_id" class="hidden">'+results.rows.item(i).constat_id +'</td>'
+            + '<td data-title="Numéro de la vidéo" data-desc="id_video">'+results.rows.item(i).id_video +'</td>'
+            + '<td data-title="Nom de la vidéo" data-desc="nom">'+results.rows.item(i).nom +'</td>'
+            + '<td data-title="path" data-desc="path" class="hidden">'+results.rows.item(i).path +'</td>'
             + '<td><button type="button" data-toggle="modal" data-target="#videoModalEdit" data-videoid="'+results.rows.item(i).id_video+'">Modifier</button>'
-            + '<button type="button" onclick="removeVideo('+results.rows.item(i).id_video+','+i+')" class="btn btn-default btn1" style="background-color:#ff0000; border-color:#b30000">Supprimer</button></td>'
-            + '<td><button type="button"  onClick="uploadVideoSucces('+results.rows.item(i).id_video+','+i+')">Synchronisation</button></td>'+
+            + '<button type="button" onclick="removeVideo('+results.rows.item(i).id_video+','+i+')" class="btn btn-default btn1 btn-rouge">Supprimer</button></td>'+
+            //+ '<td><button type="button"  onClick="uploadVideoSucces('+results.rows.item(i).id_video+','+i+')">Synchronisation</button></td>'+
             '</tr>'
         );
     }
@@ -126,7 +126,7 @@ function onVideoSuccessAjout(fileuriAjout) {
         sourceFilePath,
         filePath,
         function(entry){
-            alert("file copy success");
+           // alert("file copy success");
             //alert(JSON.stringify(entry));
         },
         function(error){

@@ -6,9 +6,9 @@
 
 }*/
 
-.ui-widget-content{
+/*.ui-widget-content{
 	border:0px !important;
-}
+}*/
 
 body {
 	line-height: 2;
@@ -110,15 +110,15 @@ input[type='text']{
 .modal {
     position: absolute;
     top: 10%;
-    bottom: 0;
-    left: 0;
+    bottom: 0%;
+    left: 0%;
     z-index: 10040;
     overflow: auto;
     overflow-y: auto;
 }
 
 .modal-content{
-    width: 99%;
+    width: 650px;
     padding-right:1%;
 }
 
@@ -186,4 +186,9 @@ label{
 
 .sousligne{
     text-decoration:underline;
+}
+
+.btn-rouge{
+    background-color:#ff0000;
+    border-color:#b30000;
 }

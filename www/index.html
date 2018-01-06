@@ -56,7 +56,7 @@
 <div id="accueil">
 	<div id="dialog1" title="Matricule">
 		Entrer votre matricule: </p>
-		<select id="matriculeMenu" type="text" name="matricule" style="width:70%; height:50px">
+		<select id="matriculeMenu" type="text" name="matricule" style="width:70%; height:50px;">
 		</select>
 	</div>
 </div>
@@ -88,8 +88,7 @@
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
 					<li><a href="#tabs-2">Détails</a></li>
-					<!--Pour la programmation
-					li><a href="#tabs-3">Vidéo</a></li>-->
+					<li><a href="#tabs-3" class="hidden">Vidéo</a></li>
 					<li><a href="#tabs-4">Synchronisation et résultat</a></li>
 				</ul>
 
@@ -323,8 +322,8 @@
 					</div>
 				</div>	
 
-				<!--table temporaire pour la programmation-->
-				<!--<div id="tabs-3">
+
+				<div id="tabs-3" class="hidden">
 					<section id="no-more-tables">
 						<div class="table1">
 							<table class="table-bordered table-striped cf" id="tbl1">
@@ -343,7 +342,7 @@
 					</section>
 					<button onclick="deleteBaseBD2()">Vider la base de données</button>
 
-				</div>-->
+				</div>
 
 				<!--table résultat de synchronisation-->
 				<div id="tabs-4">

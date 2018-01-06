@@ -1,8 +1,8 @@
 //Fichier pour la création du formulaire
 
-// $(function(){
-// 	$('#app').hide();
-// });
+ $(function(){
+ 	$('#app').hide();
+ });
 
 
 

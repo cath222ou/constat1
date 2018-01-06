@@ -28,12 +28,12 @@ function querySuccessVideo(tx, results) {
 	for (var i = 0; i < len; i++) {
 		table02.append(
 		'<tr>'
-			+ '<td data-title="matricule">'+results.rows.item(i).matricule +'</td>'
-			+ '<td data-title="constat_id">'+results.rows.item(i).constat_id +'</td>'
-			+ '<td data-title="id_video">'+results.rows.item(i).id_video +'</td>'
-            + '<td data-title="nom">'+results.rows.item(i).nom +'</td>'
-			+ '<td data-title="path">'+results.rows.item(i).path +'</td>'
-            + '<td data-title="videoSync">'+results.rows.item(i).videoSync +'</td>'+
+			+ '<td data-title="matricule" data-desc="matricule" class="hidden">'+results.rows.item(i).matricule +'</td>'
+			+ '<td data-title="constat_id" data-desc="constat_id" class="hidden">'+results.rows.item(i).constat_id +'</td>'
+			+ '<td data-title="Numéro du vidéo" data-desc="id_video">'+results.rows.item(i).id_video +'</td>'
+            + '<td data-title="Nom du vidéo" data-desc="nom">'+results.rows.item(i).nom +'</td>'
+			+ '<td data-title="path" data-desc="path" class="hidden">'+results.rows.item(i).path +'</td>'
+            + '<td data-title="videoSync" data-desc="videoSync" class="hidden">'+results.rows.item(i).videoSync +'</td>'+
 		'</tr>'
 		);
 	}
