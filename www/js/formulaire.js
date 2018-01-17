@@ -145,10 +145,18 @@ function showConfirm() {
         'Annuler,OK'         // buttonLabels
     );
 }
-//Ne fonctionne pas avec iOS, seulement avec Android. Pour utiliser avec iOS, il faut un plugin
+
 function exitFromApp(buttonIndex) {
     if (buttonIndex==2){
-        navigator.app.exitApp();
+        //navigator.app.exitApp(); Ne fonctionne pas avec iOS, seulement avec Android. Pour utiliser avec iOS, il faut un plugin
+        $("#dialog1").dialog({
+            dialogClass: "no-close",
+            modal:true,
+            buttons:
+            {
+                "OK": addmatricule
+            }
+        });
     }
 }
 
