@@ -22,9 +22,6 @@
     <feature name="Battery">
         <param name="ios-package" value="CDVBattery" />
     </feature>
-    <feature name="Camera">
-        <param name="ios-package" value="CDVCamera" />
-    </feature>
     <feature name="Console">
         <param name="ios-package" value="CDVLogger" />
     </feature>
@@ -91,12 +88,15 @@
     <feature name="Zip">
         <param name="ios-package" value="ContentSync" />
     </feature>
+    <feature name="Camera">
+        <param name="ios-package" value="CDVCamera" />
+    </feature>
     <name>ConstatDeneigement</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        app de constat de déneigement
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="ti@ville.valdor.qc.ca" href="https://ville.valdor.qc.ca">
+        Informatique et géomatique de la ville de Val-d'Or
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -132,6 +132,18 @@
     <splash height="1024" platform="ios" src="www/res/screen/ios/Default-Portrait~ipad.png" width="768" />
     <splash height="960" platform="ios" src="www/res/screen/ios/Default@2x~iphone.png" width="640" />
     <splash height="480" platform="ios" src="www/res/screen/ios/Default~iphone.png" width="320" />
+    <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+        <string>need camera access to take pictures</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
+        <string>need to photo library access to get pictures from there</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>need location access to find things nearby</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
+        <string>need to photo library access to save pictures there</string>
+    </edit-config>
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
     <preference name="AllowInlineMediaPlayback" value="false" />
@@ -147,8 +159,9 @@
     <preference name="PageLength" value="0" />
     <preference name="PaginationBreakingMode" value="page" />
     <preference name="PaginationMode" value="unpaginated" />
-    <preference name="CameraUsesGeolocation" value="false" />
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="CameraUsesGeolocation" value="false" />
     <preference name="android-minSdkVersion" value="14" />
+    <preference name="iosPersistentFileLocation" value="Library" />
 </widget>

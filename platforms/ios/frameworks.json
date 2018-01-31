@@ -1,5 +1,4 @@
 {
-    "ImageIO.framework": 1,
     "CoreLocation.framework": 3,
     "AVFoundation.framework": 2,
     "AddressBook.framework": 1,
@@ -11,5 +10,6 @@
     "CoreTelephony.framework": 1,
     "MediaPlayer.framework": 1,
     "CoreVideo.framework": 1,
-    "libz.dylib": 1
+    "libz.dylib": 1,
+    "ImageIO.framework": 1
 }

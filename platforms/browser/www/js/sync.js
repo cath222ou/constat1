@@ -211,6 +211,7 @@ function postVideo(tx,results,i, videoCompletees){
     options.mimeType = "video/quicktime";
     options.fileName = results.rows.item(i).nom + ".mov";
     options.chunkedMode = false;
+    options.headers = {Connection: "close"};
     var params = {};
     params.uuid = uuidValue;
     params.format = ".mov";
@@ -265,8 +266,8 @@ function postVideo(tx,results,i, videoCompletees){
         console.log(error);
         $('#progressbarVideo').css("background", "red");
         $('#progressLabelVideo').text('Échec');
-        //alert(JSON.stringify(error));
-        alert('Vidéo = ' + params.video_id);
+        alert(JSON.stringify(error));
+        alert('Erreur de sync video_id = ' + params.video_id);
     },
     options)
     };
