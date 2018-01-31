@@ -40,37 +40,35 @@
     -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
     <!-- Latest compiled and minified CSS -->
-	
-	<!-- jQuery library -->
-	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<link rel="stylesheet" type="text/css" href="css/adresse.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>-->
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/constat.css"/>
 
-
-
-		<title>Constat d'infraction déneigement</title>
-
+	<title>Constat d'infraction déneigement</title>
 	</head>
 
 <body>
 
 <div id="accueil">
 	<div id="dialog1" title="Matricule">
-		Entrer votre matricule: </p>
+		<label for="matriculeMenu">Entrer votre matricule: </label>
 		<select id="matriculeMenu" type="text" name="matricule" style="width:70%; height:50px;">
 		</select>
 	</div>
 </div>
 
 <div id="dialog"></div>
-
-
 	<div id="app" class="container-fluid">
 		<div class="row" id="tabs">
 			<div class="col-sm-12">
 				<button id="confirmExit" onclick="showConfirm()" style="float: right; margin-top: 2%; margin-right: 2%;" class="btn2 ui-btn-right" >Fermer</button>
 			</div>
 			<div class="col-sm-12">
-
 				<div class="flotte">
 					<img src="css/images/logo-vvd-couleur-nom-dessous.png" style="width:10%; height:10%;">
 					<H3>Constat d'infraction déneigement</H3>
@@ -82,13 +80,11 @@
 
 				<button id="nouvConstat" onclick="nouvConstat()" style="width:98%" class="btn2">Nouveau constat</button>
 
-				<div id="test"></div>
-
-
+				<!--<div id="test"></div>-->
 				<ul>
 					<li><a href="#tabs-1">Formulaire</a></li>
 					<li><a href="#tabs-2">Détails</a></li>
-					<li><a href="#tabs-3" class="hidden">Vidéo</a></li>
+					<li><a href="#tabs-3" class="">Vidéo</a></li>
 					<li><a href="#tabs-4">Synchronisation et résultat</a></li>
 				</ul>
 
@@ -323,7 +319,7 @@
 				</div>	
 
 
-				<div id="tabs-3" class="hidden">
+				<div id="tabs-3" class="">
 					<section id="no-more-tables">
 						<div class="table1">
 							<table class="table-bordered table-striped cf" id="tbl1">
@@ -347,7 +343,7 @@
 				<!--table résultat de synchronisation-->
 				<div id="tabs-4">
 					<div id="resultatSync">
-						<button id="downloadButton" onclick="syncConstat()" style="width: 100%; margin-right: 2%" data-toggle="modal" data-target="#synchronisation">Synchroniser</button>
+						<button id="downloadButton"  style="width: 100%; margin-right: 2%" >Synchroniser</button>
 						<H4 class="sousligne">Succès</H4>
 						<div id="succesSync" style="color: green"></div>
 						<H4 class="sousligne">Échec</H4>
@@ -357,255 +353,250 @@
 			</div>
 		</div>
 
-
-
-
-
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+		<div class="modal fade" id="constatModalEdit" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="exampleModalLabel">Édition des données</h4>
+						<h4 class="modal-title" id="constatEditLabel">Édition des données</h4>
 					</div>
 					<div class="modal-body">
                         <div class="row" id="tabsEdit">
+							<ul>
+								<li><a href="#tabs-1Edit">Formulaire d'édition</a></li>
+								<li><a href="#tabs-2Edit">Édition Vidéo</a></li>
+							</ul>
 
-                        <ul>
-                            <li><a href="#tabs-1Edit">Formulaire d'édition</a></li>
-                            <li><a href="#tabs-2Edit">Édition Vidéo</a></li>
-                        </ul>
-                        <div id="tabs-1Edit" >
-							<div id="accordion1" class="parent">
-								<h3>ORIGINE</h3>
-								<div id="accordion_1">
-									<div class="row">
-										<div class="col-sm-8 tableaufor">
-											Nom et adresse du responsable
-											<h6>Ville de Val-d'Or</h6>
+							<div id="tabs-1Edit" >
+								<div id="accordion1" class="parent">
+									<h3>ORIGINE</h3>
+									<div id="accordion_1">
+										<div class="row">
+											<div class="col-sm-8 tableaufor">
+												Nom et adresse du responsable
+												<h6>Ville de Val-d'Or</h6>
+											</div>
+											<div class="col-sm-4 tableaufor">
+												No dossier
+												<h6 id="no_dossierEdit"></h6>
+											</div>
 										</div>
-										<div class="col-sm-4 tableaufor">
-											No dossier
-											<h6 id="no_dossierEdit"></h6>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-8 tableaufor">
-											Adresse
-											<h6>855, 2e avenue, Val-d'Or</h6>
-										</div>
-										<div class="col-sm-4 tableaufor">
-											Code postal
-											<h6>J9P 1W8</h6>
-										</div>
-									</div>
-								</div>
-								<h3>A - DÉFENDEUR</h3>
-								<div id="accordion_2" class="parent">
-									<div class="row">
-										<div class="col-sm-12 tableaufor">
-											Nom et prénom <br />
-											<input id="nomTxtEdit" type="text" name="nomTxt" class="adr" maxlength="250"><br />
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-12 tableaufor">
-											Adresse de correspondance*
-											<input id="adresseCorEdit" type="text" name="nomTxt" class="adr" maxlength="250"><br />
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-6 tableaufor">
-											Téléphone (résidence)*
-											<input id="telResEdit" type="text" name="numbersOnly" class="adr" maxlength="11"><br />
-										</div>
-										<div class="col-sm-6 tableaufor">
-											Téléphone (travail)*
-											<input id="telTraEdit" type="text" name="numbersOnly" class="adr" maxlength="11"><br />
-										</div>
-									</div>
-								</div>
-								<h3 id="bEdit">B - INFRACTION</h3>
-								<div id="accordion_3" class="parent">
-									<div class="row">
-										<div class="col-sm-3 tableaufor">
-											Date
-											<h6 id="datedivEdit"></h6>
-										</div>
-										<div class="col-sm-3 tableaufor">
-											Heure
-											<h6 id="heuredivEdit"></h6>
-										</div>
-										<div class="col-sm-6 tableaufor">
-											Titre du réglement
-											<h6>Nuisance de la neige</h6>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-6 tableaufor">
-											Réglement municipale
-											<h6>2002-49</h6>
-										</div>
-										<div class="col-sm-6 tableaufor">
-											Article
-											<h6>Article 3</h6>
-										</div>
-										<div class="col-sm-12 tableaufor">
-											Description de l'infraction <br />
-												<div id="descInfCheckEdit">
-													<div class="col-sm-12">
-
-															<input type="radio" class="radio-input" name="radio-1" id="radio-1Edit" value="1" >
-															<label for="radio-1" class="radio-label">Voie publique</label><br />
-															<input type="radio" class="radio-input" name="radio-1" id="radio-2Edit" value="2" >
-															<label for="radio-2" class="radio-label">Triangle de visibilité d'une intersection</label><br />
-															<input type="radio" class="radio-input" name="radio-1" id="radio-3Edit" value="3" >
-															<label for="radio-3" class="radio-label">Fossé ou cours d'eau municipal</label><br />
-															<input type="radio" class="radio-input" name="radio-1" id="radio-4Edit" value="4" >
-															<label for="radio-3" class="radio-label">Amoncellement de neige fait par les travaux publics<br /> ou un entrepreneur engagé par la ville</label><br />
-															<input type="radio" class="radio-input" name="radio-1" id="radio-5Edit" value="5" >
-															<label for="radio-3" class="radio-label">Ammoncellement de neige ayant pour effet d'éllargir,<br /> d'allonger ou d'agrandir la surface au sol</label><br />
-															<input type="radio" class="radio-input" name="radio-1" id="radio-6Edit" value="6" >
-															<label for="radio-3" class="radio-label">Borne-fontaine et/ou à proximité</label><br />
-															<input type="radio" class="radio-input" name="radio-1" id="radio-7Edit" value="7" >
-															<label for="radio-3" class="radio-label">Terre-plein, parc ou terrain municipal</label><br />
-															<input type="radio" class="radio-input" name="radio-1" id="radio-8Edit" value="Autre" >
-															<label for="radio-4" class="radio-label">Autre</label><br />
-
-													</div>
-												</div>
-												<input id="descInfractionEdit" type="text" name="descInfractionEdit" maxlength="250" style="width:90%; height:27px;"><br />
-										</div>
-									</div>
-								</div>
-								<h3>C - LIEU DE L'INFRACTION</h3>
-								<div id="accordion_4" class="parent">
-									<div class="row">
-										<div class="col-sm-12 tableaufor" >
-											Endroit (établissement, compagnie, route)<br />
-											<input id="endroitTxtEdit" type="text" name="endroitTxt" class="adr" style="width:90%; height:27px;" maxlength="250"><br />
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-12 tableaufor">
-											Adresse<br />
-											<label for="noCivTxtEdit_c" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
-											<input id="noCivTxtEdit_c" type="text" class="obligatoireEdit" data-matricule="" name="noCivTxtEdit_c" maxlength="10" style="width:10%" >
-											<input id="rueTxtEdit_c" type="text" class="obligatoireEdit" onfocus="selectNoCivEdit()" name="rueTxtEdit_c" maxlength="250" style="width:80%" ><br />
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-6 tableaufor">
-											Localisation<br />
-											<H6>&nbsp;</H6>
-										</div>
-										<div class="col-sm-6 tableaufor">
-											District judiciaire<br />
-											<H6>&nbsp;</H6>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-12 tableaufor">
-											Description des lieux<br />
-											<textarea id="descLieuxEdit" name="descLieux"  style="width:100%; height:50px;" maxlength="250"></textarea><br />
-										</div>
-									</div>
-								</div>
-								<h3>E - FAITS ET GESTES PERTINENTS</h3>
-								<div id="accordion_5" class="parent">
-									<div class="row">
-										<div class="col-sm-12 tableaufor">
-											Faits et gestes pertinents<br />
-											<textarea id="faitTxtEdit" class="auto-text-area" name="faitTxtEdit" maxlength="950" style="width:100%;" onkeyup="resteEdit(this.value);"></textarea><br />
-											<span id="caracteresEdit">950</span> caractères restants
-											<a  class="plus">
-												<input type="checkbox" name="checkbox-nested-text1" id="checkbox-nested-text1">
-											</a>
-											<textarea id="faitTxt2Edit" class="auto-text-area hidden" name="faitTxt2Edit" style="width:100%;" placeholder="[Page additionnelle] Continuer votre texte ici"></textarea><br />
-										</div>
-									</div>
-								</div>
-								<h3>SIGNATURE</h3>
-								<div id="accordion_6" class="parent">
-									<div class="row">
-										<div class="col-sm-12 tableaufor">
-											J'ai personnellement constaté les faits mentionnées en<br />
-											<div class="cocher">
-												<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> A    </i>
-												<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> B    </i>
-												<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> C    </i>
-												<i class="fa fa-square-o fa-lg" aria-hidden="true"> D    </i>
-												<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> E   </i>
+										<div class="row">
+											<div class="col-sm-8 tableaufor">
+												Adresse
+												<h6>855, 2e avenue, Val-d'Or</h6>
+											</div>
+											<div class="col-sm-4 tableaufor">
+												Code postal
+												<h6>J9P 1W8</h6>
 											</div>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-sm-6 tableaufor">
-											Nom et prénom*<br />
-											<H6>&nbsp;</H6>
+									<h3>A - DÉFENDEUR</h3>
+									<div id="accordion_2" class="parent">
+										<div class="row">
+											<div class="col-sm-12 tableaufor">
+												Nom et prénom <br />
+												<input id="nomTxtEdit" type="text" name="nomTxt" class="adr" maxlength="250"><br />
+											</div>
 										</div>
-										<div class="col-sm-6 tableaufor">
-											Signature*<br />
-											<H6>&nbsp;</H6>
+										<div class="row">
+											<div class="col-sm-12 tableaufor">
+												Adresse de correspondance*
+												<input id="adresseCorEdit" type="text" name="nomTxt" class="adr" maxlength="250"><br />
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6 tableaufor">
+												Téléphone (résidence)*
+												<input id="telResEdit" type="text" name="numbersOnly" class="adr" maxlength="11"><br />
+											</div>
+											<div class="col-sm-6 tableaufor">
+												Téléphone (travail)*
+												<input id="telTraEdit" type="text" name="numbersOnly" class="adr" maxlength="11"><br />
+											</div>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-sm-4 tableaufor">
-											Matricule<br />
-											<H6 id="matriculeNumEdit"></H6>
+									<h3 id="bEdit">B - INFRACTION</h3>
+									<div id="accordion_3" class="parent">
+										<div class="row">
+											<div class="col-sm-3 tableaufor">
+												Date
+												<h6 id="datedivEdit"></h6>
+											</div>
+											<div class="col-sm-3 tableaufor">
+												Heure
+												<h6 id="heuredivEdit"></h6>
+											</div>
+											<div class="col-sm-6 tableaufor">
+												Titre du réglement
+												<h6>Nuisance de la neige</h6>
+											</div>
 										</div>
-										<div class="col-sm-4 tableaufor">
-											Qualité*<br />
-											<H6>&nbsp;</H6>
-										</div>
-										<div class="col-sm-4 tableaufor">
-											Date<br />
-											<H6 id="dateSignatureEdit"></H6>
+										<div class="row">
+											<div class="col-sm-6 tableaufor">
+												Réglement municipale
+												<h6>2002-49</h6>
+											</div>
+											<div class="col-sm-6 tableaufor">
+												Article
+												<h6>Article 3</h6>
+											</div>
+											<div class="col-sm-12 tableaufor">
+												Description de l'infraction <br />
+													<div id="descInfCheckEdit">
+														<div class="col-sm-12">
+
+																<input type="radio" class="radio-input" name="radio-1" id="radio-1Edit" value="1" >
+																<label for="radio-1" class="radio-label">Voie publique</label><br />
+																<input type="radio" class="radio-input" name="radio-1" id="radio-2Edit" value="2" >
+																<label for="radio-2" class="radio-label">Triangle de visibilité d'une intersection</label><br />
+																<input type="radio" class="radio-input" name="radio-1" id="radio-3Edit" value="3" >
+																<label for="radio-3" class="radio-label">Fossé ou cours d'eau municipal</label><br />
+																<input type="radio" class="radio-input" name="radio-1" id="radio-4Edit" value="4" >
+																<label for="radio-3" class="radio-label">Amoncellement de neige fait par les travaux publics<br /> ou un entrepreneur engagé par la ville</label><br />
+																<input type="radio" class="radio-input" name="radio-1" id="radio-5Edit" value="5" >
+																<label for="radio-3" class="radio-label">Ammoncellement de neige ayant pour effet d'éllargir,<br /> d'allonger ou d'agrandir la surface au sol</label><br />
+																<input type="radio" class="radio-input" name="radio-1" id="radio-6Edit" value="6" >
+																<label for="radio-3" class="radio-label">Borne-fontaine et/ou à proximité</label><br />
+																<input type="radio" class="radio-input" name="radio-1" id="radio-7Edit" value="7" >
+																<label for="radio-3" class="radio-label">Terre-plein, parc ou terrain municipal</label><br />
+																<input type="radio" class="radio-input" name="radio-1" id="radio-8Edit" value="Autre" >
+																<label for="radio-4" class="radio-label">Autre</label><br />
+
+														</div>
+													</div>
+													<input id="descInfractionEdit" type="text" name="descInfractionEdit" maxlength="250" style="width:90%; height:27px;"><br />
+											</div>
 										</div>
 									</div>
+									<h3>C - LIEU DE L'INFRACTION</h3>
+									<div id="accordion_4" class="parent">
+										<div class="row">
+											<div class="col-sm-12 tableaufor" >
+												Endroit (établissement, compagnie, route)<br />
+												<input id="endroitTxtEdit" type="text" name="endroitTxt" class="adr" style="width:90%; height:27px;" maxlength="250"><br />
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 tableaufor">
+												Adresse<br />
+												<label for="noCivTxtEdit_c" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
+												<input id="noCivTxtEdit_c" type="text" class="obligatoireEdit" data-matricule="" name="noCivTxtEdit_c" maxlength="10" style="width:10%" >
+												<input id="rueTxtEdit_c" type="text" class="obligatoireEdit" onfocus="selectNoCivEdit()" name="rueTxtEdit_c" maxlength="250" style="width:80%" ><br />
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6 tableaufor">
+												Localisation<br />
+												<H6>&nbsp;</H6>
+											</div>
+											<div class="col-sm-6 tableaufor">
+												District judiciaire<br />
+												<H6>&nbsp;</H6>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 tableaufor">
+												Description des lieux<br />
+												<textarea id="descLieuxEdit" name="descLieux"  style="width:100%; height:50px;" maxlength="250"></textarea><br />
+											</div>
+										</div>
+									</div>
+									<h3>E - FAITS ET GESTES PERTINENTS</h3>
+									<div id="accordion_5" class="parent">
+										<div class="row">
+											<div class="col-sm-12 tableaufor">
+												Faits et gestes pertinents<br />
+												<textarea id="faitTxtEdit" class="auto-text-area" name="faitTxtEdit" maxlength="950" style="width:100%;" onkeyup="resteEdit(this.value);"></textarea><br />
+												<span id="caracteresEdit">950</span> caractères restants
+												<a  class="plus">
+													<input type="checkbox" name="checkbox-nested-text1" id="checkbox-nested-text1">
+												</a>
+												<textarea id="faitTxt2Edit" class="auto-text-area hidden" name="faitTxt2Edit" style="width:100%;" placeholder="[Page additionnelle] Continuer votre texte ici"></textarea><br />
+											</div>
+										</div>
+									</div>
+									<h3>SIGNATURE</h3>
+									<div id="accordion_6" class="parent">
+										<div class="row">
+											<div class="col-sm-12 tableaufor">
+												J'ai personnellement constaté les faits mentionnées en<br />
+												<div class="cocher">
+													<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> A    </i>
+													<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> B    </i>
+													<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> C    </i>
+													<i class="fa fa-square-o fa-lg" aria-hidden="true"> D    </i>
+													<i class="fa fa-check-square-o fa-lg" aria-hidden="true"> E   </i>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6 tableaufor">
+												Nom et prénom*<br />
+												<H6>&nbsp;</H6>
+											</div>
+											<div class="col-sm-6 tableaufor">
+												Signature*<br />
+												<H6>&nbsp;</H6>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-4 tableaufor">
+												Matricule<br />
+												<H6 id="matriculeNumEdit"></H6>
+											</div>
+											<div class="col-sm-4 tableaufor">
+												Qualité*<br />
+												<H6>&nbsp;</H6>
+											</div>
+											<div class="col-sm-4 tableaufor">
+												Date<br />
+												<H6 id="dateSignatureEdit"></H6>
+											</div>
+										</div>
+									</div>
+									<h3>Note pour usage interne</h3>
+									<div id="accordion_7" class="parent">
+										<div class="row">
+											<div class="col-sm-12">
+												<textarea id="noteTxtEdit" name="noteTxt" class="auto-text-area" maxlength="5000" style="width:100%; height:100px;" placeholder="Cette note n'apparaîtra pas sur le formulaire"></textarea><br />
+											</div>
+										</div>
+									</div>
+									<div id="idCache" class="hidden"></div>
+									<div id="detailCache" class="hidden"></div>
+									<div id="radioCache" class="hidden"></div>
+									<div id="matAgent" class="hidden"></div>
+									<div id="uuidApp" class="hidden"></div>
 								</div>
-								<h3>Note pour usage interne</h3>
-								<div id="accordion_7" class="parent">
-									<div class="row">
-										<div class="col-sm-12">
-											<textarea id="noteTxtEdit" name="noteTxt" class="auto-text-area" maxlength="5000" style="width:100%; height:100px;" placeholder="Cette note n'apparaîtra pas sur le formulaire"></textarea><br />
-										</div>
-									</div>
-								</div>
-								<div id="idCache" class="hidden"></div>
-								<div id="detailCache" class="hidden"></div>
-								<div id="radioCache" class="hidden"></div>
-								<div id="matAgent" class="hidden"></div>
-								<div id="uuidApp" class="hidden"></div>
 							</div>
-                        </div>
 
-                        <div id="tabs-2Edit">
-                            <section id="no-more-tables">
-                                <div class="table1">
-                                    <table class="table-bordered table-striped cf" id="tblVideoEdit">
-                                        <thead class="cf1">
-                                        <tr>
-                                            <th>matricule</th>
-                                            <th>ID formulaire</th>
-                                            <th>ID Vidéo</th>
-                                            <th>Path</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </section>
-							<button type="button" data-toggle="modal" data-target="#videoModalAjout">Ajouter vidéo</button>
-                        </div>
+							<div id="tabs-2Edit">
+								<section id="no-more-tables">
+									<div class="table1">
+										<table class="table-bordered table-striped cf" id="tblVideoEdit">
+											<thead class="cf1">
+											<tr>
+												<th>matricule</th>
+												<th>ID formulaire</th>
+												<th>ID Vidéo</th>
+												<th>Path</th>
+											</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</section>
+								<button type="button" data-toggle="modal" data-target="#videoModalAjout">Ajouter vidéo</button>
+							</div>
 
-						<div class="modal-footer">
-
-							<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-							<button onclick="goEdit()" type="button" class="btn btn-primary">Enregistrer</button>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+								<button onclick="goEdit()" type="button" class="btn btn-primary">Enregistrer</button>
+							</div>
 						</div>
-					</div>
                     </div>
 				</div>
 			</div>
@@ -620,12 +611,13 @@
                         <h5 class="modal-title">Nom de la vidéo</h5>
                         <div>
                             <input id="nomVideo" type="text">
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                <button onclick="getVideo()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
-                            </div>
+
                         </div>
                     </div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+						<button onclick="getVideo()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+					</div>
                 </div>
             </div>
         </div>
@@ -670,12 +662,12 @@
 
 
 		<!--Modal de synchronisation-->
-		<div class="modal fade" id="synchronisation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+		<div class="modal fade" id="synchronisation" tabindex="-1" role="dialog" aria-labelledby="modalSyncLabel" >
 			<div class="modal-dialog" role="document">
 				<div class="modal-content modal-content1">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="exampleModalLabel">Synchronisation</h4>
+						<h4 class="modal-title" id="modalSyncLabel">Synchronisation</h4>
 					</div>
 					<div class="modal-body progressBar">
 						<H6 id="h6Constat">Constat</H6>
@@ -693,10 +685,6 @@
 				</div>
 			</div>
 		</div>
-
-
-
-
 	</div>
 
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
@@ -707,24 +695,17 @@
 <script type="text/javascript" src="js/dateHeure.js"></script>
 <script type="text/javascript" src="js/SQLite.js"></script>
 <script type="text/javascript" src="js/formulaire.js"></script>
-<script type="text/javascript" src="js/editionFormulaire.js"></script>
-<script type="text/javascript" src="js/editionVideo.js"></script>
-<script type="text/javascript" src="js/sync.js"></script>
+<script type="text/javascript" src="js/editionFormulaire-v2.js"></script>
+<script type="text/javascript" src="js/editionVideo-v2.js"></script>
+<script type="text/javascript" src="js/sync-v2.js"></script>
 <script type="text/javascript" src="js/validation.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
 
-<script type="text/javascript" src="js/SQLiteAgent.js"></script>
-<script type="text/javascript" src="js/SQLiteAdresse.js"></script>
-<script type="text/javascript" src="js/video.js"></script>
+<script type="text/javascript" src="js/SQLiteAgent-v2.js"></script>
+<script type="text/javascript" src="js/SQLiteAdresse-v2.js"></script>
+<script type="text/javascript" src="js/video-v2.js"></script>
 <script type="text/javascript">app.initialize();</script>
 
-<link rel="stylesheet" type="text/css" href="css/index.css"/>
-<link rel="stylesheet" type="text/css" href="css/adresse.css"/>
-<link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>
-<!--<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css"/>-->
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
-<link rel="stylesheet" type="text/css" href="css/constat.css"/>
 
 </body>
 </html>

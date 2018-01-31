@@ -149,6 +149,9 @@
          <framework src="CoreGraphics.framework" />
          <framework src="AVFoundation.framework" />
 
+         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+             <string>$CAMERA_PERMISSION_REASON</string>
+         </config-file>
          <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
              <string></string>
          </config-file>

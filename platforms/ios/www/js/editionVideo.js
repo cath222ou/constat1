@@ -4,7 +4,6 @@ var fichierEdit;
 
 //dessiner la table des vidéo POUR LA PROGRAMMATION
 function querySuccessVideoEdit(tx, results) {
-
     var table02 = $('#tblVideoEdit tbody');
     table02.html('');
     var len = results.rows.length;

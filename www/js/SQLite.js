@@ -15,6 +15,7 @@ var matAgent1 = 1; //$('#matAgent').val();
 function onDeviceReady() {
 	//Valeur du UUID de l'appareille
     uuidValue= '21FE5A66-7C7D-4183-87E6-2A58739DE667';//device.uuid; A ENLEBVEERERRRRRRr
+	uuidValue = device.uuid;
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, successCBConstat);
@@ -29,18 +30,18 @@ function onDeviceReady() {
 
 		// Suppression de la BD (POUR PROGRAMMATION)
 		function deleteDB(tx){
-			tx.executeSql('DROP TABLE IF EXISTS DEMO');
+			tx.executeSql('DROP TABLE IF EXISTS constats');
 		}
 
-		//Création de la table DEMO des constats
+		//Création de la table constats
 		function populateDBConstat(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS constats (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER)');
 		}
 
-		//Sélectionner tout dans la table demo
-        function queryDB(tx) {
-            tx.executeSql('SELECT * FROM DEMO WHERE sync ='+0, [], querySuccess, errorCB);
-        }
+		//Sélectionner tout dans la table constats
+        //function queryDB(tx) {
+         //
+        //}
 
 
 		//Création de la table demo pour visualisation dans l'application
@@ -51,7 +52,7 @@ function onDeviceReady() {
 		for (var i = 0; i < len; i++) {
 			table01.append(
 				'<tr>'
-					+ '<td data-title="Numéro du constat" data-desc="constat_id" id="id">'+results.rows.item(i).constat_id +'</td>'
+					+ '<td data-title="Numéro du constat" data-desc="constat_id">'+results.rows.item(i).constat_id +'</td>'
 					+ '<td data-title="user_id" data-desc="user_id" class="hidden">'+results.rows.item(i).user_id +'</td>'
                 	+ '<td data-title="device_id" data-desc="device_id" class="hidden">'+results.rows.item(i).device_id +'</td>'
                 	+ '<td data-title="a_nom" data-desc="a_nom" class="hidden">'+results.rows.item(i).a_nom +'</td>'
@@ -73,7 +74,7 @@ function onDeviceReady() {
                 	+ '<td data-title="lon" data-desc="lon" class="hidden">'+results.rows.item(i).lon +'</td>'
                 	+ '<td data-title="note" data-desc="note" class="hidden">'+results.rows.item(i).note +'</td>'
                 	+ '<td data-title="sync" data-desc="sync" class="hidden">'+results.rows.item(i).sync +'</td>'
-					+ '<td><button type="button" data-toggle="modal" data-target="#exampleModal" style="hidden">Modifier</button>'+
+					+ '<td><button type="button" data-toggle="modal" data-target="#constatModalEdit" style="hidden">Modifier</button>'+
 					//+ '<button type="button" class="btn1" onClick="syncConstat()">Synchronisation</button></td>'+
 				'</tr>'
 				);
@@ -88,16 +89,18 @@ function onDeviceReady() {
         // Lancer la requête de sélection de tous dans la table demo
         function successCBConstat(tx,result,matAgent1,uuidApp1) {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(queryDB, errorCB);
+            db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM constats WHERE sync = ?', [0], querySuccess, errorCB);
+			}, errorCB);
         }
 
 		//Requête d'insertion dans la table demo lorsque l'on clique sur enregistrer
 		function insertDB(tx, position) {
-        	var matricule = document.getElementById("matriculeMenu").value;
-			var nom = document.getElementById("nomTxt").value;
-			var adresse_a = document.getElementById("adresseCor").value;
-			var tel1 = document.getElementById("telRes").value;
-			var tel2 = document.getElementById("telTra").value;
+        	var matricule = $("#matriculeMenu").val();
+			var nom = $("#nomTxt").val();
+			var adresse_a = $("#adresseCor").val();
+			var tel1 = $("#telRes").val();
+			var tel2 = $("#telTra").val();
 			var newdate = moment().format('DD/MM/YYYY');
 			var newheure = moment().format('h:mm a');
 			var descInfraction = null;
@@ -107,28 +110,29 @@ function onDeviceReady() {
 					}
 				//Si radiobox 8 est coché, prendre la valeur du champ texte
 				else if ($('#radio-8').is(':checked')){
-                    descInfraction = document.getElementById("descInfraction").value;
+                    descInfraction = $("#descInfraction").val();
                 }
-			var endroit = document.getElementById("endroitTxt").value;
-			var nociv = document.getElementById("noCivTxt_c").value;
-			var rue = document.getElementById("rueTxt_c").value;
+			var endroit = $("#endroitTxt").val();
+			var nociv = $("#noCivTxt_c").val();
+			var rue = $("#rueTxt_c").val();
 			var adresseid = $('#rueTxt_c').data("matricule");
-			var decriptionLieux = document.getElementById("descLieux").value;
-            var faits = document.getElementById("faitTxt").value;
-            var faits2 = document.getElementById("faitTxt2").value;
-			var note = document.getElementById("noteTxt").value;
+			var decriptionLieux = $("#descLieux").val();
+            var faits = $("#faitTxt").val();
+            var faits2 = $("#faitTxt2").val();
+			var note = $("#noteTxt").val();
 
 			var suite = null;
                 //Si la case est coché, mettre la valeur true à la variable suite
 				if($('#checkbox-nested-text').is(':checked')){
-					var suite = true
+					 suite = true
 				}
 				//Sinon mettre la valeur false
 				else {
-					var suite = false
+					 suite = false
 				}
-            //Insérer les données dans la table demo
-            tx.executeSql('INSERT INTO DEMO (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
+            //Insérer les données dans la table constats
+			///TODO parametrized ->
+            tx.executeSql('INSERT INTO constats (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
 		}
 
 
@@ -192,12 +196,8 @@ function onDeviceReady() {
 
 			//sinon lance la transaction insertDB pour insérer les données dans la table DEMO
 			else{
-
                     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                    db.transaction(function (tx) {
-                            insertDB(tx, position);
-                        }
-                        , errorCB, successCBConstat);
+                    db.transaction(function (tx) {insertDB(tx, position);}, errorCB, successCBConstat);
                 }
 		}
 
@@ -230,7 +230,7 @@ function onDeviceReady() {
 		navigator.geolocation.getCurrentPosition(goInsert, onError);
 		//rendre visible le bouton de sélection de vidéo
 		$('#enrVideo').removeClass('hidden');
-	};
+	}
 
 
 

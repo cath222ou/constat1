@@ -39,7 +39,7 @@
      });
  });
 
-//Débuter un nouveau constat en vidant tout les champs
+    //Débuter un nouveau constat en vidant tout les champs
     function nouvConstat(){
         $('#enrVideo').addClass('hidden');
         //effacer les valeurs entrées
@@ -58,14 +58,13 @@
         $('input[type=radio]').prop('checked',false);
         //Retour à l'accordéon initial
         $( "#accordion" ).accordion(
-            {active:2}//Etait à 1, je l'ai mis comme lors de l'initialisation dans le document.ready
+            {active:2}//Etait à 1, je l'ai mis identique à l'initialisation dans le document.ready
         );
     }
 
-
     //Afficher nombre de caractères restants pour le champs texte de faits et gestes
 
-   function reste(texte) {
+    function reste(texte) {
         var restants = 950 - texte.length;
 
         //document.getElementById('caracteres').innerHTML = restants; --Même chose mais en jquery :)
@@ -99,7 +98,6 @@
         }
     });
 
-
     //Ajuster taille du champ texte selon le texte
     $('.auto-text-area').on('keyup', function () {
         $(this).css('height', 'auto');
@@ -121,7 +119,6 @@
         $('#app').show();
     }
 
-
     //Affichage date et heure dans formulaire
     var myVar = setInterval(function () {
         myTimer()
@@ -137,26 +134,27 @@
     }
 
     //Fermer l'Application lorsque l'on clique sur le bouton Fermer application
-function showConfirm() {
-    navigator.notification.confirm(
-        'Êtes-vous certain de vouloir fermer l\'application?',  // message
-        exitFromApp,              // callback to invoke with index of button pressed
-        'Fermeture',            // title
-        'Annuler,OK'         // buttonLabels
-    );
-}
-
-function exitFromApp(buttonIndex) {
-    if (buttonIndex==2){
-        //navigator.app.exitApp(); Ne fonctionne pas avec iOS, seulement avec Android. Pour utiliser avec iOS, il faut un plugin
-        $("#dialog1").dialog({
-            dialogClass: "no-close",
-            modal:true,
-            buttons:
-            {
-                "OK": addmatricule
-            }
-        });
+    function showConfirm() {
+        navigator.notification.confirm(
+            'Êtes-vous certain de vouloir fermer l\'application?',  // message
+            exitFromApp,              // callback to invoke with index of button pressed
+            'Fermeture',            // title
+            'Annuler,OK'         // buttonLabels
+        );
     }
-}
+
+    function exitFromApp(buttonIndex) {
+        if (buttonIndex==2){
+            $('#app').hide();
+            //navigator.app.exitApp(); Ne fonctionne pas avec iOS, seulement avec Android. Pour utiliser avec iOS, il faut un plugin
+            $("#dialog1").dialog({
+                dialogClass: "no-close",
+                modal:true,
+                buttons:
+                {
+                    "OK": addmatricule
+                }
+            });
+        }
+    }
 

@@ -1,13 +1,12 @@
 //Fichier pour l'édition des vidéos dans l'édition des formulaires
 
-var fichierEdit;
+//var fichierEdit;
 
 //dessiner la table des vidéo POUR LA PROGRAMMATION
 function querySuccessVideoEdit(tx, results) {
     var table02 = $('#tblVideoEdit tbody');
     table02.html('');
-    var len = results.rows.length;
-    for (var i = 0; i < len; i++) {
+    for (var i = 0; i < results.rows.length; i++) {
         table02.append(
             '<tr id="'+i+'">'
             + '<td data-title="matricule" data-desc="matricule" class="hidden">'+results.rows.item(i).matricule +'</td>'
@@ -26,24 +25,30 @@ function querySuccessVideoEdit(tx, results) {
 //Lancer une requête à la BD
 function videoConstat(){
         db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-        db.transaction(videoIdConstat, errorCB);
+        db.transaction(function(tx){
+            tx.executeSql('SELECT * FROM videos WHERE constat_id = ?', [constat], querySuccessVideoEdit, errorCB)
+        },
+            errorCB);
 }
-//Sélectionner les vidéo en lien avec le constat en édition
-function videoIdConstat(tx){
-    tx.executeSql('SELECT * FROM VIDEO WHERE constat_id = '+ constat, [], querySuccessVideoEdit, errorCB)
-}
+////Sélectionner les vidéo en lien avec le constat en édition
+//function videoIdConstat(tx){
+//
+//}
 
 
 //Lancer la requête pour la suppression
 function removeVideo(idVideo,i){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-    db.transaction(function(tx){videoSuppression(tx, idVideo, i)}, errorCB);
+    db.transaction(function(tx) {
+        //videoSuppression(tx, idVideo, i)
+        tx.executeSql('DELETE FROM videos WHERE id_video = ?', [idVideo],null, errorCB);
+        $("#"+ i ).empty();
+    }, errorCB);
 }
-//Supprimer la vidéo lié au formulaire lorsque l'on clique sur le bouton Supprimer
-function videoSuppression(tx, idVideo, i){
-    tx.executeSql('DELETE FROM VIDEO WHERE id_video = '+ idVideo , [], errorCB);
-    $("#"+ i ).empty();
-}
+////Supprimer la vidéo lié au formulaire lorsque l'on clique sur le bouton Supprimer
+//function videoSuppression(tx, idVideo, i){
+//
+//}
 
 //Ouvrir la librairie des vidéos
 function getVideoEdit() {
@@ -55,23 +60,23 @@ function getVideoEdit() {
 }
 
 //Copier le vidéo sélectionné dans un nouveau répertoire
-function onVideoSuccessEdit(fileuriEdit) {
-    fichierEdit = fileuriEdit;
+function onVideoSuccessEdit(fileURI) {
+    //fichierEdit = fileuriEdit;
     //Le nom de la vidéo est celui entrer dans le champ texte
-    var nomVid = $('#nomVideoEdit').val();
-    var sourceFilePath = fichierEdit;
+    var nomVideo = $('#nomVideoEdit').val();
+    //var sourceFilePath = fileuriEdit;
     //Le nouveau path de la vidéo
-    var filePath = cordova.file.documentsDirectory +nomVid+".mov";
+    var filePath = cordova.file.documentsDirectory +nomVideo+".mov";
     var ft = new FileTransfer();
     ft.download(
-        sourceFilePath,
+        fileURI,
         filePath,
         function(entry){
-            //alert("file copy success");
-            //alert(JSON.stringify(entry));
+            console.log('Video déplacer du cache correctement ', JSON.stringify(entry));
         },
         function(error){
             alert("La copie de la vidéo n'a pas été effectuée");
+            console.log('Erreur lors de la copie vidéo ', JSON.stringify(error));
         }
     );
     //Lancer la fonction pour modifier le path de la vidéo dans la table
@@ -88,18 +93,22 @@ $(document).on('show.bs.modal','#videoModalEdit', function (event) {
 //Lancer la requête pour modifier la vidéo relié au formulaire
 function modifVideo(filePath){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-    db.transaction(function(tx){videoModification(tx, filePath)}, errorCB);
+    db.transaction(function(tx){
+        //videoModification(tx, filePath)
+        var idVideo = $("#idvideo").val();
+        var nomVideo = $('#nomVideoEdit').val();
+        tx.executeSql('UPDATE videos SET nom = ?, path = ? WHERE id_video = ?', [nomVideo,filePath,idVideo],null, errorCB);
+        //Lancer la fonction pour raffraichir la visualisation de la table vidéo
+        videoConstat();
+
+    }, errorCB);
 }
 
 //modifier la vidéo relié au formulaire
-function videoModification(tx, filePath){
-
-    var vid = $("#idvideo").val();
-    nomVideo = $('#nomVideoEdit').val();
-    tx.executeSql('UPDATE VIDEO SET nom ="'+nomVideo+'", path ="'+filePath+'" WHERE id_video='+vid, [], errorCB);
-    //Lancer la fonction pour raffraichir la visualisation de la table vidéo
-    videoConstat();
-}
+//function videoModification(tx, filePath){
+//
+//
+//}
 
 
 
@@ -114,15 +123,15 @@ function getVideoAjout() {
 }
 
 //Copier la vidéo dans un nouveau répertoire
-function onVideoSuccessAjout(fileuriAjout) {
-    fichierAjout = fileuriAjout;
+function onVideoSuccessAjout(fileURIAjout) {
+    //fichierAjout = fileuriAjout;
     // modifVideo();
     var nomVid = $('#nomVideoEdit').val();
-    var sourceFilePath = fichierAjout;
+    //var sourceFilePath = fichierAjout;
     var filePath = cordova.file.documentsDirectory +nomVid+".mov";
     var ft = new FileTransfer();
     ft.download(
-        sourceFilePath,
+        fileURIAjout,
         filePath,
         function(entry){
            // alert("file copy success");
@@ -140,20 +149,22 @@ function onVideoSuccessAjout(fileuriAjout) {
 function insertVideo(filePath){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx){
-            successCBVideoAdd(tx, filePath);
+            //successCBVideoAdd(tx, filePath);
+            var matricule = $('#matAgent').val();
+            var nomVideo = $('#nomVideoAjout').val();
+            var idConstat = $("#idCache").val();
+            ///TODO parametrized ->
+            tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path, videoSync) VALUES (?,?,?,?,?)',[matricule,idConstat,nomVideo,filePath,0]);
+            //Lancer la fonction pour raffraichier la visualisation de la table vidéo
+            videoConstat();
+            //Vider le champ texte qui contient le nom de la vidéo
+            $('#nomVideo').val('');
         }
         , errorCB, successCBVideo);
 }
 
 //Insérer la vidéo dans la table vidéo
 function successCBVideoAdd(tx, filePath){
-    var matricule = $('#matAgent').val();
-    var nomV = $('#nomVideoAjout').val();
-    var idConstat = $("#idCache").val();
-    tx.executeSql('INSERT INTO VIDEO (matricule,constat_id,nom,path, videoSync) VALUES ("'+ matricule +'","'+ idConstat +'","'+nomV+'","'+ filePath +'","'+0+'")');
-    //Lancer la fonction pour raffraichier la visualisation de la table vidéo
-    videoConstat();
-    //Vider le champ texte qui contient le nom de la vidéo
-    $('#nomVideo').val('');
+
 
 }
