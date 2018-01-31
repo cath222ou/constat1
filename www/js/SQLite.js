@@ -3,6 +3,7 @@
 //Variable
 var x = '';
 var y = '';
+//var uuidValue = '21FE5A66-7C7D-4183-87E6-2A58739DE667';
 var uuidValue;
 var matAgent1 = 1; //$('#matAgent').val();
 //var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
@@ -13,8 +14,7 @@ var matAgent1 = 1; //$('#matAgent').val();
 
 //Cordova ready
 function onDeviceReady() {
-	//Valeur du UUID de l'appareille
-    uuidValue= '21FE5A66-7C7D-4183-87E6-2A58739DE667';//device.uuid; A ENLEBVEERERRRRRRr
+	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid;
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
