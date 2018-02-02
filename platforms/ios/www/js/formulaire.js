@@ -1,7 +1,7 @@
 //Fichier pour la création du formulaire
 
  $(function(){
-     $('#app').hide();
+     $('#app').fadeOut('slow');
 
      // gestion des tabs
      $("#tabs").tabs(
@@ -41,7 +41,9 @@
 
     //Débuter un nouveau constat en vidant tout les champs
     function nouvConstat(){
-        $('#enrVideo').addClass('hidden');
+        $('#enrVideo').fadeOut('slow'); //eye candy :)
+        $('#nouvConstat').fadeOut('slow');
+        $('button[name="btnEnregistreFormulaire"]').fadeIn('slow');
         //effacer les valeurs entrées
         $('#nomTxt').val('');
         $('#adresseCor').val('');
@@ -49,7 +51,7 @@
         $('#telTra').val('');
         $('#descInfraction').val('').hide();
         $('#endroitTxt').val('');
-        $('#noCivTxt_c').val('');
+        $('#noCivTxt_c').val('').attr('data-matricule','');
         $('#rueTxt_c').val('');
         $('#descLieux').val('');
         $('#faitTxt').val('');
@@ -60,6 +62,7 @@
         $( "#accordion" ).accordion(
             {active:2}//Etait à 1, je l'ai mis identique à l'initialisation dans le document.ready
         );
+        $('#tabs').tabs('option','active',0);//Remet à la première tab
     }
 
     //Afficher nombre de caractères restants pour le champs texte de faits et gestes
@@ -104,7 +107,6 @@
         $(this).height(this.scrollHeight);
     });
 
-
 	//Entrer son matricule
     function addmatricule() {
         //donner aux champs la valeur du matricule
@@ -116,7 +118,7 @@
         //Fermer la modal de matricule
         $(this).dialog("close");
         //Montrer la division du formulaire
-        $('#app').show();
+        $('#app').fadeIn('slow');
     }
 
     //Affichage date et heure dans formulaire
@@ -142,6 +144,7 @@
             'Annuler,OK'         // buttonLabels
         );
     }
+
 
     function exitFromApp(buttonIndex) {
         if (buttonIndex==2){

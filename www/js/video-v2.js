@@ -16,12 +16,6 @@ function successCBVideo() {
 	}, errorCB);
 }
 
-// Sélectionner tout dans la table vidéo
-//function queryDBVideo(tx) {
-//
-//}
-
-		
 //dessiner BD  /////TEMPORAIRE POUR LA PROGRAMMATION
 function querySuccessVideo(tx, results) {
 	var table02 = $('#tbl1 tbody');
@@ -40,72 +34,36 @@ function querySuccessVideo(tx, results) {
 		);
 	}
 }
-		
-//Supprimer BD VIDEO ///TEMPORAIRE
-function deleteBaseBD2() {
-            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(deleteDB2, errorCB);
-			$('#cf1').empty();
-			db.transaction(onDeviceReady, errorCB);
-		}
-		//drop table	
-		function deleteDB2(tx){
-			tx.executeSql('DROP TABLE IF EXISTS videos');
-		}
-
-
-//Lancer la requête d'insertion dans la table vidéo
-function goInsert2(filePath) {
+$('button[name="btnDropTableVideos"]').on('click',function(){
+//Drop la table video,
 	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 	db.transaction(function(tx){
-	    //Lancer la requête pour avoir le dernier numéro de constat_id
-		tx.executeSql('SELECT constat_id FROM constats WHERE constat_id = (SELECT MAX(constat_id) FROM constats)', [], querySuccess3, errorCB);
-	},
-		errorCB,
-		function(){
-			goInsert3(filePath)
+		tx.executeSql('DROP TABLE IF EXISTS videos',[],function(){
+			$('#cf1').empty();
+			onDeviceReady();
 		});
-}
+	}, errorCB);
+});
 
-//trouver valeur du dernier constat_id du formulaire
-//function idInfo(tx) {
-//
-//}
 
-// Donner à la variable idFormu la valeur du dernier constat
-function querySuccess3(tx, results) {
-    var len = results.rows.length;
-	console.log('qs3' , results);
-    for (var i=0; i<len; i++){
-        idFormu = results.rows.item(i).constat_id;
-    }
-}
+
 
 //Lancer la requête d'insertion
-function goInsert3(filePath) {
+function insertVideoDB(filePath) {
+
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx){
-        //Lancer la requête d'insertion
-        insertDB2(tx, filePath);
+		//Fetch le dernier ID du constat
+			tx.executeSql('SELECT MAX(constat_id) as constat_id FROM constats', [], function(tx,results) {
+				var nomVideo = $('#nomVideo');
+				tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path,videoSync) VALUES (?,?,?,?,?)', [$("#matAgent").val(), results.rows.item(0).constat_id, nomVideo.val(), filePath,0]);
+				nomVideo.val('');
+			});
         },
 		errorCB,
-
 		successCBVideo
 	);
 }
-
-//Insérer les données dans la table Vidéo
-function insertDB2(tx, filePath) {
-    //ID selon le matricule de l'agent
-    var matriculeAgent = $("#matAgent").val();
-    //Nom de la vidéo choisi par l'utilisateur
-    var nomVideo = $('#nomVideo').val();
-    tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path,videoSync) VALUES (?,?,?,?,?)',[matriculeAgent,idFormu,nomVideo,filePath]);
-    //Vider le champs texte du nom de la vidéo
-   	nomVideo.val('');
-}
-
-		
 
 //Ouvrir la librairie des vidéos
 	function getVideo() {
@@ -116,9 +74,6 @@ function insertDB2(tx, filePath) {
 		//options["duration"] = 100000;
 		navigator.camera.getPicture(onVideoSuccess, onFail, options);
 	}
-
-
-
 
 function copieVideoStockageInterne(sourceFileURI){
 	var nomVideo = $('#nomVideo').val();
@@ -175,16 +130,14 @@ function copieVideoStockageInterne(sourceFileURI){
 
 //Envoyer la vidéo dans un nouveau répertoire
 	function onVideoSuccess(fileURI, mediaFiles) {
-		//fichier = fileuri;
 		var nomVid = $('#nomVideo').val();
-		//var sourceFilePath = fileuri;
 		var filePath = cordova.file.documentsDirectory +nomVid+".mov";
 		var ft = new FileTransfer();
             ft.download(
 				fileURI,
                 filePath,
                 function(entry){
-                  //  alert("file copy success");
+                    //alert("file copy success");
 					//alert(JSON.stringify(entry));
                 },
                 function(error){
@@ -192,13 +145,13 @@ function copieVideoStockageInterne(sourceFileURI){
                 }
             );
 //Lancer la requête d'insertion dans la table vidéo
-        goInsert2(filePath);
+		insertVideoDB(filePath);
 	}
 
 
 //Callback d'erreur de l'ouverture de la librairie des vidéos
 	function onFail(err) {
-		console.log("onFail");
+		alert("Impossible d'ouvrir la sélection des videos. Erreur #"+err.code);
 	}
 
 

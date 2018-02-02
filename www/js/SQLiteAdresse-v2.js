@@ -118,19 +118,20 @@ function deleteDBAdr(tx){
 //Lancer la requête de sélection
 function selectNoCiv(){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-    db.transaction(selectNoCivSucces, errorCB);
+    db.transaction(function(tx){
+        //var  nocivique =;
+        //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
+        tx.executeSql('SELECT * FROM adresses WHERE nocivique = ? ',[$('#noCivTxt_c').val()],function(tx,results){
+            nomRueSelect(results);
+        }, function(err){console.log('err tx selectNoCiv');})
+    }, function(err){console.log(JSON.stringify(err))});
 }
 
-//Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
-function selectNoCivSucces(tx, results){
-    ///TODO parametrized ->
-    tx.executeSql('SELECT * FROM adresses WHERE nocivique='+$('#noCivTxt_c').val(),[],function(tx, results){
-        nomRueSelect(tx, results)
-    }, errorCB)
-}
+
+
 
 //Autocomplète des adresses
-function nomRueSelect(tx, results){
+function nomRueSelect(results){
     nomRueResult = [];
     var len = results.rows.length;
     //Ajouter les noms de rues et matricule à la variable nomRueResults
@@ -143,10 +144,16 @@ function nomRueSelect(tx, results){
         minLength: 2,
         select: function(event, ui) {
             event.preventDefault();
+            var inputRue = $('#rueTxt_c');
             //label
-            $("#rueTxt_c").val(ui.item.label);
+            inputRue.val(ui.item.label);
             //valeur des label
-            $('#rueTxt_c').data("matricule",ui.item.value);
+            inputRue.data("matricule",ui.item.value);
+        },
+        open: function(event, ui) {//Fix pour iOS car on doit appuyer 2 fois sur le choix
+            if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+                $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
+            }
         }
     });
 }
@@ -156,13 +163,16 @@ function nomRueSelect(tx, results){
 //Lancer la requête de sélection pour l'édition
 function selectNoCivEdit(){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-    db.transaction(selectNoCivSuccessEdit, errorCB);
+    db.transaction(
+        tx.executeSql('SELECT * FROM adresses WHERE nocivique= ?',[$('#noCivTxtEdit_c').val()],function(tx, results){
+            nomRueSelectEdit(tx, results)
+        }, errorCB)
+        , errorCB);
 }
 
 //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte pour l'édition
 function selectNoCivSuccessEdit(tx, results){
-    ///TODO parametrized ->
-    tx.executeSql('SELECT * FROM adresses WHERE nocivique='+$('#noCivTxtEdit_c').val(),[],function(tx, results){nomRueSelectEdit(tx, results)}, errorCB)
+
 }
 
 //Autocomplète des adresses pour l'édition

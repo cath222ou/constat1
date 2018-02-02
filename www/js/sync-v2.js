@@ -8,7 +8,7 @@ $('#progressbar').progressbar({
 });
 $('#downloadButton').on('click',function(){
     $('#synchronisation').modal('show');
-   syncConstat();
+    syncConstat();
 });
 //Synchronisation des constats
 function syncConstat() {
@@ -21,8 +21,7 @@ function syncConstat() {
         tx.executeSql('SELECT * FROM constats WHERE sync=?', [0], function (tx, results) {
                 //S'il y a une connexion internet
                 if (navigator.onLine === true) {
-                    //lancer la fonction
-                    uploadConstat(tx, results)
+                    uploadConstat(results)
                 }
                 //Sinon message d'erreur
                 else {
@@ -33,66 +32,70 @@ function syncConstat() {
     }, errorCB);
 };
 
-//Sélectionner les constats qui ne sont pas déjà synchronisés (sync = 0)
-//function getConstatsNonSynchro(tx) {
-//
-//};
-
-
 //Synchroniser les constats
-function uploadConstat(tx,results) {
+function uploadConstat(results) {
     //Mettre progressbar à 0, de couleur bleu et un titre Synchronisation en cours
     $('#progressbar').css({width: 0});
     $('#progressbar').css("background", "dodgerblue");
     $('#h6Constat').text('Constat (Synchronisation en cours)');
 
     //Boucle pour les fonctions de nombre de vidéo par constat et pour pousser les données vers le serveur
-    var len = results.rows.length;
-    //Créer une liste avec la même quantité que la quantité de constat (len)
-    var constatCompletees = new Array(len);
-    for (var i=0; i<len; i++){
-        //Donner la valeur 0 à chaque élément de la liste
-        constatCompletees[i] = 0;
-    };
+    //var len = results.rows.length;
+    ////Créer une liste avec la même quantité que la quantité de constat (len)
+    //var constatCompletees = new Array(len);
+    //for (var i=0; i<len; i++){
+    //    //Donner la valeur 0 à chaque élément de la liste
+    //    constatCompletees[i] = 0;
+    //}
 
-    for (var i = 0; i < len; i++) {
-        nombreVideo(results, i);
-        postConstat(results, i, len, constatCompletees);
+    for (var i = 0; i <  results.rows.length; i++) {
+          //TODO: je crois qu'on devrait appeler la fonction nombreVideo lorsqu'on ajout un vidéo ou qu'on edit un vidéo plutôt que dans la synchro
+        var promise = nombreVideo(results,i);
+        promise.done(
+            console.log(results.rows.item(i).nbrVideo)
+                //$('#progressbar').css({width:(i / results.rows.length) * 100 + '%'})
+                ////alert('i '+i);
+                //alert('done');
+                ////postConstat(results, i,  results.rows.length, constatCompletees)
+        );
     }
     //Si la connexion internet est disponible
     if (navigator.onLine === true) {
         //lancer la fonction
-        uploadVideoSucces();
+       // uploadVideoSucces();
     }
     //Sinon message d'erreur
     else{
         alert('Impossible de synchroniser les vidéos: Aucune connectivité');
     }
-};
+}
 
 //Faire une requête afin d'obtenir le nombre de vidéo par constat
 function nombreVideo(results, i) {
+    var deferred = new $.Deferred();
     var constatID = results.rows.item(i).constat_id;
-    var nombre = 0;
     //Lancer la requête pour compter le nombre de vidéo
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function (tx, results) {
-        tx.executeSql('SELECT constat_id, COUNT(*) AS nbrVideo FROM videos WHERE constat_id = ?', [constatID],
+        tx.executeSql('SELECT COUNT(*) AS nbrVideo FROM videos WHERE constat_id = ?', [constatID],
             function (tx, resultat) {
-                nombre = resultat.rows.item(0).nbrVideo;
                 //Lancer la requête de mise à jour
-                updateNbrVideo(nombre, constatID);
-            }, errorCB)})
+                //alert('constatID ' + constatID);
+                tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[resultat.rows.item(0).nbrVideo,constatID],
+                    function(){
+                        console.log('MAJ réussi du nbrVideo pour le idConstat '+constatID);
+                        deferred.resolve();
+                    },deferred.reject())
+            },deferred.reject())
+    });
+    return deferred.promise();
 }
 
 //Mettre à jour la table demo afin d'insérer le nombre de vidéo par constat
-function updateNbrVideo(nombre,constatID){
-    db.transaction(function (tx, resultat2) {
-        tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[nombre,constatID],
-            function(){
-            console.log('MAJ réussi du nbrVideo pour le idConstat '+constatID);
-        },errorCB)})
-}
+//function updateNbrVideo(nombre,constatID){
+//    db.transaction(function (tx, resultat2) {
+//        })
+//}
 
 //Connexion au serveur pour envoyer les constats vers le serveur
 function postConstat(results, i, len, constatCompletees) {
@@ -134,9 +137,8 @@ function postConstat(results, i, len, constatCompletees) {
                     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
                     db.transaction(function (tx, results) {
                         //Modifier le champ sync de 0 vers 1
-                        tx.executeSql('UPDATE constats SET sync= ? WHERE constat_id=?' , [1,idConstat], queryDB, errorCB),
-                            errorCB
-                    });
+                        tx.executeSql('UPDATE constats SET sync= ? WHERE constat_id=?' , [1,idConstat], function(){console.log('Constat '+idConstat+ ' correctement synchronisé.');}, errorCB)
+                    },errorCB);
                 }
                 //Si le serveur envoi un message d'erreur
                 else {
@@ -148,11 +150,12 @@ function postConstat(results, i, len, constatCompletees) {
             },
             //Si la connextion au serveur est un échec
 
-            error: function (model, response, constatID) {
+            error: function (error) {
                 //la progressbar devient rouge et contient un message d'échec
-                var idConstat = this.constatID;
-                alert('Échec de la synchronisation');
-                $('#echecSync').append('Constat: ' + idConstat+'<br/>');
+                //var idConstat = this.constatID;
+                //alert('Échec de la synchronisation');
+                console.error('Erreur postConstat:' + JSON.stringify(error));
+                $('#echecSync').append('Constat: ' + this.constatID+'<br/>');
                 $('#progressbar').css("background", "red");
                 $('#progerssLabelConstat').text('Échec');
             }

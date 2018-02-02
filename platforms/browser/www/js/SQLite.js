@@ -5,15 +5,16 @@ var x = '';
 var y = '';
 //var uuidValue = '21FE5A66-7C7D-4183-87E6-2A58739DE667';
 var uuidValue;
-var matAgent1 = 1; //$('#matAgent').val();
-//var uuidApp1 = '21FE5A66-7C7D-4183-87E6-2A58739DE667';//$('#uuidApp').val();
-
-
+$(function(){
+	$('#nouvConstat').fadeOut();
+	$('#enrVideo').fadeOut();
+})
 // Wait for Cordova to load
     document.addEventListener("deviceready", onDeviceReady, false);
 
 //Cordova ready
 function onDeviceReady() {
+
 	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid;
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
@@ -30,7 +31,7 @@ function onDeviceReady() {
 
 		// Suppression de la BD (POUR PROGRAMMATION)
 		function deleteDB(tx){
-			tx.executeSql('DROP TABLE IF EXISTS constats');
+
 		}
 
 		//Création de la table constats
@@ -81,13 +82,16 @@ function onDeviceReady() {
 			}
 		}
 
-		//Callback d'erreur
-        function errorCB(err) {
-            console.log('erreur',err);
-        }
+		//Callback d'erreur générique
+        function errorCB(something) {
+			if (typeof something == 'object') {
+				something = JSON.stringify(something);
+			}
+			console.log(something);
+		}
 
         // Lancer la requête de sélection de tous dans la table demo
-        function successCBConstat(tx,result,matAgent1,uuidApp1) {
+        function successCBConstat(tx) {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(function(tx){
 				tx.executeSql('SELECT * FROM constats WHERE sync = ?', [0], querySuccess, errorCB);
@@ -122,36 +126,62 @@ function onDeviceReady() {
 			var note = $("#noteTxt").val();
 
 			var suite = null;
-                //Si la case est coché, mettre la valeur true à la variable suite
-				if($('#checkbox-nested-text').is(':checked')){
-					 suite = true
-				}
-				//Sinon mettre la valeur false
-				else {
-					 suite = false
-				}
+            //Si la case est coché, mettre la valeur true à la variable suite
+			if($('#checkbox-nested-text').is(':checked')){
+				 suite = true
+			}
+			//Sinon mettre la valeur false
+			else {
+				 suite = false
+			}
+
             //Insérer les données dans la table constats
 			///TODO parametrized ->
             tx.executeSql('INSERT INTO constats (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
+			//rendre visible le bouton de sélection de vidéo
 		}
 
+		function validerMatriculeRole(){
+			var matriculeRole = $('#rueTxt_c').data("matricule");
+			if(typeof matriculeRole == "string" && matriculeRole.length > 0){//Matricule du role existe
+				return true;
+			}
+			else if(($("#nomTxt").val() != 'null' && $('#adresseCor').val() != 'null') && typeof matriculeRole == "undefined"){ //Matricule est inexistant et les champs ont été remplis par une valeur autre que null, c'est bon on accepte :)
+				$("#nomTxt").closest('.parent').prev().removeClass("ChampsObligatoire");
+				$("#nomTxt").css("border", '').removeClass('obligatoire');
+				$('#adresseCor').css('border','').removeClass('obligatoire');
+				return true;
+			}
+			else{
+				$("#nomTxt").closest('.parent').prev().addClass("ChampsObligatoire");
+				$("#nomTxt").css("border", "3px solid red").addClass('obligatoire').val('');
+				$('#adresseCor').css('border','3px solid red').addClass('obligatoire').val('');
+				return false;
+			}
 
 
+		}
 		function goInsert(position) {
             //lance la fonction pour remplir les champs vide non obligatoire par NULL
 			validA();
 
-
             //Vérifier les champs obligatoire
 			var nbr = 0;
 			var radioNbr =0;
+			var isValide = true;
             var a = $('#accordion');
+
+			if(!validerMatriculeRole()){
+				isValide = false;
+			}
+
 
 			//Compter le nombre de description d'infraction sélectionné (1 ou 0)
             a.find(".radio-input").each(function() {
             	//Si un radio box est sélectionné, augmenter la radioNbr de 1
             	if(( $(this).is(':checked') && $(this).attr('id')!== 'radio-8') || ($(this).is(':checked') && $(this).attr('id')=== 'radio-8' && $('#descInfraction').val() !== "")){
-                    radioNbr = radioNbr + 1;
+                    //radioNbr = radioNbr + 1;
+					++radioNbr;
                 }
             });
 			// Vérification qu'il y a une description d'infraction sélectionnée
@@ -175,8 +205,8 @@ function onDeviceReady() {
 			//Vérification que les champs textes obligatoires sont remplis
             $(".obligatoire").each(function() {
                 if ($(this).val() === "null" || $(this).val() === " " || $(this).val() === "") {
-                	nbr = nbr +1;
-
+                	//nbr = nbr +1;
+					++nbr;
 					$(this).css("border", "3px solid red");
                     $(this).closest('.parent').prev().addClass("ChampsObligatoire");
 
@@ -188,28 +218,40 @@ function onDeviceReady() {
             });
 
 			//Si un des champs obligatoires n'est pas remplis ou aucun radio n'est sélectionné
-			if (nbr > 0 || radioNbr === 0){
-				console.log(nbr);
-                console.log(radioNbr);
+			if (nbr > 0 || radioNbr === 0 || !isValide){
+				console.log('nbr: '+nbr);
+                console.log('radionbr: '+radioNbr);
+				$('#enrVideo').fadeOut('slow');
+				$('#nouvConstat').fadeOut('slow');
+				$('button[name="btnEnregistreFormulaire"]').fadeIn('slow');
                 alert('Des champs obligatoires ne sont pas remplis');
 			}
 
 			//sinon lance la transaction insertDB pour insérer les données dans la table DEMO
 			else{
+				$('#enrVideo').fadeIn('slow');//petite animation pour cacher et afficher les boutons
+				$('#nouvConstat').fadeIn('slow');
+				$('button[name="btnEnregistreFormulaire"]').fadeOut('slow');
                     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                    db.transaction(function (tx) {insertDB(tx, position);}, errorCB, successCBConstat);
+                    db.transaction(function (tx) {
+						insertDB(tx, position);
+					},
+						errorCB,
+						successCBConstat);
                 }
 		}
 
 
 		//Supprimer le contenu de la BD
-
-		function deleteBaseD() {
+		$('button[name="btnDropTableConstats"]').on('click',function(){
 			db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(deleteDB, errorCB);
-			$('cf').empty();
-			db.transaction(onDeviceReady, errorCB);
-        }
+			db.transaction(function(tx){
+				tx.executeSql('DROP TABLE IF EXISTS constats',[],onDeviceReady());
+			}, errorCB);
+			$('.cf').empty();
+			//db.transaction(onDeviceReady, errorCB);
+		});
+
 
 
 	/////////////////////////////
@@ -219,18 +261,21 @@ function onDeviceReady() {
 
     //Callback d'erreur du géopositionnement
     function onError(error) {
-        alert('code: '    + error.code    + '\n' +
+        alert('code:  '    + error.code    + '\n' +
               'message: ' + error.message + '\n');
     }
 
 
-
+$('button[name="btnEnregistreFormulaire"]').on('click',function(event){
+	event.preventDefault();
 	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement du constat
-	function enregistre(){
-		navigator.geolocation.getCurrentPosition(goInsert, onError);
-		//rendre visible le bouton de sélection de vidéo
-		$('#enrVideo').removeClass('hidden');
-	}
+	navigator.geolocation.getCurrentPosition(goInsert, onError);
+})
+//
+//function enregistre(){
+//
+//
+//}
 
 
 
