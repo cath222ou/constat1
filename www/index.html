@@ -88,7 +88,12 @@
 			<!--Onglet formulaire-->
 
 			<div id="tabs-1" >
-				<button id="enrVideo" type="button" data-toggle="modal" data-target="#videoModal" class="btn1">Sélectionner vidéo</button>
+				<button id="enrVideo" type="button" class="btn1">Joindre une vidéo</button>
+				<div id="videoThumbnail">
+					<video id="video" src="" type="video/quicktime" controls style="width: 120px; height: 100px;"></video><br/>
+
+					<canvas id="canvas"></canvas>
+				</div>
 				<div id="accordion">
 					<h3>ORIGINE</h3>
 					<div id="accordion-1" class="parent">
@@ -290,7 +295,7 @@
 							<textarea id="mat" name="mattxt" style="width:200px; height:27px;"></textarea></p>
 							</p>-->
 
-			<!--Édition de la BD-->
+			<!--Édition des constats-->
 			<div id="tabs-2">
 				<!--Création de la table-->
 				<section id="no-more-tables">
@@ -310,7 +315,7 @@
 				</div>
 			</div>
 
-
+			<!-- tabs Video -->
 			<div id="tabs-3" class="">
 				<section id="no-more-tables">
 					<div class="table1">
@@ -595,11 +600,11 @@
 		</div>
 	</div>
 	<!--modal de vidéo-->
-	<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+	<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" >
 		<div class="modal-dialog" role="document">
 			<div class="modal-content modal-content1">
 				<div class="modal-header">
-					<h5 class="modal-title">Nom de la vidéo</h5>
+					<h5 class="modal-title">Inscrire le nom de la vidéo</h5>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -608,7 +613,7 @@
 				</div>
 				<div class="modal-footer">
 					<!--<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>-->
-					<button onclick="getVideo()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer le nom</button>
 				</div>
 			</div>
 		</div>
@@ -618,16 +623,17 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content modal-content1">
 				<div class="modal-header">
-					<h5 class="modal-title">Nom de la vidéo</h5>
+					<h5 class="modal-title">Inscrire le nom de la vidéo</h5>
+				</div>
+				<div class="modal-body">
 					<div>
-						<input id="nomVideoEdit" type="text">
-						<div class="modal-footer">
-							<input id="idvideo" class="hidden">
-							</input>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-							<button onclick="getVideoEdit()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
-						</div>
+						<input id="idvideo" class="hidden">
+						<input id="nomVideoEdit" type="text" class="form-control">
 					</div>
+				</div>
+				<div class="modal-footer">
+					<!--<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>-->
+					<button onclick="getVideoEdit()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer le nom</button>
 				</div>
 			</div>
 		</div>
@@ -650,7 +656,7 @@
 		</div>
 	</div>
 	<!--Modal de synchronisation-->
-	<div class="modal fade" id="synchronisation" tabindex="-1" role="dialog" aria-labelledby="modalSyncLabel" >
+	<div class="modal fade" id="synchronisation" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="modalSyncLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content modal-content1">
 				<div class="modal-header">
@@ -658,13 +664,28 @@
 					<h4 class="modal-title" id="modalSyncLabel">Synchronisation</h4>
 				</div>
 				<div class="modal-body progressBar">
-					<H6 id="h6Constat">Constat</H6>
-					<div id="progressbar" class="progress">
-						<div id="progerssLabelConstat" class="progress-label"></div>
+					<form id="fileupload">
+
+					</form>
+					<div class="section">
+						<H6 id="h6Constat">Constat</H6>
+						<div id="progressbar" class="progress">
+							<div id="progerssLabelConstat" class="progress-label"></div>
+						</div>
 					</div>
-					<H6 id="h6Video">Vidéo</H6>
-					<div id="progressbarVideo" class="progress">
-						<div id="progressLabelVideo" class="progress-label"></div>
+
+					<div class="section">
+						<H6 id="h6Video">Nombre de vidéo</H6>
+						<progress id="progress" class="progress-bar-striped" value="0"></progress>
+						<div id="progressBlock">
+							<div class="innerBlock">
+								<p class="nomVideo"></p>
+								<progress max="100" value="0" class="progress-bar-success"></progress>
+								<span class="recievedValue"></span>  <span class="totalValue"></span><br/>
+								<span class="kbPerSec"></span> &nbsp; <span class="timeRemaining"></span><br/>
+								<span class="timeTotal"></span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">

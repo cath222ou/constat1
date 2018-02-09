@@ -100,17 +100,9 @@ function modifVideo(filePath){
         tx.executeSql('UPDATE videos SET nom = ?, path = ? WHERE id_video = ?', [nomVideo,filePath,idVideo],null, errorCB);
         //Lancer la fonction pour raffraichir la visualisation de la table vidéo
         videoConstat();
-
+        $('#nomVideo').val('');
     }, errorCB);
 }
-
-//modifier la vidéo relié au formulaire
-//function videoModification(tx, filePath){
-//
-//
-//}
-
-
 
 //Ajout de vidéo au constat
 //Ouverture de la librairie de vidéo
@@ -153,7 +145,6 @@ function insertVideo(filePath){
             var matricule = $('#matAgent').val();
             var nomVideo = $('#nomVideoAjout').val();
             var idConstat = $("#idCache").val();
-            ///TODO parametrized ->
             tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path, videoSync) VALUES (?,?,?,?,?)',[matricule,idConstat,nomVideo,filePath,0]);
             //Lancer la fonction pour raffraichier la visualisation de la table vidéo
             videoConstat();

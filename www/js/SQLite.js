@@ -8,6 +8,10 @@ var uuidValue;
 $(function(){
 	$('#nouvConstat').fadeOut();
 	$('#enrVideo').fadeOut();
+	$('#videoThumbnail').fadeOut();
+	$('#progress').progressbar({
+		value:0
+	});
 })
 // Wait for Cordova to load
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -29,10 +33,10 @@ function onDeviceReady() {
 
 }
 
-		// Suppression de la BD (POUR PROGRAMMATION)
-		function deleteDB(tx){
-
-		}
+		//// Suppression de la BD (POUR PROGRAMMATION)
+		//function deleteDB(tx){
+        //
+		//}
 
 		//Création de la table constats
 		function populateDBConstat(tx) {
