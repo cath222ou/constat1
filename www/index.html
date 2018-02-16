@@ -89,11 +89,8 @@
 
 			<div id="tabs-1" >
 				<button id="enrVideo" type="button" class="btn1">Joindre une vidéo</button>
-				<div id="videoThumbnail">
-					<video id="video" src="" type="video/quicktime" controls style="width: 120px; height: 100px;"></video><br/>
-
-					<canvas id="canvas"></canvas>
-				</div>
+				<ul id="listeVideo" class="list-group">
+				</ul>
 				<div id="accordion">
 					<h3>ORIGINE</h3>
 					<div id="accordion-1" class="parent">
@@ -644,13 +641,15 @@
 			<div class="modal-content modal-content1">
 				<div class="modal-header">
 					<h5 class="modal-title">Nom de la vidéo</h5>
+				</div>
+				<div class="modal-body">
 					<div>
 						<input id="nomVideoAjout" type="text">
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-							<button onclick="getVideoAjout()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
-						</div>
 					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					<button onclick="getVideoAjout()" type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
 				</div>
 			</div>
 		</div>
@@ -676,13 +675,15 @@
 
 					<div class="section">
 						<H6 id="h6Video">Nombre de vidéo</H6>
-						<progress id="progress" class="progress-bar-striped" value="0"></progress>
+						<progress id="progress" class="progress-bar-striped progress-bar-success active" value="0"></progress>
 						<div id="progressBlock">
 							<div class="innerBlock">
-								<p class="nomVideo"></p>
-								<progress max="100" value="0" class="progress-bar-success"></progress>
+								<p class="nomVideo"><span></span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-spinner fa-pulse fa-fw"></i></p>
+								<progress max="100" value="0" class="progress-bar-info progress-bar-striped"></progress>
+								<div class="detailsTransfert">
 								<span class="recievedValue"></span>  <span class="totalValue"></span><br/>
 								<span class="kbPerSec"></span> &nbsp; <span class="timeRemaining"></span><br/>
+								</div>
 								<span class="timeTotal"></span>
 							</div>
 						</div>
@@ -700,6 +701,7 @@
 <script type="text/javascript" src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/tether.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/resumable.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/dateHeure.js"></script>
 <script type="text/javascript" src="js/SQLite.js"></script>
@@ -708,6 +710,7 @@
 <script type="text/javascript" src="js/editionVideo-v2.js"></script>
 <script type="text/javascript" src="js/sync-v2.js"></script>
 <script type="text/javascript" src="js/validation.js"></script>
+<script type="text/javascript" src="js/md5.min.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
 
 <script type="text/javascript" src="js/SQLiteAgent-v2.js"></script>

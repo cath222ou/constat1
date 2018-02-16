@@ -1,6 +1,5 @@
 //Fichier pour l'édition des vidéos dans l'édition des formulaires
 
-//var fichierEdit;
 
 //dessiner la table des vidéo POUR LA PROGRAMMATION
 function querySuccessVideoEdit(tx, results) {
@@ -30,25 +29,15 @@ function videoConstat(){
         },
             errorCB);
 }
-////Sélectionner les vidéo en lien avec le constat en édition
-//function videoIdConstat(tx){
-//
-//}
-
 
 //Lancer la requête pour la suppression
 function removeVideo(idVideo,i){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx) {
-        //videoSuppression(tx, idVideo, i)
         tx.executeSql('DELETE FROM videos WHERE id_video = ?', [idVideo],null, errorCB);
         $("#"+ i ).empty();
     }, errorCB);
 }
-////Supprimer la vidéo lié au formulaire lorsque l'on clique sur le bouton Supprimer
-//function videoSuppression(tx, idVideo, i){
-//
-//}
 
 //Ouvrir la librairie des vidéos
 function getVideoEdit() {
@@ -83,13 +72,6 @@ function onVideoSuccessEdit(fileURI) {
     modifVideo(filePath);
 }
 
-//modal
-$(document).on('show.bs.modal','#videoModalEdit', function (event) {
-    var button = $(event.relatedTarget) ;
-    var idVid = button.data('videoid');
-    $("#idvideo").val(idVid);
-});
-
 //Lancer la requête pour modifier la vidéo relié au formulaire
 function modifVideo(filePath){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
@@ -116,18 +98,14 @@ function getVideoAjout() {
 
 //Copier la vidéo dans un nouveau répertoire
 function onVideoSuccessAjout(fileURIAjout) {
-    //fichierAjout = fileuriAjout;
-    // modifVideo();
-    var nomVid = $('#nomVideoEdit').val();
-    //var sourceFilePath = fichierAjout;
+    var nomVid = $('#nomVideoAjout').val();
     var filePath = cordova.file.documentsDirectory +nomVid+".mov";
     var ft = new FileTransfer();
     ft.download(
         fileURIAjout,
         filePath,
         function(entry){
-           // alert("file copy success");
-            //alert(JSON.stringify(entry));
+            // Succès!
         },
         function(error){
             alert(JSON.stringify(error));
@@ -141,21 +119,24 @@ function onVideoSuccessAjout(fileURIAjout) {
 function insertVideo(filePath){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx){
-            //successCBVideoAdd(tx, filePath);
-            var matricule = $('#matAgent').val();
-            var nomVideo = $('#nomVideoAjout').val();
-            var idConstat = $("#idCache").val();
-            tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path, videoSync) VALUES (?,?,?,?,?)',[matricule,idConstat,nomVideo,filePath,0]);
-            //Lancer la fonction pour raffraichier la visualisation de la table vidéo
-            videoConstat();
-            //Vider le champ texte qui contient le nom de la vidéo
-            $('#nomVideo').val('');
+            tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path, videoSync) VALUES (?,?,?,?,?)',[$('#matAgent').val(),$("#idCache").val(),$('#nomVideoAjout').val(),filePath,0],function(success){console.log(success);},function(err){console.log(JSON.stringify(err));});
+            $('#nomVideoAjout').val('');
         }
-        , errorCB, successCBVideo);
+        , errorCB, getVideosNonSync);
 }
 
-//Insérer la vidéo dans la table vidéo
-function successCBVideoAdd(tx, filePath){
 
+//modal
+$(document).on('show.bs.modal','#videoModalEdit', function (event) {
+    var button = $(event.relatedTarget) ;
+    var idVid = button.data('videoid');
+    $("#idvideo").val(idVid);
+});
 
-}
+//Supprime le video qui est dans la liste sous le bouton "Joindre une video" dans l'onglet Formulaire
+$(document).on('click touchstart','#listeVideo span',function(){//Le event touchstart est requis pour le ipad car il ne semble pas supporter le simple event Click ...
+    var idVideo = $(this).closest('li').data('vid');
+    removeVideo(idVideo);
+    $('#listeVideo').find($(this).closest('li')).fadeOut('slow');
+});
+

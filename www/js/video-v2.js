@@ -3,32 +3,21 @@
 var fichier = null;
 var idFormu = null;
 
-
-//$(function(){
-//	$('#fileupload').fileupload(
-//		'option',{
-//			url:'http://constats.ville.valdor.qc.ca/api/v1/sync/video',
-//			sequentialUpload: true,
-//			paramName:'file[]'
-//		}
-//	);
-//});
-
 //Création de la table vidéo
 function populateDBVideo(tx) {
 	tx.executeSql('CREATE TABLE IF NOT EXISTS videos (matricule, constat_id INTEGER, id_video INTEGER PRIMARY KEY AUTOINCREMENT, nom, path, videoSync INTEGER, FOREIGN KEY(constat_id) REFERENCES constats(constat_id))');
 }
 
 // Lancer la requête pour sélectionner tout dans la table
-function successCBVideo() {
+function getVideosNonSync() {
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx){
-		tx.executeSql('SELECT * FROM videos', [], querySuccessVideo, errorCB);
+		tx.executeSql('SELECT * FROM videos WHERE videoSync = ?', [0], afficherTableVideo, errorCB);
 	}, errorCB);
 }
 
 //dessiner BD  /////TEMPORAIRE POUR LA PROGRAMMATION
-function querySuccessVideo(tx, results) {
+function afficherTableVideo(tx, results) {
 	var table02 = $('#tbl1 tbody');
 	table02.html('');
 	var len = results.rows.length;
@@ -45,6 +34,7 @@ function querySuccessVideo(tx, results) {
 		);
 	}
 }
+
 $('button[name="btnDropTableVideos"]').on('click',function(){
 //Drop la table video,
 	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
@@ -58,7 +48,7 @@ $('button[name="btnDropTableVideos"]').on('click',function(){
 
 $('#enrVideo').on('click',function(){
 	getVideo();
-})
+});
 
 function getNbrVideoParConstat(constat_id){
 	var deferred = new $.Deferred();
@@ -76,8 +66,8 @@ function setNbrVideoParConstat(constat_id,nbrVideo){
 	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 	db.transaction(function (tx) {
 		tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[nbrVideo,constat_id],
-			function(result){ deferred.resolve()},//Succès, on est heureux et on continue!
-			function(error){deferred.reject(error)})//Échec de l'update du nombre de video, on retourne le message d'erreur
+			function(){ deferred.resolve()},//Succès, on est heureux et on continue!
+			function(error){deferred.reject(error)}); //Échec de l'update du nombre de video, on retourne le message d'erreur
 	}
 		,deferred.reject()//Erreur lors de la transaction, on reject même si le reject du executeSql devrait avoir eu lieu...
 	);
@@ -91,12 +81,15 @@ function insertVideoDB(filePath) {
 		//Fetch le dernier ID du constat
 			tx.executeSql('SELECT MAX(constat_id) as constat_id FROM constats', [], function(tx,results) {
 				var nomVideo = $('#nomVideo');
-				tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path,videoSync) VALUES (?,?,?,?,?)', [$("#matAgent").val(), results.rows.item(0).constat_id, nomVideo.val(), filePath,0]);
-				nomVideo.val('');
+				tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path,videoSync) VALUES (?,?,?,?,?)', [$("#matAgent").val(), results.rows.item(0).constat_id, nomVideo.val(), filePath,0],function(tx,results){
+					//On ajout un item qui permet de voir sous le bouton "Joindre un video", les videos en lien avec le constat. Ça permet aussi de supprimer le/les videos non désiré immédiatement.
+					$('#listeVideo').append('<li class="list-group-item" data-vid="'+results.insertId+'">'+nomVideo.val()+'&nbsp;&nbsp;&nbsp;&nbsp;<span><i class="fa fa-remove">&nbsp;&nbsp;&nbsp;</i></span></li>');
+					nomVideo.val('');
+				});
 			});
         },
 		errorCB,
-		successCBVideo
+		getVideosNonSync
 	);
 }
 
@@ -125,7 +118,6 @@ function showModalNomVideo(fileURI){
 		}
 		$('#nomVideo').val(nomRue);
 
-
 	}).on('hide.bs.modal',function(event){
 		if(!$('#nomVideo').val() && fileURI.length < 1){
 			alert('Vous devez inscrire un nom de video');
@@ -134,15 +126,14 @@ function showModalNomVideo(fileURI){
 		}
 		else if(fileURI.length > 0){
 			//à la fermeture, on déplace le video dans le répertoire de l'app via FileTransfer, nous devrions le faire via xhr2 éventuellement
-			onVideoSuccess(fileURI);
+			deplaceVideoLocal(fileURI);
 			fileURI = '';
 		}
-
 	})
 }
 
 //Envoyer la vidéo dans un nouveau répertoire
-	function onVideoSuccess(fileURI, mediaFiles) {
+function deplaceVideoLocal(fileURI, mediaFiles) {
 		var nomVid = $('#nomVideo').val();
 		var filePath = cordova.file.documentsDirectory +nomVid+".mov";
 		var ft = new FileTransfer();
@@ -173,7 +164,7 @@ function showModalNomVideo(fileURI){
 	}
 
 //Callback d'erreur de l'ouverture de la librairie des vidéos/est callé si aucun video n'est choisi aussi...
-	function onFail(err) {
+function onFail(err) {
 		alert("Impossible d'ouvrir la sélection des videos. Erreur # "+err.code);
 	}
 

@@ -18,14 +18,13 @@ $(function(){
 
 //Cordova ready
 function onDeviceReady() {
-
 	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid;
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
-    db.transaction(populateDBConstat, errorCB, successCBConstat);
+    db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
     //Création de la Table de vidéo
-    db.transaction(populateDBVideo, errorCB, successCBVideo);
+    db.transaction(populateDBVideo, errorCB, getVideosNonSync);
     //Création de la Table de Agent
     db.transaction(populateDBAgent, errorCB, function(tx,result){successCBAgent(tx,result)});
     //Création de la Table de Adresse
@@ -33,24 +32,13 @@ function onDeviceReady() {
 
 }
 
-		//// Suppression de la BD (POUR PROGRAMMATION)
-		//function deleteDB(tx){
-        //
-		//}
-
 		//Création de la table constats
 		function populateDBConstat(tx) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS constats (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER)');
 		}
 
-		//Sélectionner tout dans la table constats
-        //function queryDB(tx) {
-         //
-        //}
-
-
 		//Création de la table demo pour visualisation dans l'application
-		function querySuccess(tx, results) {
+		function afficherTableConstats(tx, results) {
 		var table01 = $('#tbl tbody');
 		table01.html('');
 		var len = results.rows.length;
@@ -95,10 +83,10 @@ function onDeviceReady() {
 		}
 
         // Lancer la requête de sélection de tous dans la table demo
-        function successCBConstat(tx) {
+        function getConstatsNonSync(tx) {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(function(tx){
-				tx.executeSql('SELECT * FROM constats WHERE sync = ?', [0], querySuccess, errorCB);
+				tx.executeSql('SELECT * FROM constats WHERE sync = ?', [0], afficherTableConstats, errorCB);
 			}, errorCB);
         }
 
@@ -165,6 +153,7 @@ function onDeviceReady() {
 
 
 		}
+
 		function goInsert(position) {
             //lance la fonction pour remplir les champs vide non obligatoire par NULL
 			validA();
@@ -241,10 +230,9 @@ function onDeviceReady() {
 						insertDB(tx, position);
 					},
 						errorCB,
-						successCBConstat);
+						getConstatsNonSync);
                 }
 		}
-
 
 		//Supprimer le contenu de la BD
 		$('button[name="btnDropTableConstats"]').on('click',function(){
@@ -274,15 +262,4 @@ $('button[name="btnEnregistreFormulaire"]').on('click',function(event){
 	event.preventDefault();
 	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement du constat
 	navigator.geolocation.getCurrentPosition(goInsert, onError);
-})
-//
-//function enregistre(){
-//
-//
-//}
-
-
-
-
-
-	
+});

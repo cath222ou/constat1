@@ -57,84 +57,113 @@ function uploadConstat(results) {
         //    //$('#progressbar').css({width:(i / results.rows.length) * 100 + '%'})
         //    ////alert('i '+i);
         //    //alert('done');
-        //    postConstat(results, i,  results.rows.length, constatCompletees)
+
+            postConstat(results, i,  results.rows.length, constatCompletees);
         //);
     }
     //Si la connexion internet est disponible
     if (navigator.onLine === true) {
-        //lancer la fonction
-        uploadVideoSucces();
+     //   uploadVideoSucces();
     }
-    //Sinon message d'erreur
     else{
         alert('Impossible de synchroniser les vidéos: Aucune connectivité');
     }
 }
 
+//Faire une requête afin d'obtenir le nombre de vidéo par constat
+function nombreVideo(results, i) {
+    var constatID = results.rows.item(i).constat_id;
+    var nombre = 0;
+    //Lancer la requête pour compter le nombre de vidéo
+    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    db.transaction(function (tx, results) {
+        tx.executeSql('SELECT COUNT(*) AS nbrVideo FROM videos WHERE constat_id = ?' ,[results.rows.item(0).constat],
+            function (tx, resultat) {
+                nombre = resultat.rows.item(0).nbrVideo;
+                //Lancer la requête de mise à jour
+                tx.executeSql('UPDATE constats SET nbrVideo="'+ nombre + '"WHERE constat_id =' + constatID)
+
+            }, errorCB)})
+};
+
+
 //Connexion au serveur pour envoyer les constats vers le serveur
 function postConstat(results, i, len, constatCompletees) {
     //Si la connection internet est disponible
     if (navigator.onLine === true) {
-        $.ajax({
-            // url: 'http://10.208.1.137/api/v1/sync/constat',
-            url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/constat',
-            method: 'post',
-            data: {uuid: uuidValue, constat: results.rows.item(i), nbrVideo: results.rows.item(i).nbrVideo},
-            constatID: results.rows.item(i).constat_id,
-            //Si la connexion au serveur est un succès
-            success: function (constatID) {
-                var idConstat = this.constatID;
-                //Si le serveur envoi un succès
-                if (constatID.status === 'success') {
-                    //Réinitialiser la variable du nombre de constat synchronisé à 0
-                    var nbConstatCompletees = 0;
-                    var len = constatCompletees.length;
-                    //Selon la position dans la liste, changer la valeur 0 par 1
-                    constatCompletees[i] = 1;
-                    //Faire la somme des éléments de la liste pour connaitre à quel nombre de constat nous sommes rendu pour la synchronisation
-                    for (var j = 0; j < len; j++){
-                        nbConstatCompletees += constatCompletees[j];
-                    }
+        var constat_id = results.rows.item(i).constat_id;
+            var nbrVideo;
+            console.log('cid: '+constat_id);
+           // var deferred = $.Deferred();
+            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+            db.transaction(function (tx) {
+                tx.executeSql('SELECT constat_id ,COUNT(*) AS nbrVideo FROM videos WHERE constat_id = ?' ,[constat_id],
+                    function (tx, resultat) {
+                        console.log('nbrVideo '+nbrVideo);
+                        nbrVideo = resultat.rows.item(0).nbrVideo;
+                    });
+                tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[nbrVideo,constat_id],function(){
+                    console.log('update nbr '+nbrVideo);
+                    alert('after: '+nbrVideo);
+                    $.ajax({
+                        url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/constat',
+                        method: 'post',
+                        data: {uuid: uuidValue, constat: results.rows.item(i), nbrVideo: nbrVideo},
+                        constatID: constat_id,
+                        //Si la connexion au serveur est un succès
+                        success: function (constatID) {
+                            var idConstat = this.constatID;
+                            //Si le serveur envoi un succès
+                            if (constatID.status === 'success') {
+                                //Réinitialiser la variable du nombre de constat synchronisé à 0
+                                var nbConstatCompletees = 0;
+                                var len = constatCompletees.length;
+                                //Selon la position dans la liste, changer la valeur 0 par 1
+                                constatCompletees[i] = 1;
+                                //Faire la somme des éléments de la liste pour connaitre à quel nombre de constat nous sommes rendu pour la synchronisation
+                                for (var j = 0; j < len; j++){
+                                    nbConstatCompletees += constatCompletees[j];
+                                }
+                                //Augmenter la valeur de la progressbar en fonction du nombre de constat poussé vers le serveur
+                                $('#progressbar').css({width: (nbConstatCompletees / len) * 100 + '%'});
+                                $('#progerssLabelConstat').text('Constat: ' + nbConstatCompletees + '/' + len);
+                                $('#succesSync').append('Constat: ' + idConstat + '<br/>');
+                                //Si le nombre de constat poussé est égale au nombre de constat total
+                                if (nbConstatCompletees === len) {
+                                    //ajouter Synchornisation complétée à la progressbar
+                                    $('#progerssLabelConstat').text("Synchronisation complétée");
+                                    $('#h6Constat').text('Constat');
+                                }
 
+                                db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+                                db.transaction(function (tx, results) {
+                                    //Modifier le champ sync de 0 vers 1
+                                    tx.executeSql('UPDATE constats SET sync= ? WHERE constat_id=?' , [1,idConstat], function(){console.log('Constat '+idConstat+ ' correctement synchronisé.');}, errorCB)
+                                },errorCB);
+                            }
+                            //Si le serveur envoi un message d'erreur
+                            else {
+                                //la progressbar devient rouge et contient un message d'échec
+                                $('#progressbar').css("background", "red");
+                                $('#progerssLabelConstat').text('Échec');
+                                $('#echecSync').append('Constat: ' + idConstat+'<br/>');
+                            }
+                        },
+                        //Si la connextion au serveur est un échec
 
-                    //Augmenter la valeur de la progressbar en fonction du nombre de constat poussé vers le serveur
-                    $('#progressbar').css({width: (nbConstatCompletees / len) * 100 + '%'});
-                    $('#progerssLabelConstat').text('Constat: ' + nbConstatCompletees + '/' + len);
-                    $('#succesSync').append('Constat: ' + idConstat + '<br/>');
-                    //Si le nombre de constat poussé est égale au nombre de constat total
-                    if (nbConstatCompletees === len) {
-                        //ajouter Synchornisation complétée à la progressbar
-                        $('#progerssLabelConstat').text("Synchronisation complétée");
-                        $('#h6Constat').text('Constat');
-                    }
-
-                    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                    db.transaction(function (tx, results) {
-                        //Modifier le champ sync de 0 vers 1
-                        tx.executeSql('UPDATE constats SET sync= ? WHERE constat_id=?' , [1,idConstat], function(){console.log('Constat '+idConstat+ ' correctement synchronisé.');}, errorCB)
-                    },errorCB);
-                }
-                //Si le serveur envoi un message d'erreur
-                else {
-                    //la progressbar devient rouge et contient un message d'échec
-                    $('#progressbar').css("background", "red");
-                    $('#progerssLabelConstat').text('Échec');
-                    $('#echecSync').append('Constat: ' + idConstat+'<br/>');
-                }
-            },
-            //Si la connextion au serveur est un échec
-
-            error: function (error) {
-                //la progressbar devient rouge et contient un message d'échec
-                //var idConstat = this.constatID;
-                //alert('Échec de la synchronisation');
-                console.error('Erreur postConstat:' + JSON.stringify(error));
-                $('#echecSync').append('Constat: ' + this.constatID+'<br/>');
-                $('#progressbar').css("background", "red");
-                $('#progerssLabelConstat').text('Échec');
-            }
-        })
-    }
+                        error: function (error) {
+                            //la progressbar devient rouge et contient un message d'échec
+                            //var idConstat = this.constatID;
+                            //alert('Échec de la synchronisation');
+                            console.error('Erreur postConstat:' + JSON.stringify(error));
+                            $('#echecSync').append('Constat: ' + this.constatID+'<br/>');
+                            $('#progressbar').css("background", "red");
+                            $('#progerssLabelConstat').text('Échec');
+                        }
+                    })
+                });
+            });
+        }
     //Si la connexion internet n'est pas disponible, envoyé un message d'erreur
     else {
         alert('Impossible de synchroniser les constats: Aucune connectivité');
@@ -145,7 +174,7 @@ function postConstat(results, i, len, constatCompletees) {
 function uploadVideoSucces() {
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function (tx, results) {
-        tx.executeSql('SELECT * FROM videos WHERE videosync = ? ', [0],
+        tx.executeSql('SELECT * FROM videos WHERE videoSync = ? ', [0],
             function (tx, results) {
                 if (navigator.onLine === true) {
                     //Lancer la fonction
@@ -163,10 +192,9 @@ function uploadVideoSucces() {
 function uploadVideo(tx,results) {
     var len = results.rows.length;
     $('#h6Video').text(len +' vidéos à synchroniser.');
-    //$('#files').html('');
     $('#progressBlock').hide();
-    $('#progress').attr('max',len);
-    $('div[name^="#progressBlock-"]').remove();
+    $('#progress').attr('max',len).val(0);
+    $('div[id^="progressBlock-"]').remove();
     for (var i=0; i < len; i++) {
         //Si la connexion internet est disponible
         if (navigator.onLine === true){
@@ -174,53 +202,136 @@ function uploadVideo(tx,results) {
             function postVideo(sqlRow,key){
                 var path = sqlRow.rows.item(key).path;
                 var nom = sqlRow.rows.item(key).nom + ".mov";
-                $('#progressBlock-'+key+' p.nomVideo').text(nom);
+                $('#progressBlock-'+key+' p.nomVideo span').text(nom);
                 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
                     console.log('file system open : ' + fs.name);
                     fs.root.getFile(nom, { create: true, exclusive: false }, function (fileEntry) {
                         fileEntry.file(function (file) {
+                            //var r = new Resumable({
+                            //    target : 'http://constats.ville.valdor.qc.ca/api/v1/sync/video',
+                            //    query:{uuid:uuidValue,constat_id:6},
+                            //    maxChunkRetries: 3,
+                            //    maxFiles: 1,
+                            //    testChunks:false,
+                            //    prioritizeFirstAndLastChunk: true,
+                            //    simultaneousUploads: 1,
+                            //    chunkSize: 2 * 1024 * 1024,
+                            //    method:'octet',
+                            //    fileParameterName:'file',
+                            //    throttleProgressCallbacks:1
+                            //});
+                            //if(!r.support) alert('Your browser does not support this feature'); //TODO: do better error handling
+                            //r.addFile(file);
+                            //
+                            //r.on('fileAdded', function(file, event){
+                            //    console.log('fileAdded');
+                            //    console.log(file.fileName + " " + file.size + " ch: " + file.chunks);
+                            //    //if(file.size > 0) r.upload();
+                            //});
+                            //r.on('filesAdded',function(files,event){
+                            //    //console.log('filesAdded');
+                            //    //console.log(files.length);
+                            //    if(files.length >0)r.upload();
+                            //});
+                            //r.on('uploadStart',function(){
+                            //    console.log('upstart ');
+                            //});
+                            //r.on('fileSuccess', function (file, message) {
+                            //    // Reflect that the file upload has completed
+                            //    console.log('success R ' + message);
+                            //    //$('.resumable-file-' + file.uniqueIdentifier + ' .resumable-file-progress').html('(completed)');
+                            //});
+                            //
+                            //r.on('fileError', function (file, message) {
+                            //    console.log('fileError R ' + message);
+                            //    alert(JSON.stringify(message));
+                            //    // Reflect that the file upload has resulted in error
+                            //    // $('.resumable-file-' + file.uniqueIdentifier + ' .resumable-file-progress').html('(file could not be uploaded: ' + message + ')');
+                            //});
+                            //
+                            //r.on('fileProgress', function (file) {
+                            //    //console.log('FP');
+                            //    console.log(Math.floor(file.progress()*100));
+                            //    // Handle progress for both the file and the overall upload
+                            //    console.log(Math.floor(r.progress() * 100));
+                            //    //console.log(r.getSize());
+                            //});
+                            ////r.on('progress',function(){
+                            ////    // Handle progress for both the file and the overall upload
+                            ////    //console.log('P')
+                            ////    console.log(Math.floor(r.progress()*100));
+                            ////    //console.log(r.getSize());
+                            ////});
+                            //r.on('complete',function(){
+                            //    console.log('complete')
+                            //});
+                            ////r.on('error',function(message, file){
+                            ////    console.log('error');
+                            ////    alert(JSON.stringify(message,null,4));
+                            ////});
+
+                            //Simple upload via XHR, ne supporte pas le resume.
                             var reader = new FileReader();
-                            reader.onloadend = function() {
-                                var blob = new Blob([new Uint8Array(this.result)], { type: "video/quicktime" });
+                            reader.onloadend = function(event) {
+                                var blob = new Blob([new Uint8Array(this.result)],{type:'video/quicktime'});
                                 var oReq = new XMLHttpRequest();
                                 var fd = new FormData();
+                                var start_time = new Date().getTime();
+                                var progressBarMain = $('#progressBlock-'+key+' progress');
+                               // var hashmd5 = SparkMD5.ArrayBuffer.hash(blob,false);
+
                                 fd.append('file',blob);
                                 fd.append('uuid',uuidValue);
                                 fd.append('format','.mov');
-                                fd.append('fileName',nom);
+                                fd.append('fileName',nom);//Requis car le nom de fichier reçu par le serveur est blob si on n'inscrit pas le nom en paramètre.
                                 fd.append('constat_id',sqlRow.rows.item(key).constat_id);
                                 fd.append('video_id',sqlRow.rows.item(key).id_video);
+                                fd.append('fileSize',blob.size);//Au fin de comparaison avec le fichier reçu par le serveur
+                                //fd.append('md5sum',hashmd5);
+                                oReq.responseType = 'json';//Pour bien interpréter la réponse du serveur Laravel
                                 oReq.open("POST", "http://constats.ville.valdor.qc.ca/api/v1/sync/video", true);
-                                oReq.setRequestHeader('Connection','close');
+                                oReq.setRequestHeader('Connection','close');//Semble requis pour IIS, en théorie ça indique au serveur de fermer la connection après le transfert pour ne pas laisser de session ouverte.
                                 oReq.onload = function (oEvent) {
-                                    $('#progress').val($('#progress').val() + 1);
-                                    console.log('temps: ' +(new Date().getTime() - start_time)+' ms' );
-                                    console.log('done '+ path);
-                                    console.log(JSON.stringify(oEvent));
-                                    // all done!
+                                    var currentProgressBar = $('#progressBlock-'+key);
+                                    if(oReq.response.status == "success"){
+                                        var progress = $('#progress');
+                                        progress.val(progress.val() + 1);
+                                        currentProgressBar.find('.detailsTransfert').fadeOut('slow');
+                                        currentProgressBar.find('.nomVideo i').removeClass('fa-spinner fa-pulse fa-fw').addClass('fa-check');
+                                        // Fichier correctement envoyé!
+
+                                        //Modifier le champ videoSync de 0 vers 1
+                                        db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+                                        db.transaction(function(tx){
+                                            tx.executeSql('UPDATE videos SET videoSync = ? WHERE id_video = ?', [1,sqlRow.rows.item(key).id_video],getVideosNonSync,errorCB);
+                                        },errorCB);
+
+                                    }
+                                    else{
+                                        currentProgressBar.find('.detailsTransfert').fadeOut('slow');
+                                        currentProgressBar.find('.innerBlock').css('background-color','red');
+                                        currentProgressBar.find('.nomVideo i').removeClass('fa-spinner fa-pulse fa-fw').addClass('fa-warning');
+                                        //Oups.. un erreur
+                                    }
                                 };
-                                var progressBarMain = $('#progressBlock-'+key+' progress');
                                 oReq.upload.onprogress = function(e){
                                     if (e.lengthComputable) {
+                                        var currentProgressBar = $('#progressBlock-'+key);
                                         progressBarMain.val((e.loaded / e.total) * 100);
                                         progressBarMain.text(progressBarMain.val());
-                                        //$('#progressBlock-'+key+ ' .recievedValue' ).html( '' ).append(  (e.loaded /1000).toFixed(0) + ' / ' );
-                                        //$('#progressBlock-'+key+ ' .totalValue' ).html( '' ).append(  (e.total/1000).toFixed(0)  );
-                                        $('#progressBlock-'+key+ ' .recievedValue' ).html( '' ).append(  formatBytes(e.loaded) + ' / ' );
-                                        $('#progressBlock-'+key+ ' .totalValue' ).html( '' ).append(  formatBytes(e.total)  );
                                         var seconds_elapsed =   ( new Date().getTime() - start_time )/1000;
                                         var bytes_per_second =  seconds_elapsed ? e.loaded / seconds_elapsed : 0 ;
                                         var Kbytes_per_second = (bytes_per_second / 1000).toFixed(0);
                                         var remaining_bytes =   e.total - e.loaded;
-                                         var seconds_remaining = seconds_elapsed ? (remaining_bytes / bytes_per_second).toFixed(0) : 'calculating' ;
-                                        $('#progressBlock-'+key+ ' .timeRemaining' ).html( '' ).append( seconds_remaining + ' secondes restantes' );
-                                        $('#progressBlock-'+key+' .kbPerSec').html('').append(Kbytes_per_second + ' kb/s');
-                                        $('#progressBlock-'+key+' .timeTotal').html('').append(seconds_elapsed.toFixed(0) + ' secondes total')
+                                        var seconds_remaining = seconds_elapsed ? (remaining_bytes / bytes_per_second).toFixed(0) : 'calculating' ;
+                                        currentProgressBar.find('.recievedValue' ).html( '' ).append(  formatBytes(e.loaded) + ' / ' );
+                                        currentProgressBar.find('.totalValue' ).html( '' ).append(  formatBytes(e.total)  );
+                                        currentProgressBar.find('.timeRemaining' ).html( '' ).append( seconds_remaining + ' secondes restantes' );
+                                        currentProgressBar.find('.kbPerSec').html('').append(Kbytes_per_second + ' kb/s');
+                                        currentProgressBar.find('.timeTotal').html('').append(seconds_elapsed.toFixed(0) + ' secondes total')
                                     }
                                 };
-
-                                var start_time = new Date().getTime();
                                 oReq.send(fd);
                             };
                             reader.readAsArrayBuffer(file);
@@ -236,7 +347,9 @@ function uploadVideo(tx,results) {
         }
     }
 }
+//Fonction trouvé sur StackOverflow pour afficher les bons formats de données
 function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]}
+
 //Connexion au serveur pour pousser les vidéos vers le serveur
 //function postVideo(sqlRow,key, videoCompletees){
 //    //Mettre la progressbar des vidéos à 0 et de couleur bleu

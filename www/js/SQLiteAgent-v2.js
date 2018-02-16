@@ -14,13 +14,6 @@ function successCBAgent(tx,result) {
     }, errorCB);
 }
 
-//Sélectionner tout dans la table agent
-//function queryDBAgent(tx,result,uuidApp1){
-//
-//
-//}
-
-
 //connexion on serveur
 function querySuccessAgent(tx,result) {
     //if (result.rows.length===0){
@@ -84,9 +77,5 @@ function deleteBaseDAgent() {
     }, errorCB);
 }
 
-//Suppression des la table agent
-//function deleteDBAgent(tx){
-//
-//}
 
 
