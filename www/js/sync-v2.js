@@ -48,7 +48,7 @@ function uploadConstat(results) {
         //Donner la valeur 0 à chaque élément de la liste
         constatCompletees[i] = 0;
     }
-
+    var defs = [];
     for (var i = 0; i <  results.rows.length; i++) {
         //TODO: je crois qu'on devrait appeler la fonction nombreVideo lorsqu'on ajout un vidéo ou qu'on edit un vidéo plutôt que dans la synchro
         //var promise = nombreVideo(results,i);
@@ -63,7 +63,7 @@ function uploadConstat(results) {
     }
     //Si la connexion internet est disponible
     if (navigator.onLine === true) {
-     //   uploadVideoSucces();
+        uploadVideoSucces();
     }
     else{
         alert('Impossible de synchroniser les vidéos: Aucune connectivité');
@@ -90,6 +90,7 @@ function nombreVideo(results, i) {
 //Connexion au serveur pour envoyer les constats vers le serveur
 function postConstat(results, i, len, constatCompletees) {
     //Si la connection internet est disponible
+    var def = $.Deferred();
     if (navigator.onLine === true) {
         var constat_id = results.rows.item(i).constat_id;
             var nbrVideo;
@@ -99,25 +100,25 @@ function postConstat(results, i, len, constatCompletees) {
             db.transaction(function (tx) {
                 tx.executeSql('SELECT constat_id ,COUNT(*) AS nbrVideo FROM videos WHERE constat_id = ?' ,[constat_id],
                     function (tx, resultat) {
-                        console.log('nbrVideo '+nbrVideo);
                         nbrVideo = resultat.rows.item(0).nbrVideo;
+                        console.log('nb video '+nbrVideo);
                     });
-                tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[nbrVideo,constat_id],function(){
-                    console.log('update nbr '+nbrVideo);
-                    alert('after: '+nbrVideo);
+                tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[parseInt(nbrVideo),constat_id],function(){
                     $.ajax({
                         url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/constat',
                         method: 'post',
                         data: {uuid: uuidValue, constat: results.rows.item(i), nbrVideo: nbrVideo},
                         constatID: constat_id,
+                        dataType:'json',
                         //Si la connexion au serveur est un succès
-                        success: function (constatID) {
+                        success: function (result) {
                             var idConstat = this.constatID;
                             //Si le serveur envoi un succès
-                            if (constatID.status === 'success') {
+                            if (result.status === 'success') {
                                 //Réinitialiser la variable du nombre de constat synchronisé à 0
                                 var nbConstatCompletees = 0;
                                 var len = constatCompletees.length;
+                                console.log('dossier_id:'+result.data.dossier_id);
                                 //Selon la position dans la liste, changer la valeur 0 par 1
                                 constatCompletees[i] = 1;
                                 //Faire la somme des éléments de la liste pour connaitre à quel nombre de constat nous sommes rendu pour la synchronisation
@@ -127,26 +128,29 @@ function postConstat(results, i, len, constatCompletees) {
                                 //Augmenter la valeur de la progressbar en fonction du nombre de constat poussé vers le serveur
                                 $('#progressbar').css({width: (nbConstatCompletees / len) * 100 + '%'});
                                 $('#progerssLabelConstat').text('Constat: ' + nbConstatCompletees + '/' + len);
-                                $('#succesSync').append('Constat: ' + idConstat + '<br/>');
+                                $('#succesSync').append('Constat: ' + idConstat + ', # dossier: '+result.data.dossier_id+'<br/>');
                                 //Si le nombre de constat poussé est égale au nombre de constat total
                                 if (nbConstatCompletees === len) {
                                     //ajouter Synchornisation complétée à la progressbar
                                     $('#progerssLabelConstat').text("Synchronisation complétée");
                                     $('#h6Constat').text('Constat');
+                                    $('#progerssLabelConstat').addClass('progress-bar-success');
                                 }
-
                                 db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
                                 db.transaction(function (tx, results) {
-                                    //Modifier le champ sync de 0 vers 1
-                                    tx.executeSql('UPDATE constats SET sync= ? WHERE constat_id=?' , [1,idConstat], function(){console.log('Constat '+idConstat+ ' correctement synchronisé.');}, errorCB)
+                                    tx.executeSql('UPDATE constats SET sync = ?,dossier_id = ? WHERE constat_id=?' , [1,result.data.dossier_id,idConstat], function(){
+                                        console.log('Constat '+idConstat+ ' correctement synchronisé. # dossier: '+result.data.dossier_id);
+                                        def.resolve(result.data.dossier_id);
+                                    }, errorCB)
                                 },errorCB);
                             }
                             //Si le serveur envoi un message d'erreur
                             else {
                                 //la progressbar devient rouge et contient un message d'échec
-                                $('#progressbar').css("background", "red");
+
                                 $('#progerssLabelConstat').text('Échec');
                                 $('#echecSync').append('Constat: ' + idConstat+'<br/>');
+                                def.reject('Constat ID:'+idConstat + ' en erreur');
                             }
                         },
                         //Si la connextion au serveur est un échec
@@ -167,8 +171,10 @@ function postConstat(results, i, len, constatCompletees) {
     //Si la connexion internet n'est pas disponible, envoyé un message d'erreur
     else {
         alert('Impossible de synchroniser les constats: Aucune connectivité');
+        def.reject('Aucune connectivitée');
     }
-};
+    return def.promise();
+}
 
 //Requête de sélection de tous les vidéos dans la table video
 function uploadVideoSucces() {
@@ -270,7 +276,6 @@ function uploadVideo(tx,results) {
                             ////    console.log('error');
                             ////    alert(JSON.stringify(message,null,4));
                             ////});
-
                             //Simple upload via XHR, ne supporte pas le resume.
                             var reader = new FileReader();
                             reader.onloadend = function(event) {
@@ -279,8 +284,6 @@ function uploadVideo(tx,results) {
                                 var fd = new FormData();
                                 var start_time = new Date().getTime();
                                 var progressBarMain = $('#progressBlock-'+key+' progress');
-                               // var hashmd5 = SparkMD5.ArrayBuffer.hash(blob,false);
-
                                 fd.append('file',blob);
                                 fd.append('uuid',uuidValue);
                                 fd.append('format','.mov');
@@ -288,7 +291,6 @@ function uploadVideo(tx,results) {
                                 fd.append('constat_id',sqlRow.rows.item(key).constat_id);
                                 fd.append('video_id',sqlRow.rows.item(key).id_video);
                                 fd.append('fileSize',blob.size);//Au fin de comparaison avec le fichier reçu par le serveur
-                                //fd.append('md5sum',hashmd5);
                                 oReq.responseType = 'json';//Pour bien interpréter la réponse du serveur Laravel
                                 oReq.open("POST", "http://constats.ville.valdor.qc.ca/api/v1/sync/video", true);
                                 oReq.setRequestHeader('Connection','close');//Semble requis pour IIS, en théorie ça indique au serveur de fermer la connection après le transfert pour ne pas laisser de session ouverte.
@@ -300,7 +302,6 @@ function uploadVideo(tx,results) {
                                         currentProgressBar.find('.detailsTransfert').fadeOut('slow');
                                         currentProgressBar.find('.nomVideo i').removeClass('fa-spinner fa-pulse fa-fw').addClass('fa-check');
                                         // Fichier correctement envoyé!
-
                                         //Modifier le champ videoSync de 0 vers 1
                                         db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
                                         db.transaction(function(tx){

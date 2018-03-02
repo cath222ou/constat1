@@ -5,7 +5,7 @@ var idFormu = null;
 
 //Création de la table vidéo
 function populateDBVideo(tx) {
-	tx.executeSql('CREATE TABLE IF NOT EXISTS videos (matricule, constat_id INTEGER, id_video INTEGER PRIMARY KEY AUTOINCREMENT, nom, path, videoSync INTEGER, FOREIGN KEY(constat_id) REFERENCES constats(constat_id))');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS videos (matricule, constat_id INTEGER, id_video INTEGER PRIMARY KEY AUTOINCREMENT, nom, path, videoSync INTEGER,dossier_id, FOREIGN KEY(constat_id) REFERENCES constats(constat_id))');
 }
 
 // Lancer la requête pour sélectionner tout dans la table
@@ -26,6 +26,7 @@ function afficherTableVideo(tx, results) {
 		'<tr>'
 			+ '<td data-title="matricule" data-desc="matricule" class="hidden">'+results.rows.item(i).matricule +'</td>'
 			+ '<td data-title="constat_id" data-desc="constat_id" class="hidden">'+results.rows.item(i).constat_id +'</td>'
+			+ '<td data-title="dossier_id" data-desc="dossier_id" class="">'+results.rows.item(i).dossier_id +'</td>'
 			+ '<td data-title="Numéro du vidéo" data-desc="id_video">'+results.rows.item(i).id_video +'</td>'
             + '<td data-title="Nom du vidéo" data-desc="nom">'+results.rows.item(i).nom +'</td>'
 			+ '<td data-title="path" data-desc="path" class="hidden">'+results.rows.item(i).path +'</td>'
@@ -40,6 +41,7 @@ $('button[name="btnDropTableVideos"]').on('click',function(){
 	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 	db.transaction(function(tx){
 		tx.executeSql('DROP TABLE IF EXISTS videos',[],function(){
+			console.log('Table videos droppée');
 			$('#cf1').empty();
 			onDeviceReady();
 		});

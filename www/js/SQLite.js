@@ -34,7 +34,7 @@ function onDeviceReady() {
 
 		//Création de la table constats
 		function populateDBConstat(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS constats (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS constats (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER,dossier_id)');
 		}
 
 		//Création de la table demo pour visualisation dans l'application
@@ -238,7 +238,7 @@ function onDeviceReady() {
 		$('button[name="btnDropTableConstats"]').on('click',function(){
 			db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 			db.transaction(function(tx){
-				tx.executeSql('DROP TABLE IF EXISTS constats',[],onDeviceReady());
+				tx.executeSql('DROP TABLE IF EXISTS constats',[],function(){console.log('Table constats droppée');onDeviceReady()});
 			}, errorCB);
 			$('.cf').empty();
 			//db.transaction(onDeviceReady, errorCB);
