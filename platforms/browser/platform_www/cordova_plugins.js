@@ -15,6 +15,36 @@ module.exports = [
         "runs": true
     },
     {
+        "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
+        "id": "cordova-plugin-camera.Camera",
+        "pluginId": "cordova-plugin-camera",
+        "clobbers": [
+            "Camera"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
+        "id": "cordova-plugin-camera.CameraPopoverOptions",
+        "pluginId": "cordova-plugin-camera",
+        "clobbers": [
+            "CameraPopoverOptions"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-camera/www/Camera.js",
+        "id": "cordova-plugin-camera.camera",
+        "pluginId": "cordova-plugin-camera",
+        "clobbers": [
+            "navigator.camera"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-camera/src/browser/CameraProxy.js",
+        "id": "cordova-plugin-camera.CameraProxy",
+        "pluginId": "cordova-plugin-camera",
+        "runs": true
+    },
+    {
         "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
         "id": "cordova-plugin-file.DirectoryEntry",
         "pluginId": "cordova-plugin-file",
@@ -556,21 +586,11 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova-plugin-vibration/www/vibration.js",
-        "id": "cordova-plugin-vibration.notification",
-        "pluginId": "cordova-plugin-vibration",
-        "merges": [
-            "navigator.notification",
-            "navigator"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-vibration/src/browser/Vibration.js",
-        "id": "cordova-plugin-vibration.Vibration",
-        "pluginId": "cordova-plugin-vibration",
-        "merges": [
-            "navigator.notification",
-            "navigator"
+        "file": "plugins/cordova-sqlite-legacy/www/SQLitePlugin.js",
+        "id": "cordova-sqlite-legacy.SQLitePlugin",
+        "pluginId": "cordova-sqlite-legacy",
+        "clobbers": [
+            "SQLitePlugin"
         ]
     },
     {
@@ -580,50 +600,13 @@ module.exports = [
         "clobbers": [
             "SQLitePlugin"
         ]
-    },
-    {
-        "file": "plugins/uk.co.workingedge.cordova.plugin.sqliteporter/www/sqlitePorter.js",
-        "id": "uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter",
-        "pluginId": "uk.co.workingedge.cordova.plugin.sqliteporter",
-        "clobbers": [
-            "cordova.plugins.sqlitePorter"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
-        "id": "cordova-plugin-camera.Camera",
-        "pluginId": "cordova-plugin-camera",
-        "clobbers": [
-            "Camera"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
-        "id": "cordova-plugin-camera.CameraPopoverOptions",
-        "pluginId": "cordova-plugin-camera",
-        "clobbers": [
-            "CameraPopoverOptions"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-camera/www/Camera.js",
-        "id": "cordova-plugin-camera.camera",
-        "pluginId": "cordova-plugin-camera",
-        "clobbers": [
-            "navigator.camera"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-camera/src/browser/CameraProxy.js",
-        "id": "cordova-plugin-camera.CameraProxy",
-        "pluginId": "cordova-plugin-camera",
-        "runs": true
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
     "cordova-plugin-battery-status": "1.1.2",
+    "cordova-plugin-camera": "2.1.1",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-file": "4.3.3",
     "cordova-plugin-media-capture": "1.2.0",
@@ -641,11 +624,9 @@ module.exports.metadata =
     "cordova-plugin-network-information": "1.2.1",
     "cordova-plugin-splashscreen": "3.2.2",
     "cordova-plugin-statusbar": "2.1.3",
-    "cordova-plugin-vibration": "2.1.5",
     "cordova-plugin-whitelist": "1.2.2",
-    "cordova-sqlite-legacy-build-support": "1.3.5",
-    "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.1",
-    "cordova-plugin-camera": "2.1.1"
+    "cordova-sqlite-legacy": "2.0.0",
+    "cordova-sqlite-legacy-build-support": "1.3.6"
 }
 // BOTTOM OF METADATA
 });

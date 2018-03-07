@@ -26,7 +26,7 @@ function afficherTableVideo(tx, results) {
 		'<tr>'
 			+ '<td data-title="matricule" data-desc="matricule" class="hidden">'+results.rows.item(i).matricule +'</td>'
 			+ '<td data-title="constat_id" data-desc="constat_id" class="hidden">'+results.rows.item(i).constat_id +'</td>'
-			+ '<td data-title="dossier_id" data-desc="dossier_id" class="">'+results.rows.item(i).dossier_id +'</td>'
+			+ '<td data-title="dossier_id" data-desc="dossier_id" class="hidden">'+results.rows.item(i).dossier_id +'</td>'
 			+ '<td data-title="Numéro du vidéo" data-desc="id_video">'+results.rows.item(i).id_video +'</td>'
             + '<td data-title="Nom du vidéo" data-desc="nom">'+results.rows.item(i).nom +'</td>'
 			+ '<td data-title="path" data-desc="path" class="hidden">'+results.rows.item(i).path +'</td>'
@@ -52,6 +52,8 @@ $('#enrVideo').on('click',function(){
 	getVideo();
 });
 
+
+///TODO:: à mettre lors de l'ajout/edition/suppression de video et lors de la creation d'un constat mettre le # en suffix pour éviter les noms identiques de vidéo
 function getNbrVideoParConstat(constat_id){
 	var deferred = new $.Deferred();
 	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
@@ -75,6 +77,8 @@ function setNbrVideoParConstat(constat_id,nbrVideo){
 	);
 	return deferred.promise();
 }
+
+
 
 //Lancer la requête d'insertion
 function insertVideoDB(filePath) {
@@ -167,7 +171,7 @@ function deplaceVideoLocal(fileURI, mediaFiles) {
 
 //Callback d'erreur de l'ouverture de la librairie des vidéos/est callé si aucun video n'est choisi aussi...
 function onFail(err) {
-		alert("Impossible d'ouvrir la sélection des videos. Erreur # "+err.code);
+		alert("Impossible d'ouvrir la sélection des videos. Erreur # " +err.code);
 	}
 
 

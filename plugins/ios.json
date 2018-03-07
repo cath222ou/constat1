@@ -64,9 +64,6 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
-        "cordova-sqlite-legacy-build-support": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
-        },
         "phonegap-plugin-contentsync": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
@@ -75,13 +72,19 @@
         },
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-sqlite-legacy": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-sqlite-legacy-build-support": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
-        },
-        "cordova-plugin-file": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     }

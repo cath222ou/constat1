@@ -98,7 +98,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <framework src="CoreLocation.framework" />
 
         <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
-            <string></string>
+            <string>Obtenir la position lors de la sauvegarde du constat</string>
         </config-file>
 
     </platform>

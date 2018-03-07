@@ -545,14 +545,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-sqlite-legacy-build-support.SQLitePlugin",
-    "file": "plugins/cordova-sqlite-legacy-build-support/www/SQLitePlugin.js",
-    "pluginId": "cordova-sqlite-legacy-build-support",
-    "clobbers": [
-      "SQLitePlugin"
-    ]
-  },
-  {
     "id": "phonegap-plugin-contentsync.ContentSync",
     "file": "plugins/phonegap-plugin-contentsync/www/index.js",
     "pluginId": "phonegap-plugin-contentsync",
@@ -601,6 +593,22 @@ module.exports = [
     "clobbers": [
       "CameraPopoverHandle"
     ]
+  },
+  {
+    "id": "cordova-sqlite-legacy.SQLitePlugin",
+    "file": "plugins/cordova-sqlite-legacy/www/SQLitePlugin.js",
+    "pluginId": "cordova-sqlite-legacy",
+    "clobbers": [
+      "SQLitePlugin"
+    ]
+  },
+  {
+    "id": "cordova-sqlite-legacy-build-support.SQLitePlugin",
+    "file": "plugins/cordova-sqlite-legacy-build-support/www/SQLitePlugin.js",
+    "pluginId": "cordova-sqlite-legacy-build-support",
+    "clobbers": [
+      "SQLitePlugin"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -627,10 +635,11 @@ module.exports.metadata =
   "cordova-plugin-vibration": "2.1.5",
   "cordova-plugin-video-editor": "1.1.3",
   "cordova-plugin-whitelist": "1.2.2",
-  "cordova-sqlite-legacy-build-support": "1.3.5",
   "phonegap-plugin-contentsync": "1.4.2",
   "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.1",
-  "cordova-plugin-camera": "2.1.1"
+  "cordova-plugin-camera": "2.1.1",
+  "cordova-sqlite-legacy": "2.0.0",
+  "cordova-sqlite-legacy-build-support": "1.3.6"
 };
 // BOTTOM OF METADATA
 });

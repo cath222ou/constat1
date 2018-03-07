@@ -41,7 +41,8 @@
 
     //Débuter un nouveau constat en vidant tout les champs
     function nouvConstat(){
-        $('#enrVideo').fadeOut('slow'); //eye candy :)
+        $('#listeVideo').empty();
+        $('#enrVideo').fadeOut('slow');
         $('#nouvConstat').fadeOut('slow');
         $('button[name="btnEnregistreFormulaire"]').fadeIn('slow');
         //effacer les valeurs entrées

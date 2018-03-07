@@ -44,12 +44,13 @@ function uploadConstat(results) {
     var len = results.rows.length;
     //Créer une liste avec la même quantité que la quantité de constat (len)
     var constatCompletees = new Array(len);
-    for (var i=0; i<len; i++){
+    for (var index=0; index<len; index++){
         //Donner la valeur 0 à chaque élément de la liste
-        constatCompletees[i] = 0;
+        constatCompletees[index] = 0;
     }
-    var defs = [];
+    var constatsDeferred = [];
     for (var i = 0; i <  results.rows.length; i++) {
+
         //TODO: je crois qu'on devrait appeler la fonction nombreVideo lorsqu'on ajout un vidéo ou qu'on edit un vidéo plutôt que dans la synchro
         //var promise = nombreVideo(results,i);
         //promise.done(
@@ -58,12 +59,19 @@ function uploadConstat(results) {
         //    ////alert('i '+i);
         //    //alert('done');
 
-            postConstat(results, i,  results.rows.length, constatCompletees);
+        //Ajout de la promesse dans l'array
+       constatsDeferred.push(postConstat(results, i,  results.rows.length, constatCompletees));
         //);
+
     }
     //Si la connexion internet est disponible
     if (navigator.onLine === true) {
-        uploadVideoSucces();
+        //On fait l'execution des promesses dans l'array et quand c'est fini, on démarre la synchro des videos
+        $.when.apply($,constatsDeferred).then(function(){
+            console.log('Deferred des constats terminés. début de la sync des videos');
+            uploadVideoSucces();
+        });
+
     }
     else{
         alert('Impossible de synchroniser les vidéos: Aucune connectivité');
@@ -88,92 +96,95 @@ function nombreVideo(results, i) {
 
 
 //Connexion au serveur pour envoyer les constats vers le serveur
+//Retourne une promesse avec le dossier_id du constat ou un erreur
 function postConstat(results, i, len, constatCompletees) {
-    //Si la connection internet est disponible
     var def = $.Deferred();
+    //Si la connection internet est disponible
     if (navigator.onLine === true) {
         var constat_id = results.rows.item(i).constat_id;
-            var nbrVideo;
-            console.log('cid: '+constat_id);
-           // var deferred = $.Deferred();
-            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-            db.transaction(function (tx) {
-                tx.executeSql('SELECT constat_id ,COUNT(*) AS nbrVideo FROM videos WHERE constat_id = ?' ,[constat_id],
-                    function (tx, resultat) {
-                        nbrVideo = resultat.rows.item(0).nbrVideo;
-                        console.log('nb video '+nbrVideo);
-                    });
-                tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[parseInt(nbrVideo),constat_id],function(){
-                    $.ajax({
-                        url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/constat',
-                        method: 'post',
-                        data: {uuid: uuidValue, constat: results.rows.item(i), nbrVideo: nbrVideo},
-                        constatID: constat_id,
-                        dataType:'json',
-                        //Si la connexion au serveur est un succès
-                        success: function (result) {
-                            var idConstat = this.constatID;
-                            //Si le serveur envoi un succès
-                            if (result.status === 'success') {
-                                //Réinitialiser la variable du nombre de constat synchronisé à 0
-                                var nbConstatCompletees = 0;
-                                var len = constatCompletees.length;
-                                console.log('dossier_id:'+result.data.dossier_id);
-                                //Selon la position dans la liste, changer la valeur 0 par 1
-                                constatCompletees[i] = 1;
-                                //Faire la somme des éléments de la liste pour connaitre à quel nombre de constat nous sommes rendu pour la synchronisation
-                                for (var j = 0; j < len; j++){
-                                    nbConstatCompletees += constatCompletees[j];
+        var nbrVideo;
+        console.log('cid: '+constat_id);
+        // var deferred = $.Deferred();
+        db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+        db.transaction(function (tx) {
+            tx.executeSql('SELECT constat_id ,COUNT(*) AS nbrVideo FROM videos WHERE constat_id = ?' ,[constat_id],
+                function (tx, resultat) {
+                    nbrVideo = resultat.rows.item(0).nbrVideo;
+                    console.log('nb video '+nbrVideo);
+                    tx.executeSql('UPDATE constats SET nbrVideo=? WHERE constat_id =?',[parseInt(nbrVideo),constat_id],function(){
+                        $.ajax({
+                            url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/constat',
+                            method: 'post',
+                            data: {uuid: uuidValue, constat: results.rows.item(i), nbrVideo: nbrVideo},
+                            constatID: constat_id,
+                            dataType:'json',
+                            success: function (result) {
+                                var idConstat = this.constatID;
+                                //Si le serveur envoi un succès
+                                if (result.status === 'success') {
+                                    //Réinitialiser la variable du nombre de constat synchronisé à 0
+                                    var nbConstatCompletees = 0;
+                                    var len = constatCompletees.length;
+                                    console.log('dossier_id:'+result.data.dossier_id);
+                                    //Selon la position dans la liste, changer la valeur 0 par 1
+                                    constatCompletees[i] = 1;
+                                    //Faire la somme des éléments de la liste pour connaitre à quel nombre de constat nous sommes rendu pour la synchronisation
+                                    for (var j = 0; j < len; j++){
+                                        nbConstatCompletees += constatCompletees[j];
+                                    }
+                                    //Augmenter la valeur de la progressbar en fonction du nombre de constat poussé vers le serveur
+                                    $('#progressbar').css({width: (nbConstatCompletees / len) * 100 + '%'});
+                                    $('#progerssLabelConstat').text('Constat: ' + nbConstatCompletees + '/' + len);
+                                    $('#succesSync').append('Constat: ' + idConstat + ', # dossier: '+result.data.dossier_id+'<br/>');
+                                    //Si le nombre de constat poussé est égale au nombre de constat total
+                                    if (nbConstatCompletees === len) {
+                                        //ajouter Synchornisation complétée à la progressbar
+                                        $('#progerssLabelConstat').text("Synchronisation complétée");
+                                        $('#h6Constat').text('Constat');
+                                        $('#progerssLabelConstat').addClass('progress-bar-success');
+                                    }
+                                    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+                                    db.transaction(function (tx, results) {
+                                        tx.executeSql('UPDATE constats SET sync = ?,dossier_id = ? WHERE constat_id=?' , [1,result.data.dossier_id,idConstat], function(tx){
+                                            console.log('Constat '+idConstat+ ' correctement synchronisé. # dossier: '+result.data.dossier_id);
+                                            tx.executeSql('UPDATE videos SET dossier_id = ? WHERE constat_id = ?',[result.data.dossier_id,idConstat],function(){
+                                                console.log('Update des videos du constat ' + idConstat + ' avec le dossier_id '+result.data.dossier_id);
+                                                def.resolve(result.data.dossier_id);//Résou la promesse avec le # de dossier
+                                            });
+                                        }, errorCB)
+                                    },errorCB);
                                 }
-                                //Augmenter la valeur de la progressbar en fonction du nombre de constat poussé vers le serveur
-                                $('#progressbar').css({width: (nbConstatCompletees / len) * 100 + '%'});
-                                $('#progerssLabelConstat').text('Constat: ' + nbConstatCompletees + '/' + len);
-                                $('#succesSync').append('Constat: ' + idConstat + ', # dossier: '+result.data.dossier_id+'<br/>');
-                                //Si le nombre de constat poussé est égale au nombre de constat total
-                                if (nbConstatCompletees === len) {
-                                    //ajouter Synchornisation complétée à la progressbar
-                                    $('#progerssLabelConstat').text("Synchronisation complétée");
-                                    $('#h6Constat').text('Constat');
-                                    $('#progerssLabelConstat').addClass('progress-bar-success');
+                                //Si le serveur envoi un message d'erreur
+                                else {
+                                    //la progressbar devient rouge et contient un message d'échec
+
+                                    $('#progerssLabelConstat').text('Échec');
+                                    $('#echecSync').append('Constat: ' + idConstat+'<br/>');
+                                    def.reject();//Promesse non résolu, petit problème?
                                 }
-                                db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                                db.transaction(function (tx, results) {
-                                    tx.executeSql('UPDATE constats SET sync = ?,dossier_id = ? WHERE constat_id=?' , [1,result.data.dossier_id,idConstat], function(){
-                                        console.log('Constat '+idConstat+ ' correctement synchronisé. # dossier: '+result.data.dossier_id);
-                                        def.resolve(result.data.dossier_id);
-                                    }, errorCB)
-                                },errorCB);
-                            }
-                            //Si le serveur envoi un message d'erreur
-                            else {
+                            },
+                            //Si la connextion au serveur est un échec
+                            error: function (error) {
                                 //la progressbar devient rouge et contient un message d'échec
-
+                                //var idConstat = this.constatID;
+                                //alert('Échec de la synchronisation');
+                                console.error('Erreur postConstat:' + JSON.stringify(error));
+                                $('#echecSync').append('Constat: ' + this.constatID+'<br/>');
+                                $('#progressbar').css("background", "red");
                                 $('#progerssLabelConstat').text('Échec');
-                                $('#echecSync').append('Constat: ' + idConstat+'<br/>');
-                                def.reject('Constat ID:'+idConstat + ' en erreur');
                             }
-                        },
-                        //Si la connextion au serveur est un échec
-
-                        error: function (error) {
-                            //la progressbar devient rouge et contient un message d'échec
-                            //var idConstat = this.constatID;
-                            //alert('Échec de la synchronisation');
-                            console.error('Erreur postConstat:' + JSON.stringify(error));
-                            $('#echecSync').append('Constat: ' + this.constatID+'<br/>');
-                            $('#progressbar').css("background", "red");
-                            $('#progerssLabelConstat').text('Échec');
-                        }
-                    })
+                        })
+                    });
                 });
-            });
-        }
+        });
+        return def.promise(); //Retourne une promesse
+    }
     //Si la connexion internet n'est pas disponible, envoyé un message d'erreur
     else {
         alert('Impossible de synchroniser les constats: Aucune connectivité');
         def.reject('Aucune connectivitée');
     }
-    return def.promise();
+
 }
 
 //Requête de sélection de tous les vidéos dans la table video
@@ -192,7 +203,7 @@ function uploadVideoSucces() {
             }, errorCB),
             errorCB
     });
-};
+}
 
 // Synchronisation des vidéos en lien avec le constat synchronisé
 function uploadVideo(tx,results) {
@@ -288,6 +299,7 @@ function uploadVideo(tx,results) {
                                 fd.append('uuid',uuidValue);
                                 fd.append('format','.mov');
                                 fd.append('fileName',nom);//Requis car le nom de fichier reçu par le serveur est blob si on n'inscrit pas le nom en paramètre.
+                                fd.append('dossier_id',sqlRow.rows.item(key).dossier_id);
                                 fd.append('constat_id',sqlRow.rows.item(key).constat_id);
                                 fd.append('video_id',sqlRow.rows.item(key).id_video);
                                 fd.append('fileSize',blob.size);//Au fin de comparaison avec le fichier reçu par le serveur
