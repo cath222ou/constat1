@@ -16,8 +16,8 @@ function successCBAdr(tx,result) {
 
 //Sélectionner tout dans la table adresse
 function queryDBAdr(tx,result){
-    tx.executeSql('SELECT * FROM adresses', [],function(tx,result,uuidApp1){
-        querySuccessAdr(tx,result,uuidApp1)
+    tx.executeSql('SELECT * FROM adresses', [],function(tx,result){
+        querySuccessAdr(tx,result)
     }, errorCB)
 }
 
@@ -89,7 +89,7 @@ function querySuccessAdr(tx,result) {
 //Insertion des informations sur les adresses du serveur dans la table adresse
 function insertDBAdr(tx,changes){
     var resultat = $.parseJSON(changes);
-    $(resultat).each(function(key,value){
+    $(resultat).each(function(key,value){///TODO:: paramétrisation
         tx.executeSql('INSERT OR REPLACE INTO adresses (adresse_id,nocivique,adresse) VALUES ("'+ value.MATRICULE +'","'+ value.NOCIVIQUE +'","'+ value.ADRESSE +'")');
     });
     resultat = $.parseJSON(changes);

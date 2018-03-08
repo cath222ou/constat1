@@ -203,3 +203,8 @@ label{
 progress {
     width: 100%;
 }
+
+footer{
+    font-size: 8px;
+    color:lightslategrey;
+}

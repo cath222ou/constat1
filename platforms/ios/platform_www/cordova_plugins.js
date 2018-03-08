@@ -9,6 +9,38 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-camera.Camera",
+    "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "Camera"
+    ]
+  },
+  {
+    "id": "cordova-plugin-camera.CameraPopoverOptions",
+    "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "CameraPopoverOptions"
+    ]
+  },
+  {
+    "id": "cordova-plugin-camera.camera",
+    "file": "plugins/cordova-plugin-camera/www/Camera.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "navigator.camera"
+    ]
+  },
+  {
+    "id": "cordova-plugin-camera.CameraPopoverHandle",
+    "file": "plugins/cordova-plugin-camera/www/ios/CameraPopoverHandle.js",
+    "pluginId": "cordova-plugin-camera",
+    "clobbers": [
+      "CameraPopoverHandle"
+    ]
+  },
+  {
     "id": "cordova-plugin-console.console",
     "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
     "pluginId": "cordova-plugin-console",
@@ -479,6 +511,12 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-media-capture.helpers",
+    "file": "plugins/cordova-plugin-media-capture/www/helpers.js",
+    "pluginId": "cordova-plugin-media-capture",
+    "runs": true
+  },
+  {
     "id": "cordova-plugin-media-capture.capture",
     "file": "plugins/cordova-plugin-media-capture/www/capture.js",
     "pluginId": "cordova-plugin-media-capture",
@@ -545,6 +583,22 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-sqlite-legacy.SQLitePlugin",
+    "file": "plugins/cordova-sqlite-legacy/www/SQLitePlugin.js",
+    "pluginId": "cordova-sqlite-legacy",
+    "clobbers": [
+      "SQLitePlugin"
+    ]
+  },
+  {
+    "id": "cordova-sqlite-legacy-build-support.SQLitePlugin",
+    "file": "plugins/cordova-sqlite-legacy-build-support/www/SQLitePlugin.js",
+    "pluginId": "cordova-sqlite-legacy-build-support",
+    "clobbers": [
+      "SQLitePlugin"
+    ]
+  },
+  {
     "id": "phonegap-plugin-contentsync.ContentSync",
     "file": "plugins/phonegap-plugin-contentsync/www/index.js",
     "pluginId": "phonegap-plugin-contentsync",
@@ -561,85 +615,36 @@ module.exports = [
     "clobbers": [
       "cordova.plugins.sqlitePorter"
     ]
-  },
-  {
-    "id": "cordova-plugin-camera.Camera",
-    "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "Camera"
-    ]
-  },
-  {
-    "id": "cordova-plugin-camera.CameraPopoverOptions",
-    "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "CameraPopoverOptions"
-    ]
-  },
-  {
-    "id": "cordova-plugin-camera.camera",
-    "file": "plugins/cordova-plugin-camera/www/Camera.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "navigator.camera"
-    ]
-  },
-  {
-    "id": "cordova-plugin-camera.CameraPopoverHandle",
-    "file": "plugins/cordova-plugin-camera/www/ios/CameraPopoverHandle.js",
-    "pluginId": "cordova-plugin-camera",
-    "clobbers": [
-      "CameraPopoverHandle"
-    ]
-  },
-  {
-    "id": "cordova-sqlite-legacy.SQLitePlugin",
-    "file": "plugins/cordova-sqlite-legacy/www/SQLitePlugin.js",
-    "pluginId": "cordova-sqlite-legacy",
-    "clobbers": [
-      "SQLitePlugin"
-    ]
-  },
-  {
-    "id": "cordova-sqlite-legacy-build-support.SQLitePlugin",
-    "file": "plugins/cordova-sqlite-legacy-build-support/www/SQLitePlugin.js",
-    "pluginId": "cordova-sqlite-legacy-build-support",
-    "clobbers": [
-      "SQLitePlugin"
-    ]
   }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
   "cordova-plugin-battery-status": "1.1.2",
-  "cordova-plugin-compat": "1.2.0",
+  "cordova-plugin-camera": "2.1.1",
   "cordova-plugin-console": "1.0.7",
   "cordova-plugin-contacts": "2.0.1",
-  "cordova-plugin-device": "1.1.6",
+  "cordova-plugin-device": "1.1.7",
   "cordova-plugin-device-motion": "1.2.5",
   "cordova-plugin-device-orientation": "1.0.7",
   "cordova-plugin-dialogs": "1.2.1",
-  "cordova-plugin-file": "4.3.3",
-  "cordova-plugin-file-transfer": "1.5.1",
+  "cordova-plugin-file": "6.0.1",
+  "cordova-plugin-file-transfer": "1.7.1",
   "cordova-plugin-geolocation": "2.1.0",
-  "cordova-plugin-globalization": "1.0.7",
+  "cordova-plugin-globalization": "1.0.9",
   "cordova-plugin-inappbrowser": "1.3.0",
-  "cordova-plugin-media": "2.2.0",
-  "cordova-plugin-media-capture": "1.2.0",
+  "cordova-plugin-media": "4.0.0",
+  "cordova-plugin-media-capture": "3.0.1",
   "cordova-plugin-network-information": "1.2.1",
   "cordova-plugin-splashscreen": "3.2.2",
   "cordova-plugin-statusbar": "2.1.3",
-  "cordova-plugin-vibration": "2.1.5",
+  "cordova-plugin-vibration": "2.1.6",
   "cordova-plugin-video-editor": "1.1.3",
   "cordova-plugin-whitelist": "1.2.2",
-  "phonegap-plugin-contentsync": "1.4.2",
-  "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.1",
-  "cordova-plugin-camera": "2.1.1",
   "cordova-sqlite-legacy": "2.0.0",
-  "cordova-sqlite-legacy-build-support": "1.3.6"
+  "cordova-sqlite-legacy-build-support": "1.3.6",
+  "phonegap-plugin-contentsync": "1.4.2",
+  "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.2"
 };
 // BOTTOM OF METADATA
 });
