@@ -27,30 +27,30 @@ function queryDBAdr(tx,result){
 function querySuccessAdr(tx,result) {
     //if (result.rows.length===0){
         $.ajax({
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-
-                // Upload progress
-                xhr.upload.addEventListener("progress", function(evt){
-                    if (evt.lengthComputable) {
-                        var percentComplete = (evt.loaded / evt.total)*100;
-                        //Do something with upload progress
-                        $(".progress-bar").css("width", percentComplete + "%").text(percentComplete + " %");
-                        }
-                }, false);
-
-                // Download progress
-                xhr.addEventListener("progress", function(evt){
-                    if (evt.lengthComputable) {
-                        var percentComplete = (evt.loaded / evt.total)*100;
-                        // Do something with download progress
-                        $(".progress-bar").css("width", percentComplete + "%").text(percentComplete + " %");
-
-                    }
-                }, false);
-
-                return xhr;
-            },
+            //xhr: function() {
+            //    var xhr = new window.XMLHttpRequest();
+            //
+            //    // Upload progress
+            //    xhr.upload.addEventListener("progress", function(evt){
+            //        if (evt.lengthComputable) {
+            //            var percentComplete = (evt.loaded / evt.total)*100;
+            //            //Do something with upload progress
+            //            $(".progress-bar").css("width", percentComplete + "%").text(percentComplete + " %");
+            //            }
+            //    }, false);
+            //
+            //    // Download progress
+            //    xhr.addEventListener("progress", function(evt){
+            //        if (evt.lengthComputable) {
+            //            var percentComplete = (evt.loaded / evt.total)*100;
+            //            // Do something with download progress
+            //            $(".progress-bar").css("width", percentComplete + "%").text(percentComplete + " %");
+            //
+            //        }
+            //    }, false);
+            //
+            //    return xhr;
+            //},
 
             //aller chercher les informations sur le serveur pour les adresses
             url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/adresses',
@@ -65,7 +65,7 @@ function querySuccessAdr(tx,result) {
                 console.log(model);
                 alert(response.responseText);
             }
-        })
+        });
     // }
     // else {
     //     $.ajax({

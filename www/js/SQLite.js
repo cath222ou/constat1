@@ -20,7 +20,6 @@ $(function(){
 function onDeviceReady() {
 	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid;
-	//alert(device.uuid);
 	$('#uuid').html(uuidValue);
 	$('#buildVersion').html('1.0.6');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);

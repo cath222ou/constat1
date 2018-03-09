@@ -111,8 +111,10 @@ function getVideo() {
 	}
 
 function showModalNomVideo(fileURI){
+
 	//affiche le modal pour la sélection du nom du video et utilise le nom de rue comme base,
 	$('#videoModal').modal('show').on('shown.bs.modal',function(){
+		var nbrvideo = $('#listeVideo li').length;
 		var nomRue;
 		if($('#noCivTxt_c').val() !== '' && $('#rueTxt_c').val() !== ''){
 			nomRue = $('#noCivTxt_c').val() + ' ' + $('#rueTxt_c').val();
@@ -123,6 +125,9 @@ function showModalNomVideo(fileURI){
 		else{
 			 nomRue = '';
 		}
+		if(nbrvideo >0)
+			nomRue += '('+nbrvideo+')';
+
 		$('#nomVideo').val(nomRue);
 
 	}).on('hide.bs.modal',function(event){
