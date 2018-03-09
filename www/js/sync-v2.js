@@ -222,8 +222,8 @@ function uploadVideo(tx,results) {
                 $('#progressBlock-'+key+' p.nomVideo span').text(nom);
                 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-                    console.log('file system open : ' + fs.name);
                     fs.root.getFile(nom, { create: true, exclusive: false }, function (fileEntry) {
+                        //alert('fileentry video sync nom : ' + nom);
                         fileEntry.file(function (file) {
                             //var r = new Resumable({
                             //    target : 'http://constats.ville.valdor.qc.ca/api/v1/sync/video',
