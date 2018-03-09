@@ -131,43 +131,95 @@ function showModalNomVideo(fileURI){
 			return false;
 		}
 		else if(fileURI.length > 0){
-			//à la fermeture, on déplace le video dans le répertoire de l'app via FileTransfer, nous devrions le faire via xhr2 éventuellement
-			deplaceVideoLocal(fileURI);
+
+
+			console.log(fileURI);
+            //à la fermeture, on déplace le video dans le répertoire de l'app via FileTransfer, nous devrions le faire via xhr2 éventuellement
+            // var folderPath = fileURI.substring(0,fileURI.lastIndexOf("/") + 1);
+			// var fileName = fileURI.substring(fileURI.lastIndexOf("/") + 1);
+            // deplaceVideoLocal(fileURI);
+            window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+                console.log('file system open : ' + fs.name);
+                fs.root.getFile(fileURI, { create: true, exclusive: false }, function (fileEntry) {
+                    fileEntry.file(function (file) {
+                        var reader = new FileReader();
+                        reader.onloadend = function(event) {
+                            var blob = new Blob([new Uint8Array(this.result)],{type:'video/quicktime'});
+                            deplaceVideoLocal(blob)
+                            };
+                        reader.readAsArrayBuffer(file);
+                    }, function (err) { console.error('error getting fileentry file!' + err); });
+                }, function (err) { console.error('error getting file! ' + err); });
+            }, function (err) { console.error('error getting persistent fs! ' + err); });
+
 			fileURI = '';
+
+
 		}
 	})
 }
 
-//Envoyer la vidéo dans un nouveau répertoire
-function deplaceVideoLocal(fileURI, mediaFiles) {
-		var nomVid = $('#nomVideo').val();
-		var filePath = cordova.file.documentsDirectory +nomVid+".mov";
-		var ft = new FileTransfer();
-            ft.download(
-				fileURI,
-                filePath,
-                function(entry){
-                    //alert("file copy success");
-					//alert(JSON.stringify(entry));
-					//$('#videoThumbnail').fadeIn();
-					//$('#video').attr('src',filePath);
-					//function capture(){
-					//	var canvas = document.getElementById('canvas');
-					//	var video = document.getElementById('video');
-					//video.preload = 'metadata';
-					//	video.src=filePath;
-					//	canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-					//}
-					//capture();
-                },
-                function(error){
-                    alert(JSON.stringify(error));
-                }
-            );
+function deplaceVideoLocal(DataBlob){
+	alert('Size'+ DataBlob.size);
+    folderPath = cordova.file.documentsDirectory;
+    fileName = $('#nomVideo').text() + '.mov';
+    // Convert the base64 string in a Blob
+    //var DataBlob = b64toBlob(content,contentType);
 
-//Lancer la requête d'insertion dans la table vidéo
+    console.log("Starting to write the file :3");
+
+    window.resolveLocalFileSystemURL(folderPath, function(dir) {
+        console.log("Access to the directory granted succesfully");
+        dir.getFile(fileName, {create:true}, function(file) {
+            alert("File created succesfully.");
+            console.log("File created succesfully.");
+            file.createWriter(function(fileWriter) {
+                console.log("Writing content to file");
+                fileWriter.write(DataBlob);
+                alert(folderPath)
+            }, function(){
+                alert('Unable to save file in path '+ folderPath);
+            });
+        });
+    });
+    filePath = folderPath + fileName;
+    //Lancer la requête d'insertion dans la table vidéo
 		insertVideoDB(filePath);
-	}
+
+}
+
+
+// //Envoyer la vidéo dans un nouveau répertoire
+// function deplaceVideoLocal(fileURI, mediaFiles) {
+// 		var nomVid = $('#nomVideo').val();
+// 		var filePath = cordova.file.documentsDirectory +nomVid+".mov";
+// 		var ft = new FileTransfer();
+//             ft.download(
+// 				fileURI,
+//                 filePath,
+//                 function(entry){
+//                     //alert("file copy success");
+// 					//alert(JSON.stringify(entry));
+// 					//$('#videoThumbnail').fadeIn();
+// 					//$('#video').attr('src',filePath);
+// 					//function capture(){
+// 					//	var canvas = document.getElementById('canvas');
+// 					//	var video = document.getElementById('video');
+// 					//video.preload = 'metadata';
+// 					//	video.src=filePath;
+// 					//	canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+// 					//}
+// 					//capture();
+//                 },
+//                 function(error){
+//                     alert(JSON.stringify(error));
+//                 }
+//             );
+//
+// //Lancer la requête d'insertion dans la table vidéo
+// 		insertVideoDB(filePath);
+// 	}
 
 //Callback d'erreur de l'ouverture de la librairie des vidéos/est callé si aucun video n'est choisi aussi...
 function onFail(err) {
