@@ -16,48 +16,34 @@ function successCBAgent(tx,result) {
 
 //connexion on serveur
 function querySuccessAgent(tx,result) {
-    //if (result.rows.length===0){
-    //Aller chercher les informations des agents sur le serveur
+    if (navigator.onLine === true) {
+        //Aller chercher les informations des agents sur le serveur
         $.ajax({
             url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
             method: 'get',
             data: {uuid: uuidValue},
             success: function (changes) {
                 //Lancer la requête d'insertion
-                    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-                    db.transaction(function (tx){
-                        insertDBAgent(tx, changes)
-                    }, errorCB);
-                   },
+                db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+                db.transaction(function (tx) {
+                    insertDBAgent(tx, changes)
+                }, errorCB);
+            },
             error: function (error) {
-                console.log(error);
+                console.log('erreur sync agent online: ',error);
                 alert(JSON.stringify(error));
-                //alert(response.responseText);
             }
         });
-    //}
-    // else {
-    //     $.ajax({
-    //         url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/users',
-    //         method: 'get',
-    //         data: {uuid: uuidApp1},
-    //         success: function (changes) {
-    //             $('#matriculeMenu').val('');
-    //             resultat = $.parseJSON(changes);
-    //             $(resultat).each(function(key,value){
-    //                 //agentResult = value.matricule;
-    //                 //console.log(value);
-    //                     $('#matriculeMenu').append( '<option value="'+value.id+'">'+value.matricule+'</option>' );
-    //
-    //             })
-    //         },
-    //         error: function (model, response) {
-    //             console.log(model);
-    //             alert(JSON.stringify(model));
-    //             //alert(response.responseText);
-    //         }
+    }
+    else {
+        //Mode hors-ligne, on ajoute via la DB locale
+        $('#matriculeMenu').val('');
+        for(var i =0; i< result.rows.length; i++){
+            console.log('Ajout matricule offline: ' + result.rows.item(i).user_id);
+            $('#matriculeMenu').append('<option value="' + result.rows.item(i).user_id + '">' + result.rows.item(i).matricule + '</option>');
+        }
+    }
 }
-
 //Insertion des informations des agents sur le serveur dans la table agent
 function insertDBAgent(tx,changes){
     var resultat = $.parseJSON(changes);

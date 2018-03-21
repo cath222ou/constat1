@@ -25,7 +25,7 @@ function queryDBAdr(tx,result){
 
 //connexion on serveur
 function querySuccessAdr(tx,result) {
-    //if (result.rows.length===0){
+    if (navigator.onLine === true){
         $.ajax({
             //xhr: function() {
             //    var xhr = new window.XMLHttpRequest();
@@ -66,7 +66,8 @@ function querySuccessAdr(tx,result) {
                 alert(response.responseText);
             }
         });
-    // }
+     }
+
     // else {
     //     $.ajax({
     //         url: 'http://constats.ville.valdor.qc.ca/api/v1/sync/adresses',
@@ -89,15 +90,12 @@ function querySuccessAdr(tx,result) {
 //Insertion des informations sur les adresses du serveur dans la table adresse
 function insertDBAdr(tx,changes){
     var resultat = $.parseJSON(changes);
-    $(resultat).each(function(key,value){///TODO:: paramétrisation
-        tx.executeSql('INSERT OR REPLACE INTO adresses (adresse_id,nocivique,adresse) VALUES ("'+ value.MATRICULE +'","'+ value.NOCIVIQUE +'","'+ value.ADRESSE +'")');
+    $(resultat).each(function(key,value){
+        tx.executeSql('INSERT OR REPLACE INTO adresses (adresse_id,nocivique,adresse) VALUES (?,?,?)',[value.MATRICULE,value.NOCIVIQUE,value.ADRESSE]);
     });
-    resultat = $.parseJSON(changes);
+    //resultat = $.parseJSON(changes); 21/03/2018
     //ajouter les information dans la variable adresseResult
-    adresseResult.push(resultat);
-
-
-
+    //adresseResult.push(resultat); 21/03/2018
 }
 
 //Lancer la requête de suppression de la table adresse

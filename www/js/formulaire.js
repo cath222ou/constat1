@@ -111,9 +111,9 @@
 	//Entrer son matricule
     function addmatricule() {
         //donner aux champs la valeur du matricule
-        var matriculeMenuVal = $("#matriculeMenu option:selected").val();//Évite au navigateur de parser 2 fois de suite pour trouver la valeur
-        $('#matriculeNum').text(matriculeMenuVal);
-        $('#matAgent').val(matriculeMenuVal);
+        var matriculeMenu = $("#matriculeMenu option:selected");//Évite au navigateur de parser 2 fois de suite pour trouver la valeur
+        $('#matriculeNum').text(matriculeMenu.text());
+        $('#matAgent').val(matriculeMenu.val());
         //donner à ce champ la valeur de uuid de l'appareil
         $('#uuidApp').val(uuidValue);
         //Fermer la modal de matricule

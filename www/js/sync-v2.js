@@ -75,6 +75,7 @@ function uploadConstat(results) {
     }
     else{
         alert('Impossible de synchroniser les vidéos: Aucune connectivité');
+        $('#synchronisation').modal('close');
     }
 }
 
@@ -92,7 +93,7 @@ function nombreVideo(results, i) {
                 tx.executeSql('UPDATE constats SET nbrVideo="'+ nombre + '"WHERE constat_id =' + constatID)
 
             }, errorCB)})
-};
+}
 
 
 //Connexion au serveur pour envoyer les constats vers le serveur
@@ -157,9 +158,8 @@ function postConstat(results, i, len, constatCompletees) {
                                 //Si le serveur envoi un message d'erreur
                                 else {
                                     //la progressbar devient rouge et contient un message d'échec
-
                                     $('#progerssLabelConstat').text('Échec');
-                                    $('#echecSync').append('Constat: ' + idConstat+'<br/>');
+                                    $('#echecSync').append('Constat: ' + idConstat+' Erreur: '+ result.msg +'<br/>');
                                     def.reject();//Promesse non résolu, petit problème?
                                 }
                             },
@@ -168,10 +168,12 @@ function postConstat(results, i, len, constatCompletees) {
                                 //la progressbar devient rouge et contient un message d'échec
                                 //var idConstat = this.constatID;
                                 //alert('Échec de la synchronisation');
+
                                 console.error('Erreur postConstat:' + JSON.stringify(error));
                                 $('#echecSync').append('Constat: ' + this.constatID+'<br/>');
                                 $('#progressbar').css("background", "red");
                                 $('#progerssLabelConstat').text('Échec');
+                                def.reject();//Promesse non résolu, petit problème?
                             }
                         })
                     });
