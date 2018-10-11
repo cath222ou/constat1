@@ -65,6 +65,7 @@ function getNbrVideoParConstat(constat_id){
 	return deferred.promise();
 }
 
+
 function setNbrVideoParConstat(constat_id,nbrVideo){
 	var deferred = new $.Deferred();
 	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
@@ -102,16 +103,16 @@ function insertVideoDB(filePath) {
 
 //Ouvrir la librairie des vidéos
 function getVideo() {
-		var options = { quality: 80 };
-		options["sourceType"] = 0 | 2; 
-		options["mediaType"] = 1;
-		options["destinationType"] = 2;
+		var options = { quality: 80};
+		options["sourceType"] = 0 | 2 ;//PHOTOLIBRARY
+		options["mediaType"] = 1; //CAMERA
+		options["destinationType"] = 1; //NATIVE_URI = 2, FILE_URI = 1
 		//options["duration"] = 100000;
 		navigator.camera.getPicture(showModalNomVideo, onFail, options);
 	}
 
 function showModalNomVideo(fileURI){
-
+	console.log('fileURI: ' + fileURI);
 	//affiche le modal pour la sélection du nom du video et utilise le nom de rue comme base,
 	$('#videoModal').modal('show').on('shown.bs.modal',function(){
 		var nbrvideo = $('#listeVideo li').length;
@@ -138,22 +139,37 @@ function showModalNomVideo(fileURI){
 		}
 		else if(fileURI.length > 0){
 			var fileName = $('#nomVideo').val()+'.mov';
-			moveImageUriFromTemporaryToPersistent(fileURI, fileName, function(newImageURI) {
-				//alert('newimage uri: ' + newImageURI);
+			//TODO::Peut-être que nous pourrions sauvegarder simplement le filreuri et le filename dans la BD et lors de la synchro, on va lire le fileuri et le nom du fichier est inscrit par le serveur à la réception du fichier.
+			deplaceVideoTempVersApp(fileURI, fileName, function(newImageURI) {
 				insertVideoDB(newImageURI);
 			});
 
 			function fail(message) {
-				alert('Erreur déplacement de video');
+				alert('Erreur déplacement de video.');
+				console.log('Erreyr moveImageURIFromTemp: '+ message);
 			}
+
+			function deplaceVideoTempVersApp(fileURI,newFileName,callback){
+
+				window.resolveLocalFileSystemURL(fileURI,function(videoTemp){
+					window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+					window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
+						fs.root.getFile(newFileName,{create:true,exclusive:false},function(newFile){
+							videoTemp.moveTo(newFile);
+							callback(newFile.toURL());
+						},function(err){console.log('err moveTo '+ err)})
+					},function(err){console.log('err getFile ' + err)})
+				},function(err){console.log('err rfs ' + err)})
+			}
+
 			//Inspiration d'un modèle vu sur stackoverflow pour déplacer le fichier de l'espace temporaire vers l'application
 			function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
-				window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {//Vérifie l'accès au fichier video qui est dans l'espace temporaire (dans le dossier /tmp)
+				window.resolveLocalFileSystemURL(imageURI, function(temporaryEntry) {//Vérifie l'accès au fichier video qui est dans l'espace temporaire (dans le dossier /tmp)
 					window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {//Créer un object pour l'accès dans l'espace de l'application, à la racine de l'app
 						persistentFileSys.root.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {//Créer un fichier avec le nouveau nom  qui est le nom du vidéo + .mov
 								temporaryEntry.file(function(oldFile) {//Ouverture du fichier temporaire pour lire le contenu
 									var reader = new FileReader(); //Création d'un objet FilreReader pour lire le fichier temporaire
-									reader.onloadend = function(evt) {//Lorsque la lecture est terminé on écrit avec le writer, le nouveau fichier
+									reader.onload = function(evt) {//Lorsque la lecture est terminé on écrit avec le writer, le nouveau fichier
 										persistentEntry.createWriter(function(writer) {
 											writer.onwrite = function(evt) {
 												temporaryEntry.remove();//On efface le fichier temporaire

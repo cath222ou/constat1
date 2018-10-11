@@ -291,7 +291,7 @@ function uploadVideo(tx,results) {
                             ////});
                             //Simple upload via XHR, ne supporte pas le resume.
                             var reader = new FileReader();
-                            reader.onloadend = function(event) {
+                            reader.onloadend = function(event) {///TODO:: à tester si onload ferait la même chose car onloadend est callé même lors d'un erreur
                                 var blob = new Blob([new Uint8Array(this.result)],{type:'video/quicktime'});
                                 var oReq = new XMLHttpRequest();
                                 var fd = new FormData();
