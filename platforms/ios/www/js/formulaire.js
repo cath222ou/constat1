@@ -29,11 +29,13 @@
 
     //Afficher champs texte si "Autre" est sélectionné
      $('#descInfraction').hide();
-     $('input[type="radio"]').click(function () {
-         if ($(this).attr('id') === 'radio-8') {
+     $('input[type="checkbox"]').click(function () {
+         //Si la case Autre est coché, afficher le champs texte
+         if ($(this).attr('value') === 'Autre' && $(this).is(':checked')) {
              $('#descInfraction').show();
          }
-         else {
+         //Si la case Autre est décoché, cacher le champs texte
+         else if ($(this).attr('value') === 'Autre' && $(!this.checked)){
              $('#descInfraction').hide();
          }
      });
@@ -58,7 +60,7 @@
         $('#faitTxt').val('');
         $('#faitTxt2').val('');
         $('#noteTxt').val('');
-        $('input[type=radio]').prop('checked',false);
+        $('input[type=checkbox]').prop('checked',false);
         //Retour à l'accordéon initial
         $( "#accordion" ).accordion(
             {active:2}//Etait à 1, je l'ai mis identique à l'initialisation dans le document.ready
@@ -111,9 +113,9 @@
 	//Entrer son matricule
     function addmatricule() {
         //donner aux champs la valeur du matricule
-        var matriculeMenuVal = $("#matriculeMenu option:selected").val();//Évite au navigateur de parser 2 fois de suite pour trouver la valeur
-        $('#matriculeNum').text(matriculeMenuVal);
-        $('#matAgent').val(matriculeMenuVal);
+        var matriculeMenu = $("#matriculeMenu option:selected");//Évite au navigateur de parser 2 fois de suite pour trouver la valeur
+        $('#matriculeNum').text(matriculeMenu.text());
+        $('#matAgent').val(matriculeMenu.val());
         //donner à ce champ la valeur de uuid de l'appareil
         $('#uuidApp').val(uuidValue);
         //Fermer la modal de matricule

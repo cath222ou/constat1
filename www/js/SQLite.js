@@ -3,8 +3,8 @@
 //Variable
 var x = '';
 var y = '';
-//var uuidValue = '21FE5A66-7C7D-4183-87E6-2A58739DE667';
-var uuidValue;
+var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
+// var uuidValue;
 $(function(){
 	$('#nouvConstat').fadeOut();
 	$('#enrVideo').fadeOut();
@@ -19,9 +19,9 @@ $(function(){
 //Cordova ready
 function onDeviceReady() {
 	//Valeur du UUID de l'appareil
-	uuidValue = device.uuid;
+	// uuidValue = device.uuid; ////////////////////////////////////changer
 	$('#uuid').html(uuidValue);
-	$('#buildVersion').html('1.0.6');
+	$('#buildVersion').html('1.0.7');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
@@ -36,7 +36,7 @@ function onDeviceReady() {
 
 		//Création de la table constats
 		function populateDBConstat(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS constats (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER,dossier_id)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS constats (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,b_description_autre,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER,dossier_id)');
 		}
 
 		//Création de la table demo pour visualisation dans l'application
@@ -57,6 +57,7 @@ function onDeviceReady() {
                 	+ '<td data-title="b_date" data-desc="b_date" class="hidden">'+results.rows.item(i).b_date +'</td>'
                 	+ '<td data-title="b_heure" data-desc="b_heure" class="hidden">'+results.rows.item(i).b_heure +'</td>'
                 	+ '<td data-title="b_description" data-desc="b_description" class="hidden">'+results.rows.item(i).b_description +'</td>'
+                	+ '<td data-title="b_description_autre" data-desc="b_description_autre" class="hidden">'+results.rows.item(i).b_description_autre +'</td>'
                 	+ '<td data-title="c_endroit" data-desc="c_endroit" class="hidden">'+results.rows.item(i).c_endroit +'</td>'
                 	+ '<td data-title="Numéro civique" data-desc="c_nociv">'+results.rows.item(i).c_nociv +'</td>'
                 	+ '<td data-title="Nom de la rue"  data-desc="c_rue">'+results.rows.item(i).c_rue +'</td>'
@@ -89,8 +90,14 @@ function onDeviceReady() {
             db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
             db.transaction(function(tx){
 				tx.executeSql('SELECT * FROM constats WHERE sync = ?', [0], afficherTableConstats, errorCB);
+                // tx.executeSql('SELECT * FROM constats', [], afficherTableConstats, errorCB);
 			}, errorCB);
         }
+
+        //Lancer la requête pour raffraichir la table dans Constats à synchroniser lorsque l'on clique sur cet tabs
+		$('#tabs-2ID').click(function() {
+    		getConstatsNonSync()
+		});
 
 		//Requête d'insertion dans la table demo lorsque l'on clique sur enregistrer
 		function insertDB(tx, position) {
@@ -101,15 +108,27 @@ function onDeviceReady() {
 			var tel2 = $("#telTra").val();
 			var newdate = moment().format('DD/MM/YYYY');
 			var newheure = moment().format('h:mm a');
-			var descInfraction = null;
-			//Donner à la variable descInfraction la valeur de 1 à 7 selon le radiobox sélectionné
-				if ($('#radio-1').is(':checked') || $('#radio-2').is(':checked') || $('#radio-3').is(':checked')|| $('#radio-4').is(':checked')|| $('#radio-5').is(':checked')|| $('#radio-6').is(':checked')|| $('#radio-7').is(':checked')){
-						descInfraction = $("input:checked").val();
-					}
-				//Si radiobox 8 est coché, prendre la valeur du champ texte
-				else if ($('#radio-8').is(':checked')){
-                    descInfraction = $("#descInfraction").val();
-                }
+			var descInfraction = [];
+            var descInfractionAutre = null;
+
+            //Donner à la variable descInfraction les valeurs de 1 à 7 selon les checkbox sélectionnés
+            $('.radio-input:checkbox:checked').each(function(){
+            	var checkboxValue = $(this).val();
+            	if(checkboxValue == 'Autre'){
+                    descInfractionAutre = ($("#descInfraction").val());
+				}
+				descInfraction.push(checkboxValue);
+
+			});
+
+			// //Donner à la variable descInfraction la valeur de 1 à 7 selon le radiobox sélectionné
+			// 	if ($('#radio-1').is(':checked') || $('#radio-2').is(':checked') || $('#radio-3').is(':checked')|| $('#radio-4').is(':checked')|| $('#radio-5').is(':checked')|| $('#radio-6').is(':checked')|| $('#radio-7').is(':checked')){
+			// 			descInfraction = $("input:checked").val();
+			// 		}
+			// 	//Si radiobox 8 est coché, prendre la valeur du champ texte
+			// 	else if ($('#radio-8').is(':checked')){
+             //        descInfraction = $("#descInfraction").val();
+             //    }
 			var endroit = $("#endroitTxt").val();
 			var nociv = $("#noCivTxt_c").val();
 			var rue = $("#rueTxt_c").val();
@@ -131,7 +150,7 @@ function onDeviceReady() {
 
             //Insérer les données dans la table constats
 			///TODO parametrized ->
-            tx.executeSql('INSERT INTO constats (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
+            tx.executeSql('INSERT INTO constats (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,b_description_autre,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+descInfractionAutre+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
 			//rendre visible le bouton de sélection de vidéo
 		}
 
@@ -172,15 +191,19 @@ function onDeviceReady() {
 
 
 			//Compter le nombre de description d'infraction sélectionné (1 ou 0)
-            a.find(".radio-input").each(function() {
+            // a.find(".radio-input").each(function() {
             	//Si un radio box est sélectionné, augmenter la radioNbr de 1
-            	if(( $(this).is(':checked') && $(this).attr('id')!== 'radio-8') || ($(this).is(':checked') && $(this).attr('id')=== 'radio-8' && $('#descInfraction').val() !== "")){
-                    //radioNbr = radioNbr + 1;
-					++radioNbr;
-                }
-            });
+            	// if(( $(this).is(':checked') && $(this).attr('id')!== 'radio-8') || ($(this).is(':checked') && $(this).attr('id')=== 'radio-8' && $('#descInfraction').val() !== "")){
+                 //    //radioNbr = radioNbr + 1;
+					// ++radioNbr;
+                // }
+                radioNbr = $('.radio-input:checkbox:checked').length;
+
+            // });
 			// Vérification qu'il y a une description d'infraction sélectionnée
-            if (radioNbr === 0 ){
+            if ((radioNbr === 0) || (($('#radio-8').is(':checked') && $('#descInfraction').val() === ""))){
+
+            	radioNbr = 0;
             	if($('#radio-8').is(':checked')){
                     $('#b').addClass("ChampsObligatoire");
                     $('#descInfraction').addClass("divObligatoire");
@@ -195,6 +218,9 @@ function onDeviceReady() {
                 $('#descInfCheck').removeClass("divObligatoire");
                 $('#descInfraction').removeClass("divObligatoire");
             }
+
+
+
 
 
 			//Vérification que les champs textes obligatoires sont remplis
@@ -231,8 +257,8 @@ function onDeviceReady() {
                     db.transaction(function (tx) {
 						insertDB(tx, position);
 					},
-						errorCB,
-						getConstatsNonSync());
+						errorCB)
+						// getConstatsNonSync());
                 }
 		}
 
@@ -265,3 +291,6 @@ $('button[name="btnEnregistreFormulaire"]').on('click',function(event){
 	//Trouver la position et l'intégrer dans la BD lors de l'enregistrement du constat
 	navigator.geolocation.getCurrentPosition(goInsert, onError);
 });
+
+
+

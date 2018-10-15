@@ -220,12 +220,16 @@ function uploadVideo(tx,results) {
             $('#progressBlock').clone().attr('id','progressBlock-'+i).insertAfter('[id^=progressBlock]:last').show();
             function postVideo(sqlRow,key){
                 var path = sqlRow.rows.item(key).path;
-                var nom = sqlRow.rows.item(key).nom + ".mov";
+                var nom = sqlRow.rows.item(key).nom+ ".mov";
+                alert(path);
+
+                // var nom = "file:/"+path+sqlRow.rows.item(key).nom;//+ ".mov";
                 $('#progressBlock-'+key+' p.nomVideo span').text(nom);
                 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-                    fs.root.getFile(nom, { create: true, exclusive: false }, function (fileEntry) {
-                        //alert('fileentry video sync nom : ' + nom);
+                // window.requestFileSystem(path, 0, function (fs) {
+                    fs.root.getFile(path, { create: true, exclusive: false }, function (fileEntry) {
+                        alert("fullpath" +fileEntry.fullPath);
                         fileEntry.file(function (file) {
                             //var r = new Resumable({
                             //    target : 'http://constats.ville.valdor.qc.ca/api/v1/sync/video',

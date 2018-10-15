@@ -15,27 +15,34 @@ $(function () {
             autoHeight: false
         }
     );
-
-    //Afficher champs texte si "Autre" est sélectionné
-    //cacher la division de champs texte additionnel
-    $('#descInfractionEdit').hide();
-    $('input[type="radio"]').click(function () {
-        //Si radio-8Edit est coché montrer la division de champs texte
-        if ($(this).attr('id') === 'radio-8Edit') {
-            $('#descInfractionEdit').show();
-        }
-        //Sinon la cacher
-        else {
-            $('#descInfractionEdit').hide();
-        }
-    });
-
     // Modal d'édition de la BD
     $('#exampleModal').modal({
         show:false
     });
 
+    //Afficher champs texte si "Autre" est sélectionné
+    $('#descInfractionEdit').hide();
+    $('input[class="radio-input edit"]').click(function () {
+        //Si la case Autre est coché, afficher le champs texte
+        if ($(this).attr('value') === 'Autre' && $(this).is(':checked')) {
+            $('#descInfractionEdit').show();
+        }
+        //Si la case Autre est décoché, cacher le champs texte
+        else if ($(this).attr('value') === 'Autre' && $(!this.checked)){
+            $('#descInfractionEdit').hide();
+        }
+    });
+
 });
+
+//Découcher toutes les checkbox du modal d'édition
+function decocherCheckbox() {
+    $('.radio-input.edit:checkbox').each(function () {
+        $(this).prop('checked', false);
+    })
+}
+
+
 
 
     //Afficher nombre de caractères restants
@@ -93,6 +100,7 @@ $(function () {
         modal.find('#noCivTxtEdit_c').val(row.find('td[data-desc="c_nociv"]').html());
         modal.find('#rueTxtEdit_c').val(row.find('td[data-desc="c_rue"]').html());
         modal.find('#descLieuxEdit').val(row.find('td[data-desc="c_description"]').html());
+        modal.find('#descLieuxEdit').val(row.find('td[data-desc="c_description_autre"]').html());
         modal.find('#faitTxtEdit').val(row.find('td[data-desc="e_details"]').html());
         modal.find('#faitTxt2Edit').val(row.find('td[data-desc="e_detailsSuite"]').html());
         modal.find('#noCivTxtEdit_c').attr('matricule',row.find('td[data-desc="adresse_id"]').html());
@@ -112,47 +120,31 @@ $(function () {
         modal.find('#idCache').text(row.find('td[data-desc="id"]').html());
         modal.find('#detailCache').text(row.find('td[data-desc="e_suite"]').html());
         modal.find('#descInfCheckEdit').val(
+
             // Vérifier quel radiobox est coché
-            function verifCheck() {
-                //Cacher la division
+            function verifCheck(){
                 $('#descInfractionEdit').hide();
-                //Si la valeur de la ligne b_description est de 1 à 7 est coché, cocher la case et vider le champs texte
-                if (row.find('td[data-desc="b_description"]').html() === "1") {
-                    $('#radio-1Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(" ");
-                }
-                else if (row.find('td[data-desc="b_description"]').html() === "2") {
-                    $('#radio-2Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(" ");
-                }
-                else if (row.find('td[data-desc="b_description"]').html() === "3") {
-                    $('#radio-3Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(" ");
-                }
-                else if (row.find('td[data-desc="b_description"]').html() === "4") {
-                    $('#radio-4Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(" ");
-                }
-                else if (row.find('td[data-desc="b_description"]').html() === "5") {
-                    $('#radio-5Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(" ");
-                }
-                else if (row.find('td[data-desc="b_description"]').html() === "6") {
-                    $('#radio-6Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(" ");
-                }
-                else if (row.find('td[data-desc="b_description"]').html() === "7") {
-                    $('#radio-7Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(" ");
-                }
-                //Sinon, cocher le radiobox 8, montrer le champ texte et afficher la valeur dans le champs texte
-                else {
-                    $('#radio-8Edit').prop('checked', true);
-                    modal.find('#descInfractionEdit').val(row.find('td[data-desc="b_description"]').html());
-                    $('#descInfractionEdit').show();
-                }
+                //Exploser les valeurs de description infraction dans une liste
+                var descValue = row.find('td[data-desc="b_description"]').text();
+                var descListValue = descValue.split(',');
+
+                //Pour chaque valeur de checkbox, vérifier si le constat inclu cette valeur
+                $('.radio-input.edit:checkbox').each(function(){
+                    var checkboxValue = $(this).val();
+                        //Si Autre est coché, afficher le champs texte et donner la valeur de la colonne b_description_autre
+                        if (descListValue.includes('Autre')){
+                            modal.find('#descInfractionEdit').val(row.find('td[data-desc="b_description_autre"]').html());
+                            $('#descInfractionEdit').show();
+                        }
+                        //Cocher les cases selon les valeurs de la colonne b_description
+                        if (descListValue.includes(checkboxValue)){
+                            $('#radio-'+checkboxValue+'Edit').prop('checked', true);
+                        }
+
+                });
 
             }
+
         );
         // donner à la variable constat la valeur du constat_id de la ligne sélectionnée
         constat = row.find('td[data-desc="constat_id"]').html();
@@ -164,14 +156,19 @@ $(function () {
 
         //Lorsque l'on clique sur enregistrer, faire la modification sur la table
         function editRow(tx){
-            //Si le radiobox 1 à 7 est coché, donner à la variable descInfraction la valeur 1 à 7 selon celui sélectionné
-            if ($('#radio-1Edit').is(':checked') || $('#radio-2Edit').is(':checked') || $('#radio-3Edit').is(':checked')|| $('#radio-4Edit').is(':checked')|| $('#radio-5Edit').is(':checked')|| $('#radio-6Edit').is(':checked')|| $('#radio-7Edit').is(':checked')){
-                descInfraction = $("input:checked").val();
-            }
-            //Sinon, donner à la variable la valeur dans le champs texte
-            else {
-                descInfraction = $("#descInfractionEdit").val();
-            }
+
+            var descInfraction = [];
+            var descInfractionAutre = null;
+
+            //Donner à la variable descInfraction les valeurs de 1 à 7 selon les checkbox sélectionnés
+            $('.radio-input:checkbox:checked').each(function(){
+                var checkboxValue = $(this).val();
+                if(checkboxValue == 'Autre'){
+                    descInfractionAutre= ($("#descInfractionEdit").val());
+                }
+                descInfraction.push(checkboxValue);
+
+            });
 
             // Si la case est coché, donner la valeur true
             if ($('#checkbox-nested-text1').is(':checked')){
@@ -193,6 +190,7 @@ $(function () {
                 '", a_telephone1 ="'+$("#telResEdit").val()+
                 '", a_telephone2 ="'+$("#telTraEdit").val()+
                 '", b_description="'+ descInfraction +
+                '", b_description_autre="'+ descInfractionAutre +
                 '", c_endroit ="'+$("#endroitTxtEdit").val()+
                 '", c_nociv ="'+$("#noCivTxtEdit_c").val()+
                 '", c_rue ="'+$("#rueTxtEdit_c").val()+
@@ -203,13 +201,19 @@ $(function () {
                 '", e_detailsSuite ="'+$("#faitTxt2Edit").val()+
                 '", note ="'+$("#noteTxtEdit").val()+
                 '" WHERE constat_id ='
-                + constat, [], queryDB, errorCB);
+                + constat, [], errorCB);
 
             //Cacher le modal
             $('#constatModalEdit').modal('hide');
+            //Décocher tous les checkbox
+            decocherCheckbox();
 
         }
 
+    //    Rafraichir la table d'édition lorsque l'utilisateur appuie du Enregistrer
+    $('#EnrModifConstat').click(function() {
+        getConstatsNonSync()
+    });
 
 		//Fonction de validation des champs qui doivent être obligatoirement remplis
         function goEdit() {
@@ -222,27 +226,21 @@ $(function () {
             var a = $('#accordion1');
 
             //Compter le nombre de description d'infraction sélectionné (1 ou 0)
-            a.find(".radio-input").each(function() {
-                //Si un radio box est sélectionné, augmenter la radioNbr de 1
-                if(( $(this).is(':checked') && $(this).attr('id')!== 'radio-8Edit') || ($(this).is(':checked') && $(this).attr('id')=== 'radio-8Edit' && $('#descInfractionEdit').val() !== "")){
-                    radioNbr = radioNbr + 1;
-                }
-            });
-            // Vérification qu'il y a une description d'infraction sélectionnée
-            if (radioNbr === 0 ){
-                //Si le radiobox 8 est sélectionné ajouter à la division du champ texte et à l'accordion
 
-                if($('#radio-8Edit').is(':checked')){
+            radioNbr = $('.radio-input.edit:checkbox:checked').length;
+            // });
+            // Vérification qu'il y a une description d'infraction sélectionnée
+            if ((radioNbr === 0) || (($('#radio-AutreEdit').is(':checked') && $('#descInfractionEdit').val() === ""))){
+                radioNbr = 0;
+                if($('#radio-AutreEdit').is(':checked')){
                     $('#bEdit').addClass("ChampsObligatoire");
                     $('#descInfractionEdit').addClass("divObligatoire");
                 }
-                //Sinon, ajouter la classe uniquement la classe à la division des radiobox et de l'accordion
                 else {
                     $('#bEdit').addClass("ChampsObligatoire");
                     $('#descInfCheckEdit').addClass("divObligatoire");
                 }
             }
-            //Si une case est coché, enlever la classe
             else {
                 $('#bEdit').removeClass("ChampsObligatoire");
                 $('#descInfCheckEdit').removeClass("divObligatoire");

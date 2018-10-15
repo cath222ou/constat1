@@ -48,9 +48,9 @@ $('button[name="btnDropTableVideos"]').on('click',function(){
 	}, errorCB);
 });
 
-$('#enrVideo').on('click',function(){
-	getVideo();
-});
+// $('#enrVideo').on('click',function(){
+// 	getVideo();
+// });
 
 
 ///TODO:: à mettre lors de l'ajout/edition/suppression de video et lors de la creation d'un constat mettre le # en suffix pour éviter les noms identiques de vidéo
@@ -82,13 +82,13 @@ function setNbrVideoParConstat(constat_id,nbrVideo){
 
 
 //Lancer la requête d'insertion
-function insertVideoDB(filePath) {
+function insertVideoDB(nameVideo) {
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx){
 		//Fetch le dernier ID du constat
 			tx.executeSql('SELECT MAX(constat_id) as constat_id FROM constats', [], function(tx,results) {
-				var nomVideo = $('#nomVideo');
-				tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path,videoSync) VALUES (?,?,?,?,?)', [$("#matAgent").val(), results.rows.item(0).constat_id, nomVideo.val(), filePath,0],function(tx,results){
+				var nomVideo = $('#nomVideo'); //J'ai changé nomVideo.val() par nameVideo dans tx.excuteSQL
+				tx.executeSql('INSERT INTO videos (matricule,constat_id,nom,path,videoSync) VALUES (?,?,?,?,?)', [$("#matAgent").val(), results.rows.item(0).constat_id, nomVideo.val(), nameVideo,0],function(tx,results){
 					//On ajout un item qui permet de voir sous le bouton "Joindre un video", les videos en lien avec le constat. Ça permet aussi de supprimer le/les videos non désiré immédiatement.
 					//alert('fp sql:'+filePath);
 					$('#listeVideo').append('<li class="list-group-item" data-vid="'+results.insertId+'">'+nomVideo.val()+'&nbsp;&nbsp;&nbsp;&nbsp;<span><i class="fa fa-remove">&nbsp;&nbsp;&nbsp;</i></span></li>');
@@ -102,169 +102,145 @@ function insertVideoDB(filePath) {
 }
 
 //Ouvrir la librairie des vidéos
-function getVideo() {
-		var options = { quality: 80};
-		options["sourceType"] = 0 | 2 ;//PHOTOLIBRARY
-		options["mediaType"] = 1; //CAMERA
-		options["destinationType"] = 1; //NATIVE_URI = 2, FILE_URI = 1
-		//options["duration"] = 100000;
-		navigator.camera.getPicture(showModalNomVideo, onFail, options);
-	}
-
-function showModalNomVideo(fileURI){
-	console.log('fileURI: ' + fileURI);
-	//affiche le modal pour la sélection du nom du video et utilise le nom de rue comme base,
-	$('#videoModal').modal('show').on('shown.bs.modal',function(){
-		var nbrvideo = $('#listeVideo li').length;
-		var nomRue;
-		if($('#noCivTxt_c').val() !== '' && $('#rueTxt_c').val() !== ''){
-			nomRue = $('#noCivTxt_c').val() + ' ' + $('#rueTxt_c').val();
-		}
-		else if($('#noCivTxtEdit_c').val() !== '' && $('#rueTxtEdit_c').val() !== ''){
-			 nomRue = $('#noCivTxtEdit_c').val() + ' ' + $('#rueTxtEdit_c').val();
-		}
-		else{
-			 nomRue = '';
-		}
-		if(nbrvideo >0)
-			nomRue += '('+nbrvideo+')';
-
-		$('#nomVideo').val(nomRue);
-
-	}).on('hide.bs.modal',function(event){
-		if(!$('#nomVideo').val() && fileURI.length < 1){
-			alert('Vous devez inscrire un nom de video');
-			$('#nomVideo').focus();
-			return false;
-		}
-		else if(fileURI.length > 0){
-			var fileName = $('#nomVideo').val()+'.mov';
-			//TODO::Peut-être que nous pourrions sauvegarder simplement le filreuri et le filename dans la BD et lors de la synchro, on va lire le fileuri et le nom du fichier est inscrit par le serveur à la réception du fichier.
-			deplaceVideoTempVersApp(fileURI, fileName, function(newImageURI) {
-				insertVideoDB(newImageURI);
-			});
-
-			function fail(message) {
-				alert('Erreur déplacement de video.');
-				console.log('Erreyr moveImageURIFromTemp: '+ message);
-			}
-
-			function deplaceVideoTempVersApp(fileURI,newFileName,callback){
-
-				window.resolveLocalFileSystemURL(fileURI,function(videoTemp){
-					window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-					window.requestFileSystem(LocalFileSystem.PERSISTENT,0,function(fs){
-						fs.root.getFile(newFileName,{create:true,exclusive:false},function(newFile){
-							videoTemp.moveTo(newFile);
-							callback(newFile.toURL());
-						},function(err){console.log('err moveTo '+ err)})
-					},function(err){console.log('err getFile ' + err)})
-				},function(err){console.log('err rfs ' + err)})
-			}
-
-			//Inspiration d'un modèle vu sur stackoverflow pour déplacer le fichier de l'espace temporaire vers l'application
-			function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
-				window.resolveLocalFileSystemURL(imageURI, function(temporaryEntry) {//Vérifie l'accès au fichier video qui est dans l'espace temporaire (dans le dossier /tmp)
-					window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {//Créer un object pour l'accès dans l'espace de l'application, à la racine de l'app
-						persistentFileSys.root.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {//Créer un fichier avec le nouveau nom  qui est le nom du vidéo + .mov
-								temporaryEntry.file(function(oldFile) {//Ouverture du fichier temporaire pour lire le contenu
-									var reader = new FileReader(); //Création d'un objet FilreReader pour lire le fichier temporaire
-									reader.onload = function(evt) {//Lorsque la lecture est terminé on écrit avec le writer, le nouveau fichier
-										persistentEntry.createWriter(function(writer) {
-											writer.onwrite = function(evt) {
-												temporaryEntry.remove();//On efface le fichier temporaire
-												callbackFunction(persistentEntry.toURL());//Nouveau truc à apprendre, c'est pour appeler une autre fonction, le callback insertVideoDB avec le path complet du nouveau fichier
-											};
-											writer.write(evt.target.result);//
-										}, fail);
-									};
-									reader.readAsArrayBuffer(oldFile);//Lecture du fichier temporaire pour ensuite écrire dans le nouveau... un simple copy ou move aurait été si simple... :)
-								}, fail);
-							}, fail);
-					}, fail);
-				}, fail);
-			}
-            //à la fermeture, on déplace le video dans le répertoire de l'app via FileTransfer, nous devrions le faire via xhr2 éventuellement
-            // var folderPath = fileURI.substring(0,fileURI.lastIndexOf("/") + 1);
-			// var fileName = fileURI.substring(fileURI.lastIndexOf("/") + 1);
-            // deplaceVideoLocal(fileURI);
-            //window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-            //window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-            //window.resolveLocalFileSystemURL(fileURI.substring(fileURI.lastIndexOf("/")), function(fs) {
-            //   alert('file system open : ' + fs.name);
-            //    fs.root.getFile(fileURI.substring(fileURI.lastIndexOf("/") + 1), { create: true, exclusive: false }, function (fileEntry) {
-            //        fileEntry.file(function (file) {
-            //            var reader = new FileReader();
-            //            reader.onloadend = function(event) {
-            //                var DataBlob = new Blob([new Uint8Array(this.result)],{type:'video/quicktime'});
-				//			alert('Size'+ DataBlob.size);
-				//			var folderPath = cordova.file.documentsDirectory;
-				//			var fileName = $('#nomVideo').val() + '.mov';
-				//			alert('folderPath: '+folderPath);
-				//			alert('filename: ' + fileName);
-				//			alert("Starting to write the file :3");
-				//			window.resolveLocalFileSystemURL(folderPath, function(dir) {
-				//				alert("Access to the directory granted succesfully");
-				//				dir.getFile(fileName, {create:true}, function(file) {
-				//					alert("File created succesfully.");
-				//					file.createWriter(function(fileWriter) {
-				//						alert("Writing content to file");
-				//						fileWriter.write(DataBlob);
-				//						alert('folderPath2: '+folderPath)
-				//					}, function(){
-				//						alert('Unable to save file in path '+ folderPath);
-				//					});
-				//				});
-				//			});
-				//			var filePath = folderPath + fileName;
-				//			//Lancer la requête d'insertion dans la table vidéo
-				//			insertVideoDB(filePath);
-            //                };
-            //            reader.readAsArrayBuffer(file);
-            //        }, function (err) { alert('error getting fileentry file!' + err); });
-            //    }, function (err) { alert('error getting file! ' + err); });
-            //}, function (err) { alert('error getting persistent fs! ' + err); });
-			fileURI = '';
-		}
-	})
-}
-
-// //Envoyer la vidéo dans un nouveau répertoire
-// function deplaceVideoLocal(fileURI, mediaFiles) {
-// 		var nomVid = $('#nomVideo').val();
-// 		var filePath = cordova.file.documentsDirectory +nomVid+".mov";
-// 		var ft = new FileTransfer();
-//             ft.download(
-// 				fileURI,
-//                 filePath,
-//                 function(entry){
-//                     //alert("file copy success");
-// 					//alert(JSON.stringify(entry));
-// 					//$('#videoThumbnail').fadeIn();
-// 					//$('#video').attr('src',filePath);
-// 					//function capture(){
-// 					//	var canvas = document.getElementById('canvas');
-// 					//	var video = document.getElementById('video');
-// 					//video.preload = 'metadata';
-// 					//	video.src=filePath;
-// 					//	canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-// 					//}
-// 					//capture();
-//                 },
-//                 function(error){
-//                     alert(JSON.stringify(error));
-//                 }
-//             );
-//
-// //Lancer la requête d'insertion dans la table vidéo
-// 		insertVideoDB(filePath);
+// function getVideo() {
+// 		var options = { quality: 80};
+// 		options["sourceType"] = 0 | 2 ;//PHOTOLIBRARY
+// 		options["mediaType"] = 1; //CAMERA
+// 		options["destinationType"] = 1; //NATIVE_URI = 2, FILE_URI = 1
+// 		//options["duration"] = 100000;
+// 		navigator.camera.getPicture(showModalNomVideo, onFail, options);
 // 	}
 
-//Callback d'erreur de l'ouverture de la librairie des vidéos/est callé si aucun video n'est choisi aussi...
-function onFail(err) {
-		alert("Impossible d'ouvrir la sélection des videos. Erreur # " +err.code);
-	}
+//Ouverture du modal pour donner un nom à la vidéo prise
+function showModalNomVideo(nameVideo){
+    console.log('fileURI: ' + nameVideo);
+    //affiche le modal pour la sélection du nom du video et utilise le nom de rue comme base,
+    $('#videoModal').modal('show').on('shown.bs.modal',function(){
+        var nbrvideo = $('#listeVideo li').length;
+        var nomRue;
+        if($('#noCivTxt_c').val() !== '' && $('#rueTxt_c').val() !== ''){
+            nomRue = $('#noCivTxt_c').val() + ' ' + $('#rueTxt_c').val();
+        }
+        else if($('#noCivTxtEdit_c').val() !== '' && $('#rueTxtEdit_c').val() !== ''){
+            nomRue = $('#noCivTxtEdit_c').val() + ' ' + $('#rueTxtEdit_c').val();
+        }
+        else{
+            nomRue = '';
+        }
+        if(nbrvideo >0)
+            nomRue += '('+nbrvideo+')';
 
+        $('#nomVideo').val(nomRue);
+
+    }).on('hide.bs.modal',function(event){
+        if($('#nomVideo').val()=="" && nameVideo.length < 1){
+            alert('Vous devez inscrire un nom de video');
+            $('#nomVideo').focus();
+            return false;
+        }
+        else if(nameVideo.length > 0){
+            // var fileName = $('#nomVideo').val()+'.mov';
+            // var fileName = $('#nomVideo').val();
+            // var fileName=fileURI;
+			insertVideoDB(nameVideo);
+            nameVideo = '';
+        }
+    });
+    $('#nomVideo').val("")
+}
+
+// Si l'enregistrement de la vidéo à fonctionner, ouvrir le modal
+// var captureSuccess = function(mediaFiles) {
+//     var i, path, len, nameVideo;
+//     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+//         // nameVideo =$('#nomVideo').val();
+//         //Chemin d'accès vers la vidéo
+//         var pathComplet = mediaFiles[i].fullPath;
+//         var n = pathComplet.lastIndexOf('/');
+//         path = pathComplet.substring(0,n+1);
+//         // alert(path);
+//         //Nom de la vidéo par défault (chaîne de caractère aléatoire)
+//         nameVideo = mediaFiles[i].name;
+//
+//         moveVideo(pathComplet,nameVideo);
+//
+//         // //Ouvrir le modal pour donner une nom à la vidéo
+//         // showModalNomVideo(path, nameVideo)
+//         // do something interesting with the file
+//     }
+// };
+//
+// // capture error callback
+// var captureError = function(error) {
+//     navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+// };
+//
+// //Débuter l'enregistrement de la vidéo lorsque l'on clique sur le bouton Joindre une vidéo
+// $('#enrVideo').on('click',function() {
+//     navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});
+// });
+
+
+//////////////////////////////test//////////////////////////////////////
+var nameVideo;
+
+var captureSuccess = function(mediaFiles) {
+    var i, path, len;
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+        // nameVideo =$('#nomVideo').val();
+        //Chemin d'accès vers la vidéo
+        path = 'file://'+mediaFiles[i].fullPath;
+        nameVideo = mediaFiles[i].name;
+        window.resolveLocalFileSystemURI(path, resolveOnSuccess, resOnError);
+
+
+
+        // //Ouvrir le modal pour donner une nom à la vidéo
+        // showModalNomVideo(path, nameVideo)
+        // do something interesting with the file
+    }
+};
+
+// capture error callback
+var captureError = function(error) {
+    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+};
+
+//Débuter l'enregistrement de la vidéo lorsque l'on clique sur le bouton Joindre une vidéo
+$('#enrVideo').on('click',function() {
+    navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});
+});
+
+
+
+//Callback function when the file system uri has been resolved
+function resolveOnSuccess(entry){
+
+    var newFileName = nameVideo;
+    var myFolderApp=""; //= "Video";
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
+            //The folder is created if doesn't exist
+            fileSys.root.getDirectory(myFolderApp,
+                {create:true, exclusive: false},
+                function(directory) {
+                    entry.moveTo(directory, newFileName,  successMove, resOnError);
+                },
+                resOnError);
+        },
+        resOnError);
+
+}
+
+function successMove(entry) {
+    var pathVideo = entry.fullPath;
+    showModalNomVideo(nameVideo);
+
+    //I do my insert with "entry.fullPath" as for the path
+}
+
+function resOnError(error) {
+    alert(error.code);
+}
 
 
 
