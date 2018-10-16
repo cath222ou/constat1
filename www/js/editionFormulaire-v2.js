@@ -106,7 +106,7 @@ function decocherCheckbox() {
         modal.find('#noCivTxtEdit_c').attr('matricule',row.find('td[data-desc="adresse_id"]').html());
             //cocher la case si texte valeur dans le deuxième champ texte
             var champ = $('#faitTxt2Edit').val();
-            if (champ.length > 0 && champ !== 'null'){
+            if (champ.length > 1 && champ !== 'null'){
                 $('#checkbox-nested-text1').attr('checked', true);
                 $('#faitTxt2Edit').removeClass('hidden');
                 }
@@ -194,7 +194,7 @@ function decocherCheckbox() {
                 '", c_endroit ="'+$("#endroitTxtEdit").val()+
                 '", c_nociv ="'+$("#noCivTxtEdit_c").val()+
                 '", c_rue ="'+$("#rueTxtEdit_c").val()+
-                '", adresse_id ="'+$("#rueTxtEdit_c").data("matricule")+
+                // '", adresse_id ="'+$("#rueTxtEdit_c").data("matricule")+
                 '", c_description ="'+$('#descLieuxEdit').val()+
                 '", e_details ="'+$("#faitTxtEdit").val()+
                 '", e_suite ="'+$("#detailCache").val()+
@@ -276,35 +276,4 @@ function decocherCheckbox() {
                 db.transaction(editRow, errorCB);
             }
         }
-
-//Autocomplete d'adresse requête en édition
-//function selectNoCivEdit(){
-//    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-//    db.transaction(selectNoCivEditSuccess, errorCB);
-//}
-
-//Sélectionner les informations de la table où le numéro civique correspond à celui inscrit dans le champs texte
-//function selectNoCivEditSuccess(tx, results){
-//    tx.executeSql('SELECT * FROM ADRESSE WHERE nocivique='+$('#noCivTxtEdit_c').val(),[],function(tx, results){nomRueSelectEdit(tx, results)}, errorCB)
-
-//}
-
-//remplir la variable nomRueResult par la matricule et le nom de la rue
-//function nomRueSelectEdit(tx, results){
-//    nomRueResult = [];
-//    var len = results.rows.length;
-//    for (var i = 0; i < len; i++) {
- //       nomRueResult.push({value: results.rows.item(i).adresse_id, label: results.rows.item(i).adresse});
- //   }
- //   // Autocomplete Jquery du nom de la rue
- //   $("#rueTxtEdit_c").autocomplete({
- //       source: nomRueResult,
-  //      minLength: 2,
-  //      select: function(event, ui) {
-  //          event.preventDefault();
-  //          $("#rueTxtEdit_c").val(ui.item.label);
-  //          $('#rueTxtEdit_c').data("matricule",ui.item.value);
-  //      }
-  //  });
-//}
 

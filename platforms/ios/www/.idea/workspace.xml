@@ -13,14 +13,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5530121">
+    <splitter split-orientation="horizontal" split-proportion="0.36204818">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="374">
-                  <caret line="82" column="12" lean-forward="false" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+                <state relative-caret-position="10710">
+                  <caret line="630" column="57" lean-forward="false" selection-start-line="630" selection-start-column="57" selection-end-line="630" selection-end-column="57" />
                   <folding>
                     <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                     <element signature="e#20979#20985#1" expanded="true" />
@@ -29,21 +29,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="formulaire.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/js/formulaire.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="374">
-                  <caret line="22" column="33" lean-forward="false" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SQLite.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="SQLite.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/SQLite.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-680">
-                  <caret line="82" column="54" lean-forward="true" selection-start-line="82" selection-start-column="54" selection-end-line="82" selection-end-column="54" />
+                <state relative-caret-position="-850">
+                  <caret line="72" column="97" lean-forward="false" selection-start-line="72" selection-start-column="97" selection-end-line="72" selection-end-column="97" />
                   <folding>
                     <marker date="1539618057754" expanded="true" signature="4777:4783" ph="..." />
                   </folding>
@@ -51,21 +41,21 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="sync-v2.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/js/sync-v2.js">
+          <file leaf-file-name="editionFormulaire-v2.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/editionFormulaire-v2.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-19">
-                  <caret line="205" column="19" lean-forward="true" selection-start-line="205" selection-start-column="19" selection-end-line="205" selection-end-column="19" />
+                <state relative-caret-position="1802">
+                  <caret line="106" column="69" lean-forward="false" selection-start-line="106" selection-start-column="69" selection-end-line="106" selection-end-column="69" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="editionFormulaire-v2.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/js/editionFormulaire-v2.js">
+          <file leaf-file-name="sync-v2.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/js/sync-v2.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3774">
-                  <caret line="222" column="45" lean-forward="false" selection-start-line="222" selection-start-column="45" selection-end-line="222" selection-end-column="45" />
+                <state relative-caret-position="999">
+                  <caret line="425" column="45" lean-forward="false" selection-start-line="425" selection-start-column="45" selection-end-line="425" selection-end-column="45" />
                   <folding />
                 </state>
               </provider>
@@ -75,30 +65,12 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="editionVideo-v2.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="editionVideo-v2.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/editionVideo-v2.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="66">
-                  <caret line="208" column="19" lean-forward="false" selection-start-line="208" selection-start-column="19" selection-end-line="208" selection-end-column="66" />
+                <state relative-caret-position="421">
+                  <caret line="99" column="35" lean-forward="true" selection-start-line="99" selection-start-column="35" selection-end-line="99" selection-end-column="35" />
                   <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="video-v2.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/js/video-v2.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="286">
-                  <caret line="219" column="23" lean-forward="false" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
-                  <folding>
-                    <marker date="1539637192510" expanded="true" signature="4329:4335" ph=" " />
-                    <marker date="1539637192510" expanded="true" signature="4335:4341" ph=" " />
-                    <marker date="1539637192510" expanded="true" signature="4341:4347" ph=" " />
-                    <marker date="1539637192510" expanded="true" signature="4347:4353" ph=" " />
-                    <marker date="1539637192510" expanded="true" signature="4383:4389" ph=" " />
-                    <marker date="1539637192510" expanded="true" signature="4389:4395" ph=" " />
-                    <marker date="1539637192510" expanded="true" signature="4395:4401" ph=" " />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -127,9 +99,16 @@
       <find>fichierEdit</find>
       <find>ca</find>
       <find>matAgent</find>
-      <find>alert</find>
       <find>fileTr</find>
       <find>btnDropTableVideos</find>
+      <find>upd</find>
+      <find>#constatModalEdit</find>
+      <find>upda</find>
+      <find>update</find>
+      <find>videoidt</find>
+      <find>videoid</find>
+      <find>$(&quot;#idCache&quot;).val()</find>
+      <find>alert</find>
     </findStrings>
     <replaceStrings>
       <replace>&lt;br /&gt;</replace>
@@ -162,12 +141,12 @@
         <option value="$PROJECT_DIR$/js/editionFormulaire.js" />
         <option value="$PROJECT_DIR$/js/SQLiteAdresse.js" />
         <option value="$PROJECT_DIR$/js/formulaire.js" />
-        <option value="$PROJECT_DIR$/js/editionFormulaire-v2.js" />
         <option value="$PROJECT_DIR$/js/SQLite.js" />
-        <option value="$PROJECT_DIR$/js/editionVideo-v2.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/sync-v2.js" />
+        <option value="$PROJECT_DIR$/js/editionFormulaire-v2.js" />
         <option value="$PROJECT_DIR$/js/video-v2.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/editionVideo-v2.js" />
       </list>
     </option>
   </component>
@@ -198,6 +177,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -215,7 +195,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -288,12 +267,14 @@
       <workItem from="1520538993356" duration="5793000" />
       <workItem from="1539267074295" duration="6078000" />
       <workItem from="1539277130686" duration="40113000" />
-      <workItem from="1539605369166" duration="23925000" />
+      <workItem from="1539605369166" duration="33009000" />
+      <workItem from="1539712809373" duration="4803000" />
+      <workItem from="1539717656119" duration="2491000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="604041000" />
+    <option name="totallyTimeSpent" value="620419000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1216" extended-state="6" />
@@ -303,12 +284,12 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21276596" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -331,16 +312,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/SQLite.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2703">
-          <caret line="159" column="54" lean-forward="false" selection-start-line="159" selection-start-column="54" selection-end-line="159" selection-end-column="54" />
-          <folding>
-            <marker date="1539618057754" expanded="true" signature="4777:4783" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/video.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -530,7 +501,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4284">
           <caret line="252" column="12" lean-forward="false" selection-start-line="252" selection-start-column="12" selection-end-line="252" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -601,18 +571,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/validation-v2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-68">
+          <caret line="2" column="9" lean-forward="false" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10710">
+          <caret line="630" column="57" lean-forward="false" selection-start-line="630" selection-start-column="57" selection-end-line="630" selection-end-column="57" />
+          <folding>
+            <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#20979#20985#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/video-v2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="28" lean-forward="true" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+          <folding>
+            <marker date="1539716304322" expanded="true" signature="4329:4335" ph=" " />
+            <marker date="1539716304322" expanded="true" signature="4335:4341" ph=" " />
+            <marker date="1539716304322" expanded="true" signature="4341:4347" ph=" " />
+            <marker date="1539716304322" expanded="true" signature="4347:4353" ph=" " />
+            <marker date="1539716304322" expanded="true" signature="4383:4389" ph=" " />
+            <marker date="1539716304322" expanded="true" signature="4389:4395" ph=" " />
+            <marker date="1539716304322" expanded="true" signature="4395:4401" ph=" " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/editionFormulaire-v2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3774">
-          <caret line="222" column="45" lean-forward="false" selection-start-line="222" selection-start-column="45" selection-end-line="222" selection-end-column="45" />
+        <state relative-caret-position="1802">
+          <caret line="106" column="69" lean-forward="false" selection-start-line="106" selection-start-column="69" selection-end-line="106" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/sync-v2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="999">
+          <caret line="425" column="45" lean-forward="false" selection-start-line="425" selection-start-column="45" selection-end-line="425" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/SQLite.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-680">
-          <caret line="82" column="54" lean-forward="true" selection-start-line="82" selection-start-column="54" selection-end-line="82" selection-end-column="54" />
+        <state relative-caret-position="-850">
+          <caret line="72" column="97" lean-forward="false" selection-start-line="72" selection-start-column="97" selection-end-line="72" selection-end-column="97" />
           <folding>
             <marker date="1539618057754" expanded="true" signature="4777:4783" ph="..." />
           </folding>
@@ -621,44 +633,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/editionVideo-v2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="208" column="19" lean-forward="false" selection-start-line="208" selection-start-column="19" selection-end-line="208" selection-end-column="66" />
+        <state relative-caret-position="421">
+          <caret line="99" column="35" lean-forward="true" selection-start-line="99" selection-start-column="35" selection-end-line="99" selection-end-column="35" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="82" column="12" lean-forward="false" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
-          <folding>
-            <element signature="n#style#0;n#select#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#20979#20985#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/sync-v2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-19">
-          <caret line="205" column="19" lean-forward="true" selection-start-line="205" selection-start-column="19" selection-end-line="205" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/video-v2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="219" column="23" lean-forward="false" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
-          <folding>
-            <marker date="1539637192510" expanded="true" signature="4329:4335" ph=" " />
-            <marker date="1539637192510" expanded="true" signature="4335:4341" ph=" " />
-            <marker date="1539637192510" expanded="true" signature="4341:4347" ph=" " />
-            <marker date="1539637192510" expanded="true" signature="4347:4353" ph=" " />
-            <marker date="1539637192510" expanded="true" signature="4383:4389" ph=" " />
-            <marker date="1539637192510" expanded="true" signature="4389:4395" ph=" " />
-            <marker date="1539637192510" expanded="true" signature="4395:4401" ph=" " />
-          </folding>
         </state>
       </provider>
     </entry>

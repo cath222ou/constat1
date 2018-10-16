@@ -149,55 +149,23 @@ function showModalNomVideo(nameVideo){
     $('#nomVideo').val("")
 }
 
-// Si l'enregistrement de la vidéo à fonctionner, ouvrir le modal
-// var captureSuccess = function(mediaFiles) {
-//     var i, path, len, nameVideo;
-//     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-//         // nameVideo =$('#nomVideo').val();
-//         //Chemin d'accès vers la vidéo
-//         var pathComplet = mediaFiles[i].fullPath;
-//         var n = pathComplet.lastIndexOf('/');
-//         path = pathComplet.substring(0,n+1);
-//         // alert(path);
-//         //Nom de la vidéo par défault (chaîne de caractère aléatoire)
-//         nameVideo = mediaFiles[i].name;
-//
-//         moveVideo(pathComplet,nameVideo);
-//
-//         // //Ouvrir le modal pour donner une nom à la vidéo
-//         // showModalNomVideo(path, nameVideo)
-//         // do something interesting with the file
-//     }
-// };
-//
-// // capture error callback
-// var captureError = function(error) {
-//     navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-// };
-//
-// //Débuter l'enregistrement de la vidéo lorsque l'on clique sur le bouton Joindre une vidéo
-// $('#enrVideo').on('click',function() {
-//     navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});
-// });
+//Variable du nom de la vidéo, utilisé pour le déplacement de la vidéo
+// var nameVideo;
 
-
-//////////////////////////////test//////////////////////////////////////
-var nameVideo;
-
+//Succès de la prise de vidéo
 var captureSuccess = function(mediaFiles) {
     var i, path, len;
     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-        // nameVideo =$('#nomVideo').val();
         //Chemin d'accès vers la vidéo
         path = 'file://'+mediaFiles[i].fullPath;
-        nameVideo = mediaFiles[i].name;
-        window.resolveLocalFileSystemURI(path, resolveOnSuccess, resOnError);
-
-
-
-        // //Ouvrir le modal pour donner une nom à la vidéo
-        // showModalNomVideo(path, nameVideo)
-        // do something interesting with the file
+        //Nom de la vidéo dans le fichier par défaut
+        var nameVideo = mediaFiles[i].name;
+        //nom requete
+		var requete = 'insertion';
+        //Aller chercher la vidéo prise, puis lancer la fonction de déplacement de la vidéo
+        window.resolveLocalFileSystemURI(path, function(entry){
+        	resolveOnSuccess(entry,requete,nameVideo)}, resOnError
+        );
     }
 };
 
@@ -211,33 +179,37 @@ $('#enrVideo').on('click',function() {
     navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});
 });
 
-
-
-//Callback function when the file system uri has been resolved
-function resolveOnSuccess(entry){
-
+//fonction pour déplacer le vidéo vers une fichier PERSISTANT au lieu de TEMPORARY
+function resolveOnSuccess(entry,requete,nameVideo){
+	console.log('type de requete: '+requete);
     var newFileName = nameVideo;
-    var myFolderApp=""; //= "Video";
+    var myFolderApp="";
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
             //The folder is created if doesn't exist
             fileSys.root.getDirectory(myFolderApp,
                 {create:true, exclusive: false},
                 function(directory) {
-                    entry.moveTo(directory, newFileName,  successMove, resOnError);
+                    entry.moveTo(directory, newFileName,  function(entry){successMove(entry,requete,nameVideo)}, resOnError);
                 },
                 resOnError);
         },
         resOnError);
 
 }
-
-function successMove(entry) {
-    var pathVideo = entry.fullPath;
-    showModalNomVideo(nameVideo);
-
-    //I do my insert with "entry.fullPath" as for the path
+//Succès du déplacement de la vidéo
+function successMove(entry,requete,nameVideo) {
+	if (requete == "insertion" ){
+        showModalNomVideo(nameVideo);
+    }
+    else if (requete == "ajout"){
+        showModalNomVideoAjout(nameVideo);
+	}
+    else if (requete == "edition"){
+        showModalNomVideoEdit(nameVideo);
+    }
 }
 
+//Erreur du déplacement de la vidéo
 function resOnError(error) {
     alert(error.code);
 }

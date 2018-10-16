@@ -221,8 +221,6 @@ function uploadVideo(tx,results) {
             function postVideo(sqlRow,key){
                 var path = sqlRow.rows.item(key).path;
                 var nom = sqlRow.rows.item(key).nom+ ".mov";
-                alert(path);
-
                 // var nom = "file:/"+path+sqlRow.rows.item(key).nom;//+ ".mov";
                 $('#progressBlock-'+key+' p.nomVideo span').text(nom);
                 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
@@ -231,69 +229,6 @@ function uploadVideo(tx,results) {
                     fs.root.getFile(path, { create: true, exclusive: false }, function (fileEntry) {
                         alert("fullpath" +fileEntry.fullPath);
                         fileEntry.file(function (file) {
-                            //var r = new Resumable({
-                            //    target : 'http://constats.ville.valdor.qc.ca/api/v1/sync/video',
-                            //    query:{uuid:uuidValue,constat_id:6},
-                            //    maxChunkRetries: 3,
-                            //    maxFiles: 1,
-                            //    testChunks:false,
-                            //    prioritizeFirstAndLastChunk: true,
-                            //    simultaneousUploads: 1,
-                            //    chunkSize: 2 * 1024 * 1024,
-                            //    method:'octet',
-                            //    fileParameterName:'file',
-                            //    throttleProgressCallbacks:1
-                            //});
-                            //if(!r.support) alert('Your browser does not support this feature'); //TODO: do better error handling
-                            //r.addFile(file);
-                            //
-                            //r.on('fileAdded', function(file, event){
-                            //    console.log('fileAdded');
-                            //    console.log(file.fileName + " " + file.size + " ch: " + file.chunks);
-                            //    //if(file.size > 0) r.upload();
-                            //});
-                            //r.on('filesAdded',function(files,event){
-                            //    //console.log('filesAdded');
-                            //    //console.log(files.length);
-                            //    if(files.length >0)r.upload();
-                            //});
-                            //r.on('uploadStart',function(){
-                            //    console.log('upstart ');
-                            //});
-                            //r.on('fileSuccess', function (file, message) {
-                            //    // Reflect that the file upload has completed
-                            //    console.log('success R ' + message);
-                            //    //$('.resumable-file-' + file.uniqueIdentifier + ' .resumable-file-progress').html('(completed)');
-                            //});
-                            //
-                            //r.on('fileError', function (file, message) {
-                            //    console.log('fileError R ' + message);
-                            //    alert(JSON.stringify(message));
-                            //    // Reflect that the file upload has resulted in error
-                            //    // $('.resumable-file-' + file.uniqueIdentifier + ' .resumable-file-progress').html('(file could not be uploaded: ' + message + ')');
-                            //});
-                            //
-                            //r.on('fileProgress', function (file) {
-                            //    //console.log('FP');
-                            //    console.log(Math.floor(file.progress()*100));
-                            //    // Handle progress for both the file and the overall upload
-                            //    console.log(Math.floor(r.progress() * 100));
-                            //    //console.log(r.getSize());
-                            //});
-                            ////r.on('progress',function(){
-                            ////    // Handle progress for both the file and the overall upload
-                            ////    //console.log('P')
-                            ////    console.log(Math.floor(r.progress()*100));
-                            ////    //console.log(r.getSize());
-                            ////});
-                            //r.on('complete',function(){
-                            //    console.log('complete')
-                            //});
-                            ////r.on('error',function(message, file){
-                            ////    console.log('error');
-                            ////    alert(JSON.stringify(message,null,4));
-                            ////});
-                            //Simple upload via XHR, ne supporte pas le resume.
                             var reader = new FileReader();
                             reader.onloadend = function(event) {///TODO:: à tester si onload ferait la même chose car onloadend est callé même lors d'un erreur
                                 var blob = new Blob([new Uint8Array(this.result)],{type:'video/quicktime'});
