@@ -106,6 +106,10 @@ xmlns:rim="http://www.blackberry.com/ns/widgets"
 
         <framework src="CoreGraphics.framework" />
         <framework src="MobileCoreServices.framework" />
+		
+		<config-file target="*-Info.plist" parent="NSCameraUsageDescription" >
+			<string>Autoriser la prise de vidéo</string>
+		</config-file>
 
     </platform>
 
