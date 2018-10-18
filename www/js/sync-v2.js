@@ -8,7 +8,7 @@ $('#progressbar').progressbar({
 });
 
 $('#downloadButton').on('click',function(){
-    $('#synchronisation').modal('show');
+    // $('#synchronisation').modal('show');
     syncConstat();
 });
 //Synchronisation des constats
@@ -22,11 +22,13 @@ function syncConstat() {
         tx.executeSql('SELECT * FROM constats WHERE sync=?', [0], function (tx, results) {
                 //S'il y a une connexion internet
                 if (navigator.onLine === true) {
-                    uploadConstat(results)
+                    $('#synchronisation').modal('show');
+                    uploadConstat(results);
                 }
                 //Sinon message d'erreur
                 else {
                     alert('Impossible de synchroniser les constats: Aucune connectivité');
+                    $('#synchronisation').modal('close');
                 }
             },
             errorCB)
@@ -184,6 +186,7 @@ function postConstat(results, i, len, constatCompletees) {
     //Si la connexion internet n'est pas disponible, envoyé un message d'erreur
     else {
         alert('Impossible de synchroniser les constats: Aucune connectivité');
+        $('#synchronisation').modal('close');
         def.reject('Aucune connectivitée');
     }
 
@@ -201,6 +204,7 @@ function uploadVideoSucces() {
                 }
                 else {
                     alert('Impossible de synchroniser les vidéos: Aucune connectivité');
+                    $('#synchronisation').modal('close');
                 }
             }, errorCB),
             errorCB
@@ -297,6 +301,7 @@ function uploadVideo(tx,results) {
         //Si la connexion internet n'est pas disponible, message d'erreur
         else {
             alert('Impossible de synchroniser les vidéos: Aucune connectivité');
+            $('#synchronisation').modal('close');
         }
     }
 }

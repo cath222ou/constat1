@@ -2,6 +2,9 @@
 
 var constat;
 
+$("#noCivTxtEdit_c").prop("readonly", true);
+$("#rueTxtEdit_c").prop("readonly", true);
+
 // gestion des tabs dans le modal d'édition des constats
 $(function () {
     //Gestion des accordions

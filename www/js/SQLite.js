@@ -21,7 +21,7 @@ function onDeviceReady() {
 	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid; ////////////////////////////////////changer
 	$('#uuid').html(uuidValue);
-	$('#buildVersion').html('1.2.3');
+	$('#buildVersion').html('1.2.5');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
