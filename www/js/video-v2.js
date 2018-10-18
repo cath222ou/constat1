@@ -171,7 +171,12 @@ var captureSuccess = function(mediaFiles) {
 
 // capture error callback
 var captureError = function(error) {
-    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+    if (error.code == '3' ){
+        navigator.notification.alert('', null, 'Enregistrement annulé');
+    }
+    else {
+        navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+    }
 };
 
 //Débuter l'enregistrement de la vidéo lorsque l'on clique sur le bouton Joindre une vidéo
