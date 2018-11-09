@@ -60,7 +60,7 @@
         $('#faitTxt').val('');
         $('#faitTxt2').val('');
         $('#noteTxt').val('');
-        $('input[type=checkbox]').prop('checked',false);
+        $('input[type=radio]').prop('checked',false);
         //Retour à l'accordéon initial
         $( "#accordion" ).accordion(
             {active:2}//Etait à 1, je l'ai mis identique à l'initialisation dans le document.ready
