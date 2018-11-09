@@ -29,13 +29,13 @@
 
     //Afficher champs texte si "Autre" est sélectionné
      $('#descInfraction').hide();
-     $('input[type="checkbox"]').click(function () {
+     $('input[type="radio"]').click(function () {
          //Si la case Autre est coché, afficher le champs texte
          if ($(this).attr('value') === 'Autre' && $(this).is(':checked')) {
              $('#descInfraction').show();
          }
          //Si la case Autre est décoché, cacher le champs texte
-         else if ($(this).attr('value') === 'Autre' && $(!this.checked)){
+         else if ($(this).attr('value') !== 'Autre' && $(!this.checked)){
              $('#descInfraction').hide();
          }
      });

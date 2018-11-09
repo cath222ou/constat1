@@ -21,7 +21,7 @@ function onDeviceReady() {
 	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid; ////////////////////////////////////changer
 	$('#uuid').html(uuidValue);
-	$('#buildVersion').html('1.2.5');
+	$('#buildVersion').html('1.2.6');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
@@ -112,7 +112,7 @@ function onDeviceReady() {
             var descInfractionAutre = null;
 
             //Donner à la variable descInfraction les valeurs de 1 à 7 selon les checkbox sélectionnés
-            $('.radio-input:checkbox:checked').each(function(){
+            $('.radio-input:radio:checked').each(function(){
             	var checkboxValue = $(this).val();
             	if(checkboxValue == 'Autre'){
                     descInfractionAutre = ($("#descInfraction").val());
@@ -152,6 +152,7 @@ function onDeviceReady() {
 			///TODO parametrized ->
             tx.executeSql('INSERT INTO constats (user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,b_description_autre,c_endroit,c_nociv,c_rue,adresse_id,c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync) VALUES ("'+ matricule +'","'+ uuidValue +'","'+ nom +'","'+adresse_a+'","'+tel1+'","'+tel2+'","'+ newdate +'","'+newheure+'","'+descInfraction+'","'+descInfractionAutre+'","'+endroit+'","'+nociv+'","'+rue+'","'+adresseid+'","'+decriptionLieux+'","'+faits+'","'+suite+'","'+faits2+'","'+ position.coords.latitude +'","'+ position.coords.longitude +'","'+ note +'","'+0+'")');
 			//rendre visible le bouton de sélection de vidéo
+
 		}
 
 		function validerMatriculeRole(){
@@ -197,7 +198,7 @@ function onDeviceReady() {
                  //    //radioNbr = radioNbr + 1;
 					// ++radioNbr;
                 // }
-                radioNbr = $('.radio-input:checkbox:checked').length;
+                radioNbr = $('.radio-input:radio:checked').length;
 
             // });
 			// Vérification qu'il y a une description d'infraction sélectionnée

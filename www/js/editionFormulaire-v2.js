@@ -31,7 +31,7 @@ $(function () {
             $('#descInfractionEdit').show();
         }
         //Si la case Autre est décoché, cacher le champs texte
-        else if ($(this).attr('value') === 'Autre' && $(!this.checked)){
+        else if ($(this).attr('value') !== 'Autre' && $(!this.checked)){
             $('#descInfractionEdit').hide();
         }
     });
@@ -44,7 +44,6 @@ function decocherCheckbox() {
         $(this).prop('checked', false);
     })
 }
-
 
 
 
@@ -132,7 +131,7 @@ function decocherCheckbox() {
                 var descListValue = descValue.split(',');
 
                 //Pour chaque valeur de checkbox, vérifier si le constat inclu cette valeur
-                $('.radio-input.edit:checkbox').each(function(){
+                $('.radio-input.edit:radio').each(function(){
                     var checkboxValue = $(this).val();
                         //Si Autre est coché, afficher le champs texte et donner la valeur de la colonne b_description_autre
                         if (descListValue.includes('Autre')){
@@ -143,11 +142,8 @@ function decocherCheckbox() {
                         if (descListValue.includes(checkboxValue)){
                             $('#radio-'+checkboxValue+'Edit').prop('checked', true);
                         }
-
                 });
-
             }
-
         );
         // donner à la variable constat la valeur du constat_id de la ligne sélectionnée
         constat = row.find('td[data-desc="constat_id"]').html();
@@ -164,13 +160,12 @@ function decocherCheckbox() {
             var descInfractionAutre = null;
 
             //Donner à la variable descInfraction les valeurs de 1 à 7 selon les checkbox sélectionnés
-            $('.radio-input:checkbox:checked').each(function(){
+            $('.radio-input:radio:checked').each(function(){
                 var checkboxValue = $(this).val();
                 if(checkboxValue == 'Autre'){
                     descInfractionAutre= ($("#descInfractionEdit").val());
                 }
                 descInfraction.push(checkboxValue);
-
             });
 
             // Si la case est coché, donner la valeur true
@@ -230,7 +225,7 @@ function decocherCheckbox() {
 
             //Compter le nombre de description d'infraction sélectionné (1 ou 0)
 
-            radioNbr = $('.radio-input.edit:checkbox:checked').length;
+            radioNbr = $('.radio-input.edit:radio:checked').length;
             // });
             // Vérification qu'il y a une description d'infraction sélectionnée
             if ((radioNbr === 0) || (($('#radio-AutreEdit').is(':checked') && $('#descInfractionEdit').val() === ""))){
