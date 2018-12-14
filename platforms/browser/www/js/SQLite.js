@@ -21,7 +21,7 @@ function onDeviceReady() {
 	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid; ////////////////////////////////////changer
 	$('#uuid').html(uuidValue);
-	$('#buildVersion').html('1.2.8');
+	$('#buildVersion').html('1.2.10');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
@@ -160,19 +160,21 @@ function onDeviceReady() {
 			if(typeof matriculeRole == "string" && matriculeRole.length > 0){//Matricule du role existe
 				return true;
 			}
-			else if(($("#nomTxt").val() != 'null' && $('#adresseCor').val() != 'null') && typeof matriculeRole == "undefined"){ //Matricule est inexistant et les champs ont été remplis par une valeur autre que null, c'est bon on accepte :)
-				$("#nomTxt").closest('.parent').prev().removeClass("ChampsObligatoire");
-				$("#nomTxt").css("border", '').removeClass('obligatoire');
-				$('#adresseCor').css('border','').removeClass('obligatoire');
-				return true;
-			}
+			// else if(($("#nomTxt").val() != 'null' && $('#adresseCor').val() != 'null') && typeof matriculeRole == "undefined"){ //Matricule est inexistant et les champs ont été remplis par une valeur autre que null, c'est bon on accepte :)
+			// 	$("#nomTxt").closest('.parent').prev().removeClass("ChampsObligatoire");
+			// 	$("#nomTxt").css("border", '').removeClass('obligatoire');
+			// 	$('#adresseCor').css('border','').removeClass('obligatoire');
+			// 	return true;
+			// }
 			else{
-				$("#nomTxt").closest('.parent').prev().addClass("ChampsObligatoire");
-				$("#nomTxt").css("border", "3px solid red").addClass('obligatoire').val('');
-				$('#adresseCor').css('border','3px solid red').addClass('obligatoire').val('');
+				// $("#nomTxt").closest('.parent').prev().addClass("ChampsObligatoire");
+				// $("#nomTxt").css("border", "3px solid red").addClass('obligatoire').val('');
+				// $('#adresseCor').css('border','3px solid red').addClass('obligatoire').val('');
+				// return false;
+				alert('Vous devez entrer une adresse valide. Si l\'immeuble correspond à un plex, entrer le numéro civique le plus petit.')
 				return false;
-			}
 
+			}
 
 		}
 
@@ -189,6 +191,8 @@ function onDeviceReady() {
 			if(!validerMatriculeRole()){
 				isValide = false;
 			}
+
+
 
 
 			//Compter le nombre de description d'infraction sélectionné (1 ou 0)
@@ -226,13 +230,17 @@ function onDeviceReady() {
 
 			//Vérification que les champs textes obligatoires sont remplis
             $(".obligatoire").each(function() {
-                if ($(this).val() === "null" || $(this).val() === " " || $(this).val() === "") {
+                if ($(this).val() === "null" || $(this).val() === " " || $(this).val() === "" ) {
                 	//nbr = nbr +1;
 					++nbr;
 					$(this).css("border", "3px solid red");
                     $(this).closest('.parent').prev().addClass("ChampsObligatoire");
 
                 }
+                else if ($(this).data("matricule")== null){
+                    $(this).css("border", "3px solid red");
+                    $(this).closest('.parent').prev().addClass("ChampsObligatoire");
+				}
                 else{
                     $(this).closest('.parent').prev().removeClass("ChampsObligatoire");
                     $(this).css("border", "");
@@ -240,13 +248,20 @@ function onDeviceReady() {
             });
 
 			//Si un des champs obligatoires n'est pas remplis ou aucun radio n'est sélectionné
-			if (nbr > 0 || radioNbr === 0 || !isValide){
+			if (nbr > 0 || radioNbr === 0){
 				console.log('nbr: '+nbr);
                 console.log('radionbr: '+radioNbr);
 				$('#enrVideo').fadeOut('slow');
 				$('#nouvConstat').fadeOut('slow');
 				$('button[name="btnEnregistreFormulaire"]').fadeIn('slow');
                 alert('Des champs obligatoires ne sont pas remplis');
+			}
+			else if(!isValide){
+                console.log('nbr: '+nbr);
+                console.log('radionbr: '+radioNbr);
+                $('#enrVideo').fadeOut('slow');
+                $('#nouvConstat').fadeOut('slow');
+                $('button[name="btnEnregistreFormulaire"]').fadeIn('slow');
 			}
 
 			//sinon lance la transaction insertDB pour insérer les données dans la table DEMO

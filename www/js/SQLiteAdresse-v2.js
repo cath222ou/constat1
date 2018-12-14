@@ -130,6 +130,8 @@ function selectNoCiv(){
 
 //Autocomplète des adresses
 function nomRueSelect(results){
+    $('#rueTxt_c').data("matricule");
+    $('#rueTxt_c').data("matricule",null);
     nomRueResult = [];
     var len = results.rows.length;
     //Ajouter les noms de rues et matricule à la variable nomRueResults
@@ -148,12 +150,19 @@ function nomRueSelect(results){
             //valeur des label
             inputRue.data("matricule",ui.item.value);
         },
+        // change: function (event, ui) {
+        //     if (ui.item === null) {
+        //         alert(inputRue.data())
+        //         inputRue.data("matricule",null);
+        //     }
+        // },
         open: function(event, ui) {//Fix pour iOS car on doit appuyer 2 fois sur le choix
             if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
                 $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
             }
         }
     });
+
 }
 
 

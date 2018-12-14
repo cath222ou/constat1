@@ -41,6 +41,15 @@
      });
  });
 
+//Vider le champ du nom de la rue et le matricule lorsque l'utilisateur clique pour changer le numéro civique (SEECTION C)
+$('#noCivTxt_c').click(function(){
+    $('#rueTxt_c').val('');
+    $('#rueTxt_c').removeData( "matricule" );
+    var matriculeRole = $('#rueTxt_c').data("matricule");
+    console.log(matriculeRole)
+    }
+);
+
     //Débuter un nouveau constat en vidant tout les champs
     function nouvConstat(){
         $('#listeVideo').empty();
