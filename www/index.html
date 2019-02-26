@@ -82,10 +82,11 @@
 			<!--<button name="btnDropTableVideos" class="">Vider la base de données</button>-->
 			<!--<div id="test"></div>-->
 			<ul>
-				<li><a href="#tabs-1">Formulaire</a></li>
-				<li><a id="tabs-2ID" href="#tabs-2">Constats à synchroniser</a></li>
-				<li><a href="#tabs-3" class="hidden">Vidéo</a></li>
-				<li><a href="#tabs-4">Synchronisation et résultat</a></li>
+				<li><a href="#tabs-1">Formulaire </br> &nbsp;</a></li>
+				<li><a id="tabs-2ID" href="#tabs-2">Constats à </br> synchroniser</a></li>
+				<li><a href="#tabs-3" class="hidden">Vidéo</br> &nbsp;</a></li>
+				<li><a href="#tabs-5">Synchronisation</br> et résultat</a></li>
+				<li><a id="tabs-6ID" href="#tabs-6">Administration</br> &nbsp;</a></li>
 			</ul>
 
 			<!--Onglet formulaire-->
@@ -335,10 +336,30 @@
 				</section>
 				<button name="btnDropTableVideos" class="">Vider la base de données</button>
 
+				<!--Édition des constats-->
+				<div id="tabs-4">
+					<!--Création de la table-->
+					<section id="no-more-tables">
+						<div class="table">
+							<table class="table-bordered table-striped cf" id="tbl">
+								<thead class="cf">
+								<tr>
+								</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<div style="text-align: center">
+						<!--<button name="btnDropTableConstats" class="">Vider la base de données À ENLEVER</button>-->
+					</div>
+				</div>
+
 			</div>
 
 			<!--table résultat de synchronisation-->
-			<div id="tabs-4">
+			<div id="tabs-5">
 				<div id="resultatSync">
 					<button id="downloadButton"  style="width: 100%; margin-right: 2%" >Synchroniser</button>
 					<H4 class="sousligne">Succès</H4>
@@ -347,8 +368,52 @@
 					<div id="echecSync" style="color: red"></div>
 				</div>
 			</div>
+
+			<!--Table admin-->
+			<div id="tabs-6">
+				<!--Création de la table-->
+				<section id="no-more-tables">
+					<div class="table">
+						<table class="table-bordered table-striped cf hidden" id="tblAdmin">
+							<thead class="cf">
+							<tr>
+							</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				<div style="text-align: center">
+					<!--<button name="btnDropTableConstats" class="">Vider la base de données À ENLEVER</button>-->
+				</div>
+			</div>
+
+
 		</div>
 	</div>
+
+	<!-- Modal de login admin -->
+	<div class="modal fade" id="loginAdminModal" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Connexion administrateur</h4>
+				</div>
+				<div class="modal-body">
+					<label>Entrer le mot de passe: </label>
+					<input type="text">
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					<button id="verifAdmin" onclick="verifAdminMP()" type="button" class="btn btn-primary">Enregistrer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- Modal d'édition du constat -->
 	<div class="modal fade" id="constatModalEdit" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
@@ -721,6 +786,7 @@
 <script type="text/javascript" src="js/SQLiteAdresse-v2.js"></script>
 <script type="text/javascript" src="js/video-v2.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/admin.js"></script>
 <script type="text/javascript">app.initialize();</script>
 
 </body>
