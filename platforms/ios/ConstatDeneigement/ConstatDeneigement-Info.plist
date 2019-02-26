@@ -52,6 +52,8 @@
       <key>NSAllowsArbitraryLoads</key>
       <true/>
     </dict>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app needs microphone access</string>
     <key>NSCameraUsageDescription</key>
     <string>need camera access to take pictures</string>
     <key>NSPhotoLibraryUsageDescription</key>

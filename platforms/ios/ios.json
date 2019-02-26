@@ -38,6 +38,12 @@
                             "mode": "merge",
                             "id": "config.xml"
                         }
+                    ],
+                    "NSMicrophoneUsageDescription": [
+                        {
+                            "xml": "<string>This app needs microphone access</string>",
+                            "count": 1
+                        }
                     ]
                 }
             },
@@ -227,6 +233,13 @@
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
         "uk.co.workingedge.cordova.plugin.sqliteporter": {
+            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+        },
+        "cordova-plugin-ios-camera-permissions": {
+            "CAMERA_USAGE_DESCRIPTION": "This app needs camera access",
+            "MICROPHONE_USAGE_DESCRIPTION": "This app needs microphone access",
+            "PHOTOLIBRARY_ADD_USAGE_DESCRIPTION": "This app needs write-access to photo library",
+            "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs read/write-access photo library access",
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         }
     },
@@ -874,6 +887,7 @@
         "cordova-sqlite-legacy": "2.0.0",
         "cordova-sqlite-legacy-build-support": "1.3.6",
         "phonegap-plugin-contentsync": "1.4.2",
-        "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.2"
+        "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.2",
+        "cordova-plugin-ios-camera-permissions": "1.2.0"
     }
 }

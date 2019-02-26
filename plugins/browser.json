@@ -81,6 +81,9 @@
         },
         "uk.co.workingedge.cordova.plugin.sqliteporter": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+        },
+        "cordova-plugin-ios-camera-permissions": {
+            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         }
     },
     "dependent_plugins": {}

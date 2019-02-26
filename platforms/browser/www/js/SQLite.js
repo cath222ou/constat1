@@ -3,8 +3,8 @@
 //Variable
 var x = '';
 var y = '';
-// var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
-var uuidValue;
+var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
+// var uuidValue;
 $(function(){
 	$('#nouvConstat').fadeOut();
 	$('#enrVideo').fadeOut();

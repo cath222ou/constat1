@@ -644,7 +644,8 @@ module.exports.metadata =
   "cordova-sqlite-legacy": "2.0.0",
   "cordova-sqlite-legacy-build-support": "1.3.6",
   "phonegap-plugin-contentsync": "1.4.2",
-  "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.2"
+  "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.2",
+  "cordova-plugin-ios-camera-permissions": "1.2.0"
 };
 // BOTTOM OF METADATA
 });
