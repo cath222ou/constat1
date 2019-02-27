@@ -203,7 +203,7 @@
 								Adresse<br />
 								<label for="noCivTxt_c" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
 								<input id="noCivTxt_c" type="text" class="obligatoire numbersOnly" data-matricule="" name="nociv" maxlength="10" style="width:10%" >
-								<input id="rueTxt_c" type="text" class="obligatoire" onfocus="selectNoCiv()" name="nomrue" maxlength="250" style="width:80%" ><br />
+								<input id="rueTxt_c" type="text" class="obligatoire" onfocus="selectNoCiv('noCivTxt_c')" name="nomrue" maxlength="250" style="width:80%" ><br />
 							</div>
 						</div>
 						<div class="row">
@@ -370,7 +370,11 @@
 			</div>
 
 			<!--Table admin-->
-			<div id="tabs-6">
+			<div id="tabs-6" class="hidden">
+				<div style="margin-bottom: 10px;">
+					<button name="appliquerFiltre" data-toggle="modal" data-target="#filtreAdminModal">Filtrer</button>
+					<button name="supprimerFiltre" onclick="getConstatsAdmin()">Supprimer le filtre</button>
+				</div>
 				<!--Création de la table-->
 				<section id="no-more-tables">
 					<div class="table">
@@ -393,26 +397,6 @@
 		</div>
 	</div>
 
-	<!-- Modal de login admin -->
-	<div class="modal fade" id="loginAdminModal" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Connexion administrateur</h4>
-				</div>
-				<div class="modal-body">
-					<label>Entrer le mot de passe: </label>
-					<input type="text">
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-					<button id="verifAdmin" onclick="verifAdminMP()" type="button" class="btn btn-primary">Enregistrer</button>
-				</div>
-			</div>
-		</div>
-	</div>
 
 
 	<!-- Modal d'édition du constat -->
@@ -546,7 +530,7 @@
 											Adresse<br />
 											<label for="noCivTxtEdit_c" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
 											<input id="noCivTxtEdit_c" type="text" class="obligatoireEdit" data-matricule="" name="noCivTxtEdit_c" maxlength="10" style="width:10%" >
-											<input id="rueTxtEdit_c" type="text" class="obligatoireEdit" onfocus="selectNoCivEdit()" name="rueTxtEdit_c" maxlength="250" style="width:80%" ><br />
+											<input id="rueTxtEdit_c" type="text" class="obligatoireEdit" onfocus="selectNoCivEdit('noCivTxtEdit_c')" name="rueTxtEdit_c" maxlength="250" style="width:80%" ><br />
 										</div>
 									</div>
 									<div class="row">
@@ -766,6 +750,81 @@
 			</div>
 		</div>
 	</div>
+
+
+	<!-- Modal de login admin -->
+	<div class="modal fade" id="loginAdminModal" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Connexion administrateur</h4>
+				</div>
+				<div class="modal-body">
+					<label>Entrer le mot de passe: </label>
+					<input id="password" type="text">
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					<button id="verifAdmin" onclick="verifAdminMP()" type="button" class="btn btn-primary">Enregistrer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Modal d'édition des constats en mode ADMIN-->
+	<div class="modal fade" id="constatModalEditAdmin" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+					<h5>Constat ID</h5>
+					<input id="idAdmin" type="text" >
+					<h5>Matricule</h5>
+					<input id="userIdAdmin" type="text">
+					<h5>État</h5>
+					<input id="etatAdmin" type="text">
+				</div>
+
+
+				<div class="modal-footer">
+					<button onclick="decocherCheckbox()" type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					<button onclick="goEditAdmin()" type="button" class="btn btn-primary">Enregistrer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Modal de filtre de données mode ADMIN-->
+	<div class="modal fade" id="filtreAdminModal" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Filtrer les données</h4>
+				</div>
+				<div class="modal-body">
+					<div>
+						<h3>Requête par adresse</h3>
+						<label for="noCivTxtAdmin" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
+						<input id="noCivTxtAdmin" type="text" class="obligatoire numbersOnly" data-matricule="" name="nociv" maxlength="10" style="width:10%" >
+						<input id="rueTxtAdmin" type="text" class="obligatoire" onfocus="selectNoCiv('noCivTxtAdmin')" name="nomrue" maxlength="250" style="width:80%" ><br />
+
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					<button id="" onclick="filtreConstat()" type="button" class="btn btn-primary">Enregistrer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 <footer>UUID:<span id="uuid"></span>   Version:<span id="buildVersion"></span></footer>
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>

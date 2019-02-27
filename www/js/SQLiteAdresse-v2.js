@@ -114,12 +114,12 @@ function deleteDBAdr(tx){
 
 
 //Lancer la requête de sélection
-function selectNoCiv(){
+function selectNoCiv(idText){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx){
         //var  nocivique =;
         //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
-        tx.executeSql('SELECT * FROM adresses WHERE nocivique = ? ',[$('#noCivTxt_c').val()],function(tx,results){
+        tx.executeSql('SELECT * FROM adresses WHERE nocivique = ? ',[$('#'+idText).val()],function(tx,results){
             nomRueSelect(results);
         }, function(err){console.log('err tx selectNoCiv');})
     }, function(err){console.log(JSON.stringify(err))});
@@ -145,6 +145,30 @@ function nomRueSelect(results){
         select: function(event, ui) {
             event.preventDefault();
             var inputRue = $('#rueTxt_c');
+            //label
+            inputRue.val(ui.item.label);
+            //valeur des label
+            inputRue.data("matricule",ui.item.value);
+        },
+        // change: function (event, ui) {
+        //     if (ui.item === null) {
+        //         alert(inputRue.data())
+        //         inputRue.data("matricule",null);
+        //     }
+        // },
+        open: function(event, ui) {//Fix pour iOS car on doit appuyer 2 fois sur le choix
+            if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+                $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
+            }
+        }
+    });
+    // Autocomplete Jquery
+    $("#rueTxtAdmin").autocomplete({
+        source: nomRueResult,
+        minLength: 2,
+        select: function(event, ui) {
+            event.preventDefault();
+            var inputRue = $('#rueTxtAdmin');
             //label
             inputRue.val(ui.item.label);
             //valeur des label

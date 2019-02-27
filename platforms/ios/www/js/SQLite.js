@@ -3,8 +3,8 @@
 //Variable
 var x = '';
 var y = '';
-var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
-// var uuidValue;
+// var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
+var uuidValue;
 $(function(){
 	$('#nouvConstat').fadeOut();
 	$('#enrVideo').fadeOut();
@@ -21,7 +21,7 @@ function onDeviceReady() {
 	//Valeur du UUID de l'appareil
 	uuidValue = device.uuid; ////////////////////////////////////changer
 	$('#uuid').html(uuidValue);
-	$('#buildVersion').html('1.2.10');
+	$('#buildVersion').html('1.2.11');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
