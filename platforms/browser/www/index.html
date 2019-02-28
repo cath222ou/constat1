@@ -374,11 +374,13 @@
 				<div style="margin-bottom: 10px;">
 					<button name="appliquerFiltre" data-toggle="modal" data-target="#filtreAdminModal">Filtrer</button>
 					<button name="supprimerFiltre" onclick="getConstatsAdmin()">Supprimer le filtre</button>
+					<button name="btnDropTableConstats" class="deleteTableAdmin">Vider la base de données</button>
 				</div>
+
 				<!--Création de la table-->
 				<section id="no-more-tables">
 					<div class="table">
-						<table class="table-bordered table-striped cf hidden" id="tblAdmin">
+						<table class="table-bordered table-striped cf" id="tblAdmin">
 							<thead class="cf">
 							<tr>
 							</tr>
@@ -388,9 +390,6 @@
 						</table>
 					</div>
 				</section>
-				<div style="text-align: center">
-					<!--<button name="btnDropTableConstats" class="">Vider la base de données À ENLEVER</button>-->
-				</div>
 			</div>
 
 
@@ -762,7 +761,7 @@
 				</div>
 				<div class="modal-body">
 					<label>Entrer le mot de passe: </label>
-					<input id="password" type="text">
+					<input id="password" type="password">
 				</div>
 
 				<div class="modal-footer">
@@ -781,13 +780,18 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title"></h4>
 				</div>
-				<div class="modal-body">
-					<h5>Constat ID</h5>
-					<input id="idAdmin" type="text" >
-					<h5>Matricule</h5>
-					<input id="userIdAdmin" type="text">
-					<h5>État</h5>
-					<input id="etatAdmin" type="text">
+				<div class="modal-body" style="text-align: center;">
+					<h4>Constat ID</h4>
+					<div id="idAdmin" type="text" style="font-size:20px"></div>
+					<h4>Matricule</h4>
+						<select id="matriculeMenuAdmin" type="text" name="matriculeAdmin" class="menuAdmin">
+						</select>
+					<h4>État</h4>
+						<select id="etatMenuAdmin" type="text" name="etatAdmin" class="menuAdmin">
+							<option value="0">Non synchronisé</option>
+							<option value="1">Synchronisé</option>
+						</select>
+						<!--<input id="etatAdmin" type="text">-->
 				</div>
 
 
@@ -811,8 +815,8 @@
 					<div>
 						<h3>Requête par adresse</h3>
 						<label for="noCivTxtAdmin" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
-						<input id="noCivTxtAdmin" type="text" class="obligatoire numbersOnly" data-matricule="" name="nociv" maxlength="10" style="width:10%" >
-						<input id="rueTxtAdmin" type="text" class="obligatoire" onfocus="selectNoCiv('noCivTxtAdmin')" name="nomrue" maxlength="250" style="width:80%" ><br />
+						<input id="noCivTxtAdmin" type="text" class=" numbersOnly" data-matricule="" name="nociv" maxlength="10" style="width:10%" >
+						<input id="rueTxtAdmin" type="text" class="" onfocus="selectNoCiv('noCivTxtAdmin')" name="nomrue" maxlength="250" style="width:80%" ><br />
 
 					</div>
 				</div>

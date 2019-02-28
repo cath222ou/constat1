@@ -41,6 +41,7 @@ function querySuccessAgent(tx,result) {
         for(var i =0; i< result.rows.length; i++){
             console.log('Ajout matricule offline: ' + result.rows.item(i).user_id);
             $('#matriculeMenu').append('<option value="' + result.rows.item(i).user_id + '">' + result.rows.item(i).matricule + '</option>');
+            $('#matriculeMenuAdmin').append('<option value="' + result.rows.item(i).user_id + '">' + result.rows.item(i).matricule + '</option>');
         }
     }
 }
@@ -48,10 +49,13 @@ function querySuccessAgent(tx,result) {
 function insertDBAgent(tx,changes){
     var resultat = $.parseJSON(changes);
     var matriculeMenu =$('#matriculeMenu');
+    var matriculeMenuAdmin =$('#matriculeMenuAdmin');
     matriculeMenu.val('');
+    matriculeMenuAdmin.val('');
     $(resultat).each(function(key,value){
         tx.executeSql('INSERT OR REPLACE INTO agents (user_id,matricule,nom) VALUES (?,?,?)',[value.id,value.matricule,value.nom]);
         matriculeMenu.append('<option value="' + value.id + '">' + value.matricule + '</option>');
+        matriculeMenuAdmin.append('<option value="' + value.id + '">' + value.matricule + '</option>');
     });
 }
 

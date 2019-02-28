@@ -3,8 +3,8 @@
 //Variable
 var x = '';
 var y = '';
-// var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
-var uuidValue;
+var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
+// var uuidValue;
 $(function(){
 	$('#nouvConstat').fadeOut();
 	$('#enrVideo').fadeOut();
@@ -19,7 +19,7 @@ $(function(){
 //Cordova ready
 function onDeviceReady() {
 	//Valeur du UUID de l'appareil
-	uuidValue = device.uuid; ////////////////////////////////////changer
+	// uuidValue = device.uuid; ////////////////////////////////////changer
 	$('#uuid').html(uuidValue);
 	$('#buildVersion').html('1.2.11');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
@@ -280,14 +280,44 @@ function onDeviceReady() {
 
 		//Supprimer le contenu de la BD
 		$('button[name="btnDropTableConstats"]').on('click',function(){
-			db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+
+            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+            db.transaction(function(tx){
+                tx.executeSql('select * from videos',[],dropVideoFile,errorCB)
+            });
+
+			// db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 			db.transaction(function(tx){
-				tx.executeSql('DROP TABLE IF EXISTS constats',[],function(){console.log('Table constats droppée');onDeviceReady()});
+				tx.executeSql('DROP TABLE IF EXISTS constats',[],function(){alert('Table constats vidée');onDeviceReady()});
 			}, errorCB);
 			$('.cf').empty();
 			//db.transaction(onDeviceReady, errorCB);
 		});
 
+		function dropVideoFile(tx, results){
+            db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+			var len = results.rows.length;
+			for (var i = 0; i<len;i++) {
+				var fileVideo = results .rows.item(i).path + results.rows.item(i).name;
+				var idVideo = results.rows.item(i).id_video;
+				window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (dir) {
+					dir.getFile(fileVideo, {create: false}, function (fileEntry) {
+						fileEntry.remove(function (file) {
+							alert("file removed!");
+                            db.transaction(function(tx){
+                                tx.executeSql('DELETE FROM videos WHERE id=?',[idVideo],function(){
+                                    console.log('videos droppée pour id='+idVideo);
+                                });
+                            }, errorCB);
+                        }, function (error) {
+                            alert("error occurred: " + error.code);
+                        }, function () {
+                            alert("file does not exist");
+                        });
+					});
+				});
+			}
+		}
 
 
 	/////////////////////////////

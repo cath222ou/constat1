@@ -36,17 +36,17 @@ function afficherTableVideo(tx, results) {
 	}
 }
 
-$('button[name="btnDropTableVideos"]').on('click',function(){
-//Drop la table video,
-	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-	db.transaction(function(tx){
-		tx.executeSql('DROP TABLE IF EXISTS videos',[],function(){
-			console.log('Table videos droppée');
-			$('#cf1').empty();
-			onDeviceReady();
-		});
-	}, errorCB);
-});
+// $('button[name="btnDropTableVideos"]').on('click',function(){
+// //Drop la table video,
+// 	db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+// 	db.transaction(function(tx){
+// 		tx.executeSql('DROP TABLE IF EXISTS videos',[],function(){
+// 			console.log('Table videos droppée');
+// 			$('#cf1').empty();
+// 			onDeviceReady();
+// 		});
+// 	}, errorCB);
+// });
 
 // $('#enrVideo').on('click',function(){
 // 	getVideo();

@@ -1,32 +1,40 @@
 $('#tabs-6ID').on('click', function(){
-    $('#tabs-6ID').addClass('hidden');
-    $('#loginAdminModal').modal('show');
+    $('#tabs-6').addClass('hidden');
+    if (navigator.onLine === true) {
+        $('#loginAdminModal').modal('show');
+    }
+    else{
+        alert('Impossible d\'ouvrir l\'onglet "Administration": Aucune connectivité');
+    }
+    $('input[type="password"]').val('');
     $('input[type="text"]').val('');
 });
 
 function verifAdminMP() {
-    var password = $('#password').val();
-    $('loginAdminModal').modal('hide')
+        var password = $('#password').val();
 
-    $.ajax({
 
-        url: 'http://constats.ville.valdor.qc.ca/auth',
-        method: 'post',
-        data: {pwd: password},
-        success: function (response) {
-            if (response.code == 200) {
-                getConstatsAdmin();
-                $('#tabs-6ID').removeClass('hidden');
+        $.ajax({
+
+            url: 'http://constats.ville.valdor.qc.ca/auth',
+            method: 'post',
+            data: {pwd: password},
+            success: function (response) {
+                if (response.code == 200) {
+                    getConstatsAdmin();
+                    $('#tabs-6').removeClass('hidden');
+                    $('#loginAdminModal').modal('hide')
+                }
+                else {
+                    console.log(response.msg);
+                    alert('Mot de passe invalide')
+                }
+            },
+            error: function (model, response) {
+                console.log(model);
+                alert(response.responseText);
             }
-            else{
-                alert('Mot de passe invalide')
-            }
-        },
-        error: function (model, response) {
-            console.log(model);
-            alert(response.responseText);
-        }
-    });
+        });
 }
 
 
@@ -43,13 +51,13 @@ function afficherTableAdmin(tx, results) {
         table01.append(
             '<tr>'
             + '<td data-title="Numéro du constat" data-desc="constat_id" class="hidden">'+results.rows.item(i).constat_id +'</td>'
-            + '<td data-title="user_id" data-desc="user_id" >'+results.rows.item(i).user_id +'</td>'
+            + '<td data-title="Matricule ID" data-desc="user_id" >'+results.rows.item(i).user_id +'</td>'
             + '<td data-title="device_id" data-desc="device_id" class="hidden">'+results.rows.item(i).device_id +'</td>'
             + '<td data-title="a_nom" data-desc="a_nom" class="hidden">'+results.rows.item(i).a_nom +'</td>'
             + '<td data-title="a_adresse" data-desc="a_adresse" class="hidden">'+results.rows.item(i).a_adresse +'</td>'
             + '<td data-title="a_telephone1" data-desc="a_telephone1" class="hidden">'+results.rows.item(i).a_telephone1 +'</td>'
             + '<td data-title="a_telephone2" data-desc="a_telephone2" class="hidden">'+results.rows.item(i).a_telephone2 +'</td>'
-            + '<td data-title="b_date" data-desc="b_date" class="hidden">'+results.rows.item(i).b_date +'</td>'
+            + '<td data-title="Date" data-desc="b_date" class="">'+results.rows.item(i).b_date +'</td>'
             + '<td data-title="b_heure" data-desc="b_heure" class="hidden">'+results.rows.item(i).b_heure +'</td>'
             + '<td data-title="b_description" data-desc="b_description" class="hidden">'+results.rows.item(i).b_description +'</td>'
             + '<td data-title="b_description_autre" data-desc="b_description_autre" class="hidden">'+results.rows.item(i).b_description_autre +'</td>'
@@ -64,7 +72,7 @@ function afficherTableAdmin(tx, results) {
             + '<td data-title="lat" data-desc="lat" class="hidden">'+results.rows.item(i).lat +'</td>'
             + '<td data-title="lon" data-desc="lon" class="hidden">'+results.rows.item(i).lon +'</td>'
             + '<td data-title="note" data-desc="note" class="hidden">'+results.rows.item(i).note +'</td>'
-            + '<td data-title="sync" data-desc="sync" >'+results.rows.item(i).sync +'</td>'
+            + '<td data-title="Sync" data-desc="sync" >'+results.rows.item(i).sync +'</td>'
             + '<td><button id="editAdmin" type="button" data-toggle="modal" data-target="#constatModalEditAdmin">Modifier</button>'+
             //+ '<button type="button" class="btn1" onClick="syncConstat()">Synchronisation</button></td>'+
             '</tr>'
@@ -115,29 +123,28 @@ $('#constatModalEditAdmin').on('show.bs.modal', function (event) {
     var row = $(event.relatedTarget).closest('tr');
     var modal = $(this);
     modal.find('.modal-title').text('Édition du constat: '+row.find('td[data-desc="c_nociv"]').html()+', '+row.find('td[data-desc="c_rue"]').html());
-    $('#idAdmin').val(row.find('td[data-desc="constat_id"]').html());
-    $('#userIdAdmin').val(row.find('td[data-desc="user_id"]').html());
-    $('#etatAdmin').val(row.find('td[data-desc="sync"]').html());
-
+    $('#idAdmin').text(row.find('td[data-desc="constat_id"]').html());
+    $('#matriculeMenuAdmin').val(row.find('td[data-desc="user_id"]').html());
+    $('#etatMenuAdmin').val(row.find('td[data-desc="sync"]').html());
 });
 
 function goEditAdmin() {
     var matricule = $('userIdAdmin').val();
     var etat = $('#etatAdmin').val();
 
-    if((matricule == "" || matricule == null || matricule == " ")&&(etat == "" || etat == null || etat == " " )){
-        alert('Les champs ne peuvent être vide')
-    }
-    else {
+    // if((matricule == "" || matricule == null || matricule == " ")&&(etat == "" || etat == null || etat == " " )){
+    //     alert('Les champs ne peuvent être vide')
+    // }
+    // else {
         db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
         db.transaction(editRowAdmin, errorCB, getConstatsAdmin);
-    }
+    // }
 }
 
 function editRowAdmin(tx) {
-    var constatID = $('#idAdmin').val();
-    var userID = $("#userIdAdmin").val();
-    var etat = $("#etatAdmin").val();
+    var constatID = $('#idAdmin').text();
+    var userID = $("#matriculeMenuAdmin").val();
+    var etat = $("#etatMenuAdmin").val();
 
     tx.executeSql('UPDATE constats SET user_id="' + userID +
         '", sync ="' + etat +
