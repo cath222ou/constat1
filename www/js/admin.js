@@ -138,6 +138,10 @@ function goEditAdmin() {
     // else {
         db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
         db.transaction(editRowAdmin, errorCB, getConstatsAdmin);
+
+        db.transaction(editVideoAdmin, errorCB, getConstatsAdmin);
+
+
     // }
 }
 
@@ -150,5 +154,24 @@ function editRowAdmin(tx) {
         '", sync ="' + etat +
         '" WHERE constat_id =' +constatID, [], errorCB);
 
+    // tx.executeSql('UPDATE videos SET videoSync"' + etat +
+    //     '" WHERE constat_id =' +constatID, [], errorCB);
+
+
     $('#constatModalEditAdmin').modal('hide');
+}
+
+function editVideoAdmin(tx) {
+    var constatID = $('#idAdmin').text();
+    // var userID = $("#matriculeMenuAdmin").val();
+    var etat = $("#etatMenuAdmin").val();
+    //
+    // tx.executeSql('UPDATE constats SET user_id="' + userID +
+    //     '", sync ="' + etat +
+    //     '" WHERE constat_id =' +constatID, [], errorCB);
+
+    tx.executeSql('UPDATE videos SET videoSync="' + etat +
+        '" WHERE constat_id =' +constatID, [], errorCB);
+
+
 }
