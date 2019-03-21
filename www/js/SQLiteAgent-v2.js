@@ -31,7 +31,9 @@ function querySuccessAgent(tx,result) {
             },
             error: function (error) {
                 console.log('erreur sync agent online: ',error);
-                alert(JSON.stringify(error));
+                toastr['error'](JSON.stringify(error));
+
+                // alert(JSON.stringify(error));
             }
         });
     }

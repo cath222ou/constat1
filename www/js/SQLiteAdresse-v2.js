@@ -63,7 +63,9 @@ function querySuccessAdr(tx,result) {
             },
             error: function (model, response) {
                 console.log(model);
-                alert(response.responseText);
+                toastr['error'](reponse.responseText)
+
+                // alert(response.responseText);
             }
         });
      }
@@ -115,6 +117,7 @@ function deleteDBAdr(tx){
 
 //Lancer la requête de sélection
 function selectNoCiv(idText){
+
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(function(tx){
         //var  nocivique =;
@@ -126,10 +129,31 @@ function selectNoCiv(idText){
 }
 
 
+function verifMonth(matricule){
+
+    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    db.transaction(function(tx){
+        //var  nocivique =;
+        //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
+        tx.executeSql('SELECT * FROM constatsMonth WHERE adresse_id = ? ',[matricule],function (tx,results){
+            inMonth(results);
+        }, errorCB)
+    }, errorCB);
+
+}
+
+function inMonth(results){
+
+    if(results.rows.length > 0){
+        toastr['error']('Un constat a été émis à cette adresse dans les 30 derniers jours')
+        nouvConstat();
+    }
+}
 
 
 //Autocomplète des adresses
 function nomRueSelect(results){
+
     $('#rueTxt_c').data("matricule");
     $('#rueTxt_c').data("matricule",null);
     nomRueResult = [];
@@ -149,6 +173,9 @@ function nomRueSelect(results){
             inputRue.val(ui.item.label);
             //valeur des label
             inputRue.data("matricule",ui.item.value);
+
+
+            verifMonth(inputRue.data("matricule"))
         },
         // change: function (event, ui) {
         //     if (ui.item === null) {
@@ -162,6 +189,8 @@ function nomRueSelect(results){
             }
         }
     });
+
+
     // Autocomplete Jquery
     $("#rueTxtAdmin").autocomplete({
         source: nomRueResult,

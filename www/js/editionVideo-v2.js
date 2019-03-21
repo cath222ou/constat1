@@ -79,7 +79,9 @@ function showModalNomVideoEdit(nameVideo){
     $('#videoModalEdit').modal('show').on('shown.bs.modal',function(){
             }).on('hide.bs.modal',function(event){
         if($('#nomVideoEdit').val()=="" && nameVideo.length < 1){
-            alert('Vous devez inscrire un nom de video');
+            toastr['error']('Vous devez inscrire un nom de vidéo');
+
+            // alert('Vous devez inscrire un nom de video');
             $('#nomVideoEdit').focus();
             return false;
         }
@@ -156,7 +158,9 @@ function showModalNomVideoAjout(nameVideo){
 
     }).on('hide.bs.modal',function(event){
         if($('#nomVideoAjout').val()=="" && nameVideo.length < 1){
-            alert('Vous devez inscrire un nom de video');
+            toastr['error']('Vous devez inscrire un nom de vidéo');
+
+            // alert('Vous devez inscrire un nom de video');
             $('#nomVideoAjout').focus();
             return false;
         }

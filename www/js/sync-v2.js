@@ -27,7 +27,9 @@ function syncConstat() {
                 }
                 //Sinon message d'erreur
                 else {
-                    alert('Impossible de synchroniser les constats: Aucune connectivité');
+                    toastr['error']('Impossible de synchroniser les constats: Aucune connectivité')
+
+                    // alert('Impossible de synchroniser les constats: Aucune connectivité');
                     $('#synchronisation').modal('close');
                 }
             },
@@ -76,7 +78,9 @@ function uploadConstat(results) {
 
     }
     else{
-        alert('Impossible de synchroniser les vidéos: Aucune connectivité');
+        toastr['error']('Impossible de synchroniser les vidéos: Aucune connectivité')
+
+        // alert('Impossible de synchroniser les vidéos: Aucune connectivité');
         $('#synchronisation').modal('close');
     }
 }
@@ -185,7 +189,9 @@ function postConstat(results, i, len, constatCompletees) {
     }
     //Si la connexion internet n'est pas disponible, envoyé un message d'erreur
     else {
-        alert('Impossible de synchroniser les constats: Aucune connectivité');
+        toastr['error']('Impossible de synchroniser les constats": Aucune connectivité');
+
+        // alert('Impossible de synchroniser les constats: Aucune connectivité');
         $('#synchronisation').modal('close');
         def.reject('Aucune connectivitée');
     }
@@ -203,7 +209,9 @@ function uploadVideoSucces() {
                     uploadVideo(tx, results);
                 }
                 else {
-                    alert('Impossible de synchroniser les vidéos: Aucune connectivité');
+                    toastr['error']('Impossible de synchroniser les vidéos": Aucune connectivité');
+
+                    // alert('Impossible de synchroniser les vidéos: Aucune connectivité');
                     $('#synchronisation').modal('close');
                 }
             }, errorCB),
@@ -300,7 +308,9 @@ function uploadVideo(tx,results) {
         }
         //Si la connexion internet n'est pas disponible, message d'erreur
         else {
-            alert('Impossible de synchroniser les vidéos: Aucune connectivité');
+            toastr['error']('Impossible de synchroniser les vidéos": Aucune connectivité');
+
+            // alert('Impossible de synchroniser les vidéos: Aucune connectivité');
             $('#synchronisation').modal('close');
         }
     }

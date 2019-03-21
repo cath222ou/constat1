@@ -134,7 +134,9 @@ function showModalNomVideo(nameVideo){
 
     }).on('hide.bs.modal',function(event){
         if($('#nomVideo').val()=="" && nameVideo.length < 1){
-            alert('Vous devez inscrire un nom de video');
+            toastr['error']('Vous devez inscrire un nom de vidéo');
+
+            // alert('Vous devez inscrire un nom de video');
             $('#nomVideo').focus();
             return false;
         }
@@ -216,7 +218,9 @@ function successMove(entry,requete,nameVideo) {
 
 //Erreur du déplacement de la vidéo
 function resOnError(error) {
-    alert(error.code);
+    toastr['error'](error.code)
+
+    // alert(error.code);
 }
 
 

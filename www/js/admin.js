@@ -4,7 +4,9 @@ $('#tabs-6ID').on('click', function(){
         $('#loginAdminModal').modal('show');
     }
     else{
-        alert('Impossible d\'ouvrir l\'onglet "Administration": Aucune connectivité');
+        toastr['error']('Impossible d\'ouvrir l\'onglet "Administration": Aucune connectivité');
+
+        // alert('Impossible d\'ouvrir l\'onglet "Administration": Aucune connectivité');
     }
     $('input[type="password"]').val('');
     $('input[type="text"]').val('');
@@ -27,12 +29,16 @@ function verifAdminMP() {
                 }
                 else {
                     console.log(response.msg);
-                    alert('Mot de passe invalide')
+                    toastr['error']('Mot de passe invalide');
+
+                    // alert('Mot de passe invalide')
                 }
             },
             error: function (model, response) {
                 console.log(model);
-                alert(response.responseText);
+                toastr['error'](response.responseText);
+
+                // alert(response.responseText);
             }
         });
 }

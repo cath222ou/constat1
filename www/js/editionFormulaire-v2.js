@@ -265,7 +265,9 @@ function decocherCheckbox() {
 
             //Si un des champs obligatoires n'est pas remplis ou aucun radio n'est sélectionné
             if (nbr > 0 || radioNbr === 0){
-                alert('Des champs obligatoires ne sont pas remplis');
+                toastr['error']('Des champs obligatoires ne sont pas remplis');
+
+                // alert('Des champs obligatoires ne sont pas remplis');
             }
 
             //sinon lance la transaction insertDB pour insérer les données dans la table DEMO

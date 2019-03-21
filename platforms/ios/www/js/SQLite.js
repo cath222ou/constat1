@@ -31,13 +31,15 @@ function onDeviceReady() {
     db.transaction(populateDBAgent, errorCB, function(tx,result){successCBAgent(tx,result)});
     //Création de la Table de Adresse
     db.transaction(populateDBAdr, errorCB, function(tx,result){successCBAdr(tx,result)});
-
+	//Création de la Table des constats du mois
+    db.transaction(populateDBConstatMonth, errorCB, function(tx,result){successCBMonth(tx,result)});
 }
 
 		//Création de la table constats
 		function populateDBConstat(tx) {
             tx.executeSql('CREATE TABLE IF NOT EXISTS constats (constat_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id,device_id,a_nom,a_adresse,a_telephone1,a_telephone2,b_date,b_heure,b_description,b_description_autre,c_endroit,c_nociv, c_rue, adresse_id, c_description,e_details,e_suite,e_detailsSuite,lat,lon,note,sync INTEGER, nbrVideo INTEGER,dossier_id)');
 		}
+
 
 		//Création de la table demo pour visualisation dans l'application
 		function afficherTableConstats(tx, results) {
@@ -171,7 +173,9 @@ function onDeviceReady() {
 				// $("#nomTxt").css("border", "3px solid red").addClass('obligatoire').val('');
 				// $('#adresseCor').css('border','3px solid red').addClass('obligatoire').val('');
 				// return false;
-				alert('Vous devez entrer une adresse valide. Si l\'immeuble correspond à un plex, entrer le numéro civique le plus petit.')
+                toastr['error']('Vous devez entrer une adresse valide. Si l\'immeuble correspond à un plex, entrer le numéro civique le plus petit.')
+
+                // alert('Vous devez entrer une adresse valide. Si l\'immeuble correspond à un plex, entrer le numéro civique le plus petit.')
 				return false;
 
 			}
@@ -254,7 +258,9 @@ function onDeviceReady() {
 				$('#enrVideo').fadeOut('slow');
 				$('#nouvConstat').fadeOut('slow');
 				$('button[name="btnEnregistreFormulaire"]').fadeIn('slow');
-                alert('Des champs obligatoires ne sont pas remplis');
+                toastr['error']('Des champs obligatoires ne sont pas remplis');
+
+                // alert('Des champs obligatoires ne sont pas remplis');
 			}
 			else if(!isValide){
                 console.log('nbr: '+nbr);
@@ -288,7 +294,8 @@ function onDeviceReady() {
 
 			// db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 			db.transaction(function(tx){
-				tx.executeSql('DROP TABLE IF EXISTS constats',[],function(){alert('Table constats vidée');onDeviceReady()});
+				tx.executeSql('DROP TABLE IF EXISTS constats',[],function(){toastr['success']('Table constat vidée');
+				onDeviceReady()});
 			}, errorCB);
 			$('.cf').empty();
 			//db.transaction(onDeviceReady, errorCB);
@@ -303,16 +310,22 @@ function onDeviceReady() {
 				window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (dir) {
 					dir.getFile(fileVideo, {create: false}, function (fileEntry) {
 						fileEntry.remove(function (file) {
-							alert("file removed!");
+                            toastr['success']('file removed!');
+
+                            // alert("file removed!");
                             db.transaction(function(tx){
                                 tx.executeSql('DELETE FROM videos WHERE id=?',[idVideo],function(){
                                     console.log('videos droppée pour id='+idVideo);
                                 });
                             }, errorCB);
                         }, function (error) {
-                            alert("error occurred: " + error.code);
+                            toastr['error']('error occured: ' +error.code);
+
+                            // alert("error occurred: " + error.code);
                         }, function () {
-                            alert("file does not exist");
+                            toastr['error']('file does not exist');
+
+                            // alert("file does not exist");
                         });
 					});
 				});
@@ -327,8 +340,11 @@ function onDeviceReady() {
 
     //Callback d'erreur du géopositionnement
     function onError(error) {
-        alert('code:  '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
+        toastr['error']('code: '+ error.code +'\n'+
+						'message: ' + error.message +'\n');
+		//
+        // alert('code:  '    + error.code    + '\n' +
+        //       'message: ' + error.message + '\n');
     }
 
 

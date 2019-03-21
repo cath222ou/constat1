@@ -22,7 +22,9 @@ var currentRow;
         // Transaction error callback
         //
         function errorCB(err) {
-            alert("Error processing SQL: "+err.code);
+            toastr['error']('Error processing SQL: '+err.code);
+
+            // alert("Error processing SQL: "+err.code);
         }
 
         // Transaction success callback
