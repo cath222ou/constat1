@@ -159,10 +159,7 @@ $( function() {
         width: 400,
         modal: true,
         buttons: {
-            "Oui": function() {
-                $( this ).dialog( "close" );
-            },
-            "Non": function() {
+            "Ok": function() {
                 nouvConstat();
                 $( this ).dialog( "close" );
             }
@@ -172,14 +169,22 @@ $( function() {
 
 //Vérifier si le constat a été émis dans les 30 derniers jours
 function verifTrenteDernierJour(tx, results){
-    for (i=0; i < results.rows.length; i++){
-            var dateConstat = moment(results.rows.item(i).b_date,"DD/MM/YYYY");
+    var infractionEnCours = $('.radio-input:radio:checked').val(); //COMMENTAIRE si pas besoin
+    if (infractionEnCours == null || infractionEnCours == undefined){ //COMMENTAIRE si pas besoin
+        toastr["warning"]('Veuillez sélectionner une infraction avant d\'entrer une adresse.'); //COMMENTAIRE si pas besoin
+        $('#noCivTxt_c').val('').attr('data-matricule',''); //COMMENTAIRE si pas besoin
+        $('#rueTxt_c').val(''); //COMMENTAIRE si pas besoin
+    } //COMMENTAIRE si pas besoin
+    else { //COMMENTAIRE si pas besoin
+        for (i = 0; i < results.rows.length; i++) {
+            var dateConstat = moment(results.rows.item(i).b_date, "DD/MM/YYYY");
+            var infractionPrecedente = results.rows.item(i).b_description; //COMMENTAIRE si pas besoin
             //Vérifier si la date du constat date de 30 jours ou moins
-            if(moment().diff(dateConstat,'days') < 31) {
-                $( "#dialog-confirm" ).dialog( "open" );
+            if (moment().diff(dateConstat, 'days') < 31 && infractionPrecedente == infractionEnCours) { //COMMENTAIRE si pas besoin (Pour la 2e condition)
+                $("#dialog-confirm").dialog("open");
             }
-
-    }
+        }
+    } //COMMENTAIRE si pas besoin
 }
 
 
