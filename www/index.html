@@ -288,7 +288,7 @@
 					</div>
 				</div>
 				<div style="text-align: center">
-					* inclus automatiquement lors de la synchronisation
+					* remplis automatiquement lors de la synchronisation
 					<button id="enr" style="width:100%" name="btnEnregistreFormulaire">Enregistrer le formulaire</button><br />
 				</div>
 
@@ -313,7 +313,7 @@
 					</div>
 				</section>
 				<div style="text-align: center">
-					<!--<button name="btnDropTableConstats" class="">Vider la base de données À ENLEVER</button>-->
+					<button name="btnDropTableConstats" class="">Vider la base de données À ENLEVER</button>
 				</div>
 			</div>
 
@@ -830,6 +830,10 @@
 		</div>
 	</div>
 
+	<div id="dialog-confirm" title="Avertissement">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Un constat a été émis à cette adresse dans les 30 derniers jours. Voulez-vous tout de même continuer ?</p>
+	</div>
+
 </div>
 <footer>UUID:<span id="uuid"></span>   Version:<span id="buildVersion"></span></footer>
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
@@ -839,7 +843,8 @@
 <script ype="text/javascript" src="js/toastr.min.js"></script>
 <script type="text/javascript" src="js/resumable.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript" src="js/dateHeure.js"></script>
+<script type="text/javascript" src="js/moment-with-locales.min.js"></script>
+<!--<script type="text/javascript" src="js/dateHeure.js"></script>-->
 <script type="text/javascript" src="js/SQLite.js"></script>
 <script type="text/javascript" src="js/formulaire.js"></script>
 <script type="text/javascript" src="js/editionFormulaire-v2.js"></script>
@@ -854,6 +859,3 @@
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="js/admin.js"></script>
 <script type="text/javascript">app.initialize();</script>
-
-</body>
-</html>

@@ -129,26 +129,69 @@ function selectNoCiv(idText){
 }
 
 
-function verifMonth(matricule){
+// function verifMonth(matricule){
+//
+//     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+//     db.transaction(function(tx){
+//         //var  nocivique =;
+//         //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
+//         tx.executeSql('SELECT * FROM constatsMonth WHERE adresse_id = ? ',[matricule],function (tx,results){
+//             inMonth(results);
+//         }, errorCB)
+//     }, errorCB);
+//
+// }
+//
+// function inMonth(results){
+//
+//     if(results.rows.length > 0){
+//         toastr['error']('Un constat a été émis à cette adresse dans les 30 derniers jours')
+//         nouvConstat();
+//     }
+// }
 
-    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-    db.transaction(function(tx){
-        //var  nocivique =;
-        //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
-        tx.executeSql('SELECT * FROM constatsMonth WHERE adresse_id = ? ',[matricule],function (tx,results){
-            inMonth(results);
-        }, errorCB)
-    }, errorCB);
+//Dialogue pour le message d'avertissement qu'un constat a déjà été émis à cette adresse dans les 30 derniers jours
+$( function() {
+    $( "#dialog-confirm" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            "Oui": function() {
+                $( this ).dialog( "close" );
+            },
+            "Non": function() {
+                nouvConstat();
+                $( this ).dialog( "close" );
+            }
+        }
+    });
+} );
 
-}
+//Vérifier si le constat a été émis dans les 30 derniers jours
+function verifTrenteDernierJour(tx, results){
+    for (i=0; i < results.rows.length; i++){
+            var dateConstat = moment(results.rows.item(i).b_date,"DD/MM/YYYY");
+            //Vérifier si la date du constat date de 30 jours ou moins
+            if(moment().diff(dateConstat,'days') < 31) {
+                $( "#dialog-confirm" ).dialog( "open" );
+            }
 
-function inMonth(results){
-
-    if(results.rows.length > 0){
-        toastr['error']('Un constat a été émis à cette adresse dans les 30 derniers jours')
-        nouvConstat();
     }
 }
+
+
+//Récupérer les constats qui ont été émis à cette adresse
+function validerConstatMemeAdresse(matriculeRole){
+    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+    db.transaction(function(tx){
+            tx.executeSql('SELECT * FROM constats WHERE adresse_id=?', [matriculeRole], verifTrenteDernierJour, errorCB)
+        }, errorCB
+    );
+}
+
 
 
 //Autocomplète des adresses
@@ -174,8 +217,8 @@ function nomRueSelect(results){
             //valeur des label
             inputRue.data("matricule",ui.item.value);
 
-
-            verifMonth(inputRue.data("matricule"))
+            //Lorsqu'une adresse est sélectionner, vérifier si un constat a été émis dans les 30 derniers jours
+            validerConstatMemeAdresse(inputRue.data("matricule"))
         },
         // change: function (event, ui) {
         //     if (ui.item === null) {
