@@ -14,10 +14,7 @@ $('#tabs-6ID').on('click', function(){
 
 function verifAdminMP() {
         var password = $('#password').val();
-
-
         $.ajax({
-
             url: 'http://constats.ville.valdor.qc.ca/auth',
             method: 'post',
             data: {pwd: password},
@@ -43,9 +40,7 @@ function verifAdminMP() {
         });
 }
 
-
 $("#idAdmin").prop("readonly", true);
-
 
 //Création de la table demo pour visualisation dans l'application
 function afficherTableAdmin(tx, results) {

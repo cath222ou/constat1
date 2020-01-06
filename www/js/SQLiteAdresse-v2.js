@@ -18,7 +18,7 @@ function successCBAdr(tx,result) {
 function queryDBAdr(tx,result){
     tx.executeSql('SELECT * FROM adresses', [],function(tx,result){
         querySuccessAdr(tx,result)
-    }, errorCB)
+    }, errorCB);
 }
 
 
@@ -59,11 +59,11 @@ function querySuccessAdr(tx,result) {
             success: function (changes) {
                 db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
                 //lancer la requête d'insertion des informations dans la table adresse
-                db.transaction(function (tx){insertDBAdr(tx,changes)}, errorCB);
+                db.transaction(function (tx){insertDBAdr(tx,changes);}, errorCB);
             },
             error: function (model, response) {
                 console.log(model);
-                toastr['error'](reponse.responseText)
+                toastr['error'](reponse.responseText);
 
                 // alert(response.responseText);
             }
@@ -158,68 +158,88 @@ function verifTrenteDernierJour(tx, results){
     //     $('#rueTxt_c').val(''); //COMMENTAIRE si pas besoin
     // } //COMMENTAIRE si pas besoin
     // else { //COMMENTAIRE si pas besoin
+    console.log('début fn vérifier 30 jours');
+    console.log(results.rows.length);
         for (i = 0; i < results.rows.length; i++) {
             var dateConstat = moment(results.rows.item(i).b_date, "DD/MM/YYYY");
             // var infractionPrecedente = results.rows.item(i).b_description; //COMMENTAIRE si pas besoin
             //Vérifier si la date du constat date de 30 jours ou moins
             if (moment().diff(dateConstat, 'days') < 31) { //COMMENTAIRE si pas besoin (Pour la 2e condition)
                 // $("#dialog-confirm").dialog("open");
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": 0,
+                    "extendedTimeOut": 0,
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    "tapToDismiss": false
+                }
                 toastr['warning']('Un constat a été émis à cette adresse dans les 30 derniers jours.');
             }
         }
+        console.log('fin fn vérifier 30 jours');
     // } //COMMENTAIRE si pas besoin
 }
 
 //Récupérer les constats qui ont été émis à cette adresse
 function validerConstatMemeAdresse(matriculeRole){
-    db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-    db.transaction(function(tx){
-            tx.executeSql('SELECT * FROM constats WHERE adresse_id=?', [matriculeRole], verifTrenteDernierJour, errorCB)
-        }, errorCB
-    );
+   setTimeout(function(){
+           db = window.openDatabase("Database", "1.0", "Cordova Demo", 500000);
+           db.transaction(function(tx){
+                       tx.executeSql('SELECT * FROM constats WHERE adresse_id=?', [matriculeRole], verifTrenteDernierJour, errorCB);
+               }, errorCB,function(){console.log('validation constat deja emis ok');}
+           );
+           },600);
 }
 
 $('#rueTxt_c').on('click',function(event){
    event.preventDefault();
-    $('#rueTxt_c').data("matricule");
+    // $('#rueTxt_c').data("matricule");
     $('#rueTxt_c').data("matricule",null);
-    console.log('debut fn selectNoCiv' );
     var nociv = $('#noCivTxt_c').val();
-    console.log('No civ: '+ nociv);
     setTimeout(function(){
         db = window.openDatabase("Database", "1.0", "Cordova Demo", 500000);
         db.transaction(function(tx){
-            console.log('début transaction');
             //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
             setTimeout(nomRueSelect(tx,nociv),500);
-        }, errorCB,function(){console.log('transaction ok')});
+        }, errorCB,function(){console.log('transaction ok');});
 
     },500);
 });
 $('#rueTxtAdmin').on('click',function(event){
     event.preventDefault();
-    $('#rueTxtAdmin').data("matricule");
+    // $('#rueTxtAdmin').data("matricule");
     $('#rueTxtAdmin').data("matricule",null);
-    console.log('debut fn selectNoCiv' );
     var nociv = $('#noCivTxtAdmin').val();
-    console.log('No civ: '+ nociv);
     setTimeout(function(){
         db = window.openDatabase("Database", "1.0", "Cordova Demo", 500000);
         db.transaction(function(tx){
-            console.log('début transaction');
             //Sélectionner les nom de rue ayant un numéro civique égale à la valeur entrée dans le champ texte
             setTimeout(nomRueSelect(tx,nociv),500);
-        }, errorCB,function(){console.log('transaction ok')});
+        }, errorCB,function(){console.log('transaction ok');});
 
     },500);
+});
+$('#rueTxt_c').focusout(function(){
+    var inputRue = $('#rueTxt_c');
+    console.log('avant valider constat meme adresse');
+    validerConstatMemeAdresse(inputRue.data("matricule"));
 });
 
 //Autocomplète des adresses
 function nomRueSelect(tx,nociv){
     console.log('début fn nomRueSelect');
     tx.executeSql('SELECT * FROM adresses WHERE nocivique = ? ',[nociv],function(tx,results){
-        console.log('début executesql');
-
         var nomRueResult = [];
         var len = results.rows.length;
         //Ajouter les noms de rues et matricule à la variable nomRueResults
@@ -241,9 +261,6 @@ function nomRueSelect(tx,nociv){
                 inputRue.val(ui.item.label);
                 //valeur des label
                 inputRue.data("matricule",ui.item.value);
-
-                //Lorsqu'une adresse est sélectionner, vérifier si un constat a été émis dans les 30 derniers jours
-                validerConstatMemeAdresse(inputRue.data("matricule"))
             },
             // change: function (event, ui) {
             //     if (ui.item === null) {
@@ -294,7 +311,7 @@ function selectNoCivEdit(){
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     db.transaction(
         tx.executeSql('SELECT * FROM adresses WHERE nocivique= ?',[$('#noCivTxtEdit_c').val()],function(tx, results){
-            nomRueSelectEdit(tx, results)
+            nomRueSelectEdit(tx, results);
         }, errorCB)
         , errorCB);
 }

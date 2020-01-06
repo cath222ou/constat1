@@ -33,7 +33,7 @@ function syncConstat() {
                     $('#synchronisation').modal('close');
                 }
             },
-            errorCB)
+            errorCB);
     }, errorCB);
 };
 

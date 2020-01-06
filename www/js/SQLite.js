@@ -23,7 +23,7 @@ function onDeviceReady() {
     //Valeur du UUID de l'appareil
     uuidValue = device.uuid;
     $('#uuid').html(uuidValue);
-    $('#buildVersion').html('1.3.0');
+    $('#buildVersion').html('1.3.1');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
@@ -34,7 +34,7 @@ function onDeviceReady() {
     //Création de la Table de Adresse
     db.transaction(populateDBAdr, errorCB, function(tx,result){successCBAdr(tx,result)});
     //Création de la Table des constats du mois
-    // db.transaction(populateDBConstatMonth, errorCB, function(tx,result){successCBMonth(tx,result)});
+    //db.transaction(populateDBConstatMonth, errorCB, function(tx,result){successCBMonth(tx,result)});
 }
 
 //Création de la table constats
@@ -102,7 +102,7 @@ function getConstatsNonSync(tx) {
 
 //Lancer la requête pour raffraichir la table dans Constats à synchroniser lorsque l'on clique sur cet tabs
 $('#tabs-2ID').click(function() {
-    getConstatsNonSync()
+    getConstatsNonSync();
 });
 
 //Requête d'insertion dans la table demo lorsque l'on clique sur enregistrer
@@ -203,7 +203,7 @@ function validerMatriculeRole(){
         // $("#nomTxt").css("border", "3px solid red").addClass('obligatoire').val('');
         // $('#adresseCor').css('border','3px solid red').addClass('obligatoire').val('');
         // return false;
-        toastr['error']('Vous devez entrer une adresse valide. Si l\'immeuble correspond à un plex, entrer le numéro civique le plus petit.')
+        toastr['error']('Vous devez entrer une adresse valide. Si l\'immeuble correspond à un plex, entrer le numéro civique le plus petit.');
 
         // alert('Vous devez entrer une adresse valide. Si l\'immeuble correspond à un plex, entrer le numéro civique le plus petit.')
         return false;
@@ -303,7 +303,7 @@ function goInsert(position) {
 
     //sinon lance la transaction insertDB pour insérer les données dans la table DEMO
     else{
-        console.log('constat valide')
+        console.log('constat valide');
         console.log('avant fadein');
         $('#enrVideo').fadeIn('slow');//petite animation pour cacher et afficher les boutons
         $('#nouvConstat').fadeIn('slow');

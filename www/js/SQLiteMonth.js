@@ -11,8 +11,8 @@ function successCBMonth(tx,result) {
 //Sélectionner tout dans la table adresse
 function queryDBMonth(tx,result){
     tx.executeSql('SELECT * FROM adresses', [],function(tx,result){
-        querySuccessMonth(tx,result)
-    }, errorCB)
+        querySuccessMonth(tx,result);
+    }, errorCB);
 }
 
 //connexion on serveur
@@ -32,7 +32,6 @@ function querySuccessMonth(tx,result) {
             error: function (model, response) {
                 console.log(model);
                 toastr['error'](response.responseText);
-
                 // alert(response.responseText);
             }
         });

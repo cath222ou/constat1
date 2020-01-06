@@ -52,6 +52,7 @@ $('#noCivTxt_c').click(function(){
 
     //Débuter un nouveau constat en vidant tout les champs
     function nouvConstat(){
+
         $('#listeVideo').empty();
         $('#enrVideo').fadeOut('slow');
         $('#nouvConstat').fadeOut('slow');
@@ -69,12 +70,16 @@ $('#noCivTxt_c').click(function(){
         $('#faitTxt').val('');
         $('#faitTxt2').val('');
         $('#noteTxt').val('');
+        $('#heurediv').val('');
+        $('#datediv').val('');
+        myTimer();
         $('input[type=radio]').prop('checked',false);
         //Retour à l'accordéon initial
         $( "#accordion" ).accordion(
             {active:2}//Etait à 1, je l'ai mis identique à l'initialisation dans le document.ready
         );
         $('#tabs').tabs('option','active',0);//Remet à la première tab
+
     }
 
     //Afficher nombre de caractères restants pour le champs texte de faits et gestes

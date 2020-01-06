@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="ca.qc.valdor.ville.deneigement" version="1.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="ca.qc.valdor.ville.deneigement" version="1.3.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>ConstatDeneigement</name>
     <description>
         App de constat de déneigement
@@ -92,5 +92,4 @@
     <plugin name="cordova-plugin-media" source="npm" spec="~5.0.0" />
     <plugin name="cordova-plugin-media-capture" source="npm" spec="~3.0.1" />
     <plugin name="cordova-plugin-ios-camera-permissions" source="npm" spec="1.2.0" />
-
 </widget>
