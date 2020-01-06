@@ -204,7 +204,7 @@
 								Adresse<br />
 								<label for="noCivTxt_c" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
 								<input id="noCivTxt_c" type="text" class="obligatoire numbersOnly" data-matricule="" name="nociv" maxlength="10" style="width:10%" >
-								<input id="rueTxt_c" type="text" class="obligatoire" onfocus="selectNoCiv('noCivTxt_c')" name="nomrue" maxlength="250" style="width:80%" ><br />
+								<input id="rueTxt_c" type="text" class="obligatoire"  name="nomrue" maxlength="250" style="width:80%" ><br />
 							</div>
 						</div>
 						<div class="row">
@@ -312,9 +312,9 @@
 					</table>
 					</div>
 				</section>
-				<div style="text-align: center">
-					<button name="btnDropTableConstats" class="">Vider la base de données À ENLEVER</button>
-				</div>
+				<!--<div style="text-align: center">-->
+					<!--<button name="btnDropTableConstats" class="">Vider la base de données À ENLEVER</button>-->
+				<!--</div>-->
 			</div>
 
 			<!-- tabs Video -->
@@ -392,8 +392,6 @@
 					</div>
 				</section>
 			</div>
-
-
 		</div>
 	</div>
 
@@ -751,7 +749,6 @@
 		</div>
 	</div>
 
-
 	<!-- Modal de login admin -->
 	<div class="modal fade" id="loginAdminModal" tabindex="-1" role="dialog" aria-labelledby="constatEditLabel" >
 		<div class="modal-dialog" role="document">
@@ -817,7 +814,7 @@
 						<h3>Requête par adresse</h3>
 						<label for="noCivTxtAdmin" style="margin-left: 1%">No civ</label><label style="margin-left: 6%">Rue</label><br />
 						<input id="noCivTxtAdmin" type="text" class=" numbersOnly" data-matricule="" name="nociv" maxlength="10" style="width:10%" >
-						<input id="rueTxtAdmin" type="text" class="" onfocus="selectNoCiv('noCivTxtAdmin')" name="nomrue" maxlength="250" style="width:80%" ><br />
+						<input id="rueTxtAdmin" type="text"  class="" name="nomrue" maxlength="250" style="width:80%" ><br />
 
 					</div>
 				</div>
@@ -836,11 +833,11 @@
 
 </div>
 <footer>UUID:<span id="uuid"></span>   Version:<span id="buildVersion"></span></footer>
-<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/tether.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script ype="text/javascript" src="js/toastr.min.js"></script>
+<script type="text/javascript" src="js/toastr.min.js"></script>
 <script type="text/javascript" src="js/resumable.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/moment-with-locales.min.js"></script>

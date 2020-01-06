@@ -5,8 +5,8 @@ var deferred = $.Deferred();
 var countJour;
 var x = '';
 var y = '';
-// var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A'; ///////////changerrr
-var uuidValue;
+ // var uuidValue = '2E9F2ADA-8992-4971-925A-C2DCDA04042A';
+//var uuidValue;
 $(function(){
     $('#nouvConstat').fadeOut();
     $('#enrVideo').fadeOut();
@@ -21,9 +21,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 //Cordova ready
 function onDeviceReady() {
     //Valeur du UUID de l'appareil
-    uuidValue = device.uuid; ////////////////////////////////////changer
+   // uuidValue = device.uuid;
     $('#uuid').html(uuidValue);
-    $('#buildVersion').html('1.2.18');
+    $('#buildVersion').html('1.3.0');
     db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
     //Création de la Table de constat
     db.transaction(populateDBConstat, errorCB, getConstatsNonSync);
@@ -34,7 +34,7 @@ function onDeviceReady() {
     //Création de la Table de Adresse
     db.transaction(populateDBAdr, errorCB, function(tx,result){successCBAdr(tx,result)});
     //Création de la Table des constats du mois
-    db.transaction(populateDBConstatMonth, errorCB, function(tx,result){successCBMonth(tx,result)});
+    // db.transaction(populateDBConstatMonth, errorCB, function(tx,result){successCBMonth(tx,result)});
 }
 
 //Création de la table constats
@@ -169,7 +169,7 @@ function validerMatriculeRole(){
     countJour = 0;
 
     var matriculeRole = $('#rueTxt_c').data("matricule");
-    if(typeof matriculeRole == "string" && matriculeRole.length > 0){//Matricule du role existe
+    if(typeof matriculeRole === "string" && matriculeRole.length > 0){//Matricule du role existe
         // if(validerConstatMemeAdresse(matriculeRole) == true){
             return true;
         // };
@@ -282,6 +282,7 @@ function goInsert(position) {
 
     //Si un des champs obligatoires n'est pas remplis ou aucun radio n'est sélectionné
     if (nbr > 0 || radioNbr === 0){
+        console.error('manque champs ou radio');
         console.log('nbr: '+nbr);
         console.log('radionbr: '+radioNbr);
         $('#enrVideo').fadeOut('slow');
@@ -292,6 +293,7 @@ function goInsert(position) {
         // alert('Des champs obligatoires ne sont pas remplis');
     }
     else if(!isValide){
+        console.error('constat non valide');
         console.log('nbr: '+nbr);
         console.log('radionbr: '+radioNbr);
         $('#enrVideo').fadeOut('slow');
@@ -301,6 +303,8 @@ function goInsert(position) {
 
     //sinon lance la transaction insertDB pour insérer les données dans la table DEMO
     else{
+        console.log('constat valide')
+        console.log('avant fadein');
         $('#enrVideo').fadeIn('slow');//petite animation pour cacher et afficher les boutons
         $('#nouvConstat').fadeIn('slow');
         $('button[name="btnEnregistreFormulaire"]').fadeOut('slow');

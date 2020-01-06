@@ -23,14 +23,6 @@
         "is_top_level": false,
         "variables": {}
     },
-    "cordova-plugin-console": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-console@~1.0.2"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-contacts": {
         "source": {
             "type": "registry",
@@ -82,7 +74,7 @@
     "cordova-plugin-media": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-media@5.0"
+            "id": "cordova-plugin-media@~5.0.0"
         },
         "is_top_level": true,
         "variables": {}
@@ -145,15 +137,6 @@
             "CAMERA_USAGE_DESCRIPTION": "Pour usage interne",
             "PHOTOLIBRARY_USAGE_DESCRIPTION": "Pour usage interne"
         }
-    },
-    "cordova-sqlite-legacy": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/litehelpers/cordova-sqlite-legacy",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
     },
     "cordova-sqlite-legacy-build-support": {
         "source": {
@@ -224,6 +207,30 @@
         "source": {
             "type": "registry",
             "id": "cordova-plugin-ios-camera-permissions@1.2.0"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-sqlite-2": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-sqlite-2"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-sqlite-evcore-extbuild-free": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-sqlite-evcore-extbuild-free@^0.10.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-sqlite-storage": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-sqlite-storage@3.4.0"
         },
         "is_top_level": true,
         "variables": {}

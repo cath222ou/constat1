@@ -13,9 +13,6 @@
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
         "cordova-plugin-contacts": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
@@ -46,6 +43,9 @@
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
+        "cordova-plugin-ios-camera-permissions": {
+            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+        },
         "cordova-plugin-media": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
@@ -56,6 +56,9 @@
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
         "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+        },
+        "cordova-plugin-sqlite-2": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
         "cordova-plugin-statusbar": {
@@ -70,7 +73,7 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
-        "cordova-sqlite-legacy": {
+        "cordova-sqlite-evcore-extbuild-free": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
         "cordova-sqlite-legacy-build-support": {
@@ -82,7 +85,7 @@
         "uk.co.workingedge.cordova.plugin.sqliteporter": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         },
-        "cordova-plugin-ios-camera-permissions": {
+        "cordova-sqlite-storage": {
             "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
         }
     },

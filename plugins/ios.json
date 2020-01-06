@@ -8,86 +8,90 @@
     },
     "installed_plugins": {
         "cordova-plugin-battery-status": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-contacts": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-device-motion": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-device-orientation": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-globalization": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-media": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-media-capture": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-vibration": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-video-editor": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-sqlite-legacy": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "cordova-sqlite-legacy-build-support": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "phonegap-plugin-contentsync": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
-        },
-        "uk.co.workingedge.cordova.plugin.sqliteporter": {
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         },
         "cordova-plugin-ios-camera-permissions": {
             "CAMERA_USAGE_DESCRIPTION": "This app needs camera access",
             "MICROPHONE_USAGE_DESCRIPTION": "This app needs microphone access",
             "PHOTOLIBRARY_ADD_USAGE_DESCRIPTION": "This app needs write-access to photo library",
             "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs read/write-access photo library access",
-            "PACKAGE_NAME": "ca.qc.valdor.ville.deneigement"
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-media": {
+            "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO",
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-sqlite-2": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-video-editor": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-sqlite-evcore-extbuild-free": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-sqlite-legacy-build-support": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "phonegap-plugin-contentsync": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "uk.co.workingedge.cordova.plugin.sqliteporter": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         }
     },
     "dependent_plugins": {}

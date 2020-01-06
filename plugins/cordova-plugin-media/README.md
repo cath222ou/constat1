@@ -46,9 +46,6 @@ function onDeviceReady() {
 }
 ```
 
-Report issues with this plugin on the [Apache Cordova issue tracker](https://issues.apache.org/jira/issues/?jql=project%20%3D%20CB%20AND%20status%20in%20(Open%2C%20%22In%20Progress%22%2C%20Reopened)%20AND%20resolution%20%3D%20Unresolved%20AND%20component%20%3D%20%22cordova-plugin-media%22%20ORDER%20BY%20priority%20DESC%2C%20summary%20ASC%2C%20updatedDate%20DESC)
-
-
 ## Installation
 
 ```bash
@@ -58,17 +55,9 @@ cordova plugin add cordova-plugin-media
 ## Supported Platforms
 
 - Android
-- BlackBerry 10
 - iOS
-- Windows Phone 7 and 8
-- Tizen
-- Windows 8
 - Windows
 - Browser
-
-## Windows Phone Quirks
-
-- Only one media file can be played back at a time.
 
 ## Media
 
@@ -82,9 +71,9 @@ var media = new Media(src, mediaSuccess, [mediaError], [mediaStatus]);
 
 - __mediaSuccess__: (Optional) The callback that executes after a `Media` object has completed the current play, record, or stop action. _(Function)_
 
-- __mediaError__: (Optional) The callback that executes if an error occurs. _(Function)_
+- __mediaError__: (Optional) The callback that executes if an error occurs. It takes an integer error code. _(Function)_
 
-- __mediaStatus__: (Optional) The callback that executes to indicate status changes. _(Function)_
+- __mediaStatus__: (Optional) The callback that executes to indicate status changes. It takes a integer status code. _(Function)_
 
 __NOTE__: `cdvfile` path is supported as `src` parameter:
 ```javascript
@@ -129,6 +118,8 @@ The following constants are reported as the only parameter to the
 - `media.stopRecord`: Stop recording an audio file.
 
 - `media.stop`: Stop playing an audio file.
+
+- `media.setRate`: Set the playback rate for the audio file.
 
 ### Additional ReadOnly Parameters
 
@@ -464,10 +455,6 @@ setTimeout(function() {
 }, 5000);
 ```
 
-### BlackBerry 10 Quirks
-
-- Not supported on BlackBerry OS 5 devices.
-
 ## media.setVolume
 
 Set the volume for an audio file.
@@ -525,7 +512,6 @@ Starts recording an audio file.
 
 - Android
 - iOS
-- Windows Phone 7 and 8
 - Windows
 
 ### Quick Example
@@ -588,10 +574,6 @@ To add this entry into the `info.plist`, you can use the `edit-config` tag in th
 
 - Any subdirectory specified at record time must already exist.
 
-### Tizen Quirks
-
-- Not supported on Tizen devices.
-
 ## media.stop
 
 Stops playing an audio file.
@@ -636,7 +618,6 @@ Stops recording an audio file.
 
 - Android
 - iOS
-- Windows Phone 7 and 8
 - Windows
 
 ### Quick Example
@@ -668,9 +649,33 @@ function recordAudio() {
 }
 ```
 
-### Tizen Quirks
+## media.setRate
 
-- Not supported on Tizen devices.
+Stops recording an audio file.
+
+    media.setRate(rate);
+
+### Supported Platforms
+
+- iOS
+
+### Parameters
+
+- __rate__: The rate to set for playback.
+
+### Quick Example
+
+```js
+// Audio player
+//
+var my_media = new Media(src, onSuccess, onError);
+    my_media.play();
+
+// Set playback rate to 2.0x after 10 seconds
+setTimeout(function() {
+    my_media.setRate(2.0);
+}, 5000);
+```
 
 ## MediaError
 

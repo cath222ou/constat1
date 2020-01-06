@@ -576,6 +576,14 @@ module.exports = [
         "runs": true
     },
     {
+        "file": "plugins/cordova-plugin-sqlite-2/dist/sqlite-plugin.js",
+        "id": "cordova-plugin-sqlite-2.sqlitePlugin",
+        "pluginId": "cordova-plugin-sqlite-2",
+        "clobbers": [
+            "sqlitePlugin"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
         "id": "cordova-plugin-statusbar.statusbar",
         "pluginId": "cordova-plugin-statusbar",
@@ -626,9 +634,9 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova-sqlite-legacy/www/SQLitePlugin.js",
-        "id": "cordova-sqlite-legacy.SQLitePlugin",
-        "pluginId": "cordova-sqlite-legacy",
+        "file": "plugins/cordova-sqlite-evcore-extbuild-free/www/SQLitePlugin.js",
+        "id": "cordova-sqlite-evcore-extbuild-free.SQLitePlugin",
+        "pluginId": "cordova-sqlite-evcore-extbuild-free",
         "clobbers": [
             "SQLitePlugin"
         ]
@@ -666,6 +674,14 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.sqlitePorter"
         ]
+    },
+    {
+        "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+        "id": "cordova-sqlite-storage.SQLitePlugin",
+        "pluginId": "cordova-sqlite-storage",
+        "clobbers": [
+            "SQLitePlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -673,7 +689,6 @@ module.exports.metadata =
 {
     "cordova-plugin-battery-status": "1.1.2",
     "cordova-plugin-camera": "2.1.1",
-    "cordova-plugin-console": "1.0.7",
     "cordova-plugin-contacts": "2.0.1",
     "cordova-plugin-device": "1.1.7",
     "cordova-plugin-device-motion": "1.2.5",
@@ -684,19 +699,21 @@ module.exports.metadata =
     "cordova-plugin-geolocation": "2.1.0",
     "cordova-plugin-globalization": "1.0.9",
     "cordova-plugin-inappbrowser": "1.3.0",
-    "cordova-plugin-media": "4.0.0",
+    "cordova-plugin-ios-camera-permissions": "1.2.0",
+    "cordova-plugin-media": "5.0.3",
     "cordova-plugin-media-capture": "3.0.1",
     "cordova-plugin-network-information": "1.2.1",
     "cordova-plugin-splashscreen": "3.2.2",
+    "cordova-plugin-sqlite-2": "1.0.6",
     "cordova-plugin-statusbar": "2.1.3",
     "cordova-plugin-vibration": "2.1.6",
     "cordova-plugin-video-editor": "1.1.3",
     "cordova-plugin-whitelist": "1.2.2",
-    "cordova-sqlite-legacy": "2.0.0",
+    "cordova-sqlite-evcore-extbuild-free": "0.10.1",
     "cordova-sqlite-legacy-build-support": "1.3.6",
     "phonegap-plugin-contentsync": "1.4.2",
     "uk.co.workingedge.cordova.plugin.sqliteporter": "1.0.2",
-    "cordova-plugin-ios-camera-permissions": "1.2.0"
+    "cordova-sqlite-storage": "3.4.0"
 }
 // BOTTOM OF METADATA
 });

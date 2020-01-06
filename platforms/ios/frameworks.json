@@ -9,6 +9,7 @@
     "AudioToolbox.framework": 2,
     "SystemConfiguration.framework": 1,
     "CoreTelephony.framework": 1,
+    "libsqlite3.dylib": 1,
     "MediaPlayer.framework": 1,
     "CoreVideo.framework": 1,
     "libz.dylib": 1
